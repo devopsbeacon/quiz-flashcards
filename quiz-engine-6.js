@@ -2308,14 +2308,13 @@ function showResults() {
     document.getElementById("dbProgressBar").style.width = "100%";
     document.getElementById("dbQuizScreen").style.display = "none";
     
-    // Grab the results screen container
     const resultsScreen = document.getElementById("dbResultsScreen");
     resultsScreen.style.display = "block";
     
     const score = Math.round((trueCount / activeQuestions.length) * 100);
     document.getElementById("dbFinalScore").innerText = `${score}%`;
 
-    // Ensure html2pdf is loaded in the background for certificate generation
+    // Ensure html2pdf is loaded in the background
     if (typeof html2pdf === 'undefined') {
         const pdfScript = document.createElement("script");
         pdfScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
@@ -2327,10 +2326,8 @@ function showResults() {
       document.getElementById("dbResultsHeading").innerText = "Congratulations! You Passed!";
       document.getElementById("dbSummaryText").innerText = `Outstanding job! You scored ${trueCount} out of ${activeQuestions.length} (${score}%).`;
       
-      // Fire celebration fireworks
       triggerCelebration();
 
-      // Inject Certificate Claim Form dynamically
       if(!document.getElementById('dbCertForm')) {
           const certForm = document.createElement('div');
           certForm.id = 'dbCertForm';
@@ -2355,73 +2352,98 @@ function showResults() {
     }
   }
 
+  window.generateAndDownloadCert = function(score, event) {
+      const studentName = document.getElementById("dbCertName").value.trim();
+      if(!studentName) {
+          alert("Please enter your name to claim the certificate.");
+          return;
+      }
 
-window.generateAndDownloadCert = function(score, event) {
-    const studentName = document.getElementById("dbCertName").value.trim();
-    if(!studentName) {
-        alert("Please enter your name to claim the certificate.");
-        return;
-    }
+      if (typeof html2pdf === 'undefined') {
+          alert("Certificate engine is still loading. Please wait a few seconds and click again.");
+          return;
+      }
 
-    if (typeof html2pdf === 'undefined') {
-        alert("Certificate engine is still loading. Please wait a few seconds and click again.");
-        return;
-    }
+      const downloadBtn = event ? event.target : document.querySelector('#dbCertForm .db-btn');
+      const originalText = downloadBtn.innerText;
+      downloadBtn.innerText = "⏳ Generating PDF (Please Wait)...";
+      downloadBtn.disabled = true;
 
-    // Visual feedback
-    const downloadBtn = event ? event.target : document.querySelector('#dbCertForm .db-btn');
-    const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "⏳ Generating PDF (Please Wait)...";
-    downloadBtn.disabled = true;
+      const topicDropdown = document.getElementById("dbSubjectSelect");
+      const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
+      const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    const topicDropdown = document.getElementById("dbSubjectSelect");
-    const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
-    const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      // FIX: Render off-screen safely (no opacity: 0, which breaks html2canvas)
+      const certContainer = document.createElement('div');
+      certContainer.style.position = 'fixed';
+      certContainer.style.top = '200%'; 
+      certContainer.style.left = '0';
+      certContainer.style.zIndex = '-1';
+      
+      // FIX: Replaced GoDaddy image with text placeholder to bypass strict CORS blocking.
+      certContainer.innerHTML = `
+          <div id="hiddenCertificate" style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
+                  
+                  <div style="font-size: 2.5rem; font-weight: 800; color: #1a1a1a; margin-bottom: 20px;">🚀 DEVOPS BEACON</div>
+                  <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">DevOps Beacon Academy</div>
+                  <h1 style="font-size: 4rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 2px;">CERTIFICATE</h1>
+                  <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 30px;">OF ACHIEVEMENT</div>
+                  <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">This is proudly presented to</div>
+                  <div style="font-family: Georgia, serif; font-style: italic; font-size: 4.5rem; color: #00e5ff; margin: 20px 0; border-bottom: 2px solid #1a1a1a; padding: 0 40px; min-width: 400px;">${studentName}</div>
+                  <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">for successfully completing the assessment in</div>
+                  <div style="font-size: 1.8rem; font-weight: 600; color: #1a1a1a; margin: 15px 0;">${passedTopic}</div>
+                  <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">with a verified score of ${score}%, demonstrating practical knowledge and capability.</div>
+                  <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 50px; padding: 0 60px; box-sizing: border-box;">
+                      <div style="text-align: center;">
+                          <div style="font-size: 1.2rem; color: #4a4a4a; font-weight: bold;">${todayDate}</div>
+                          <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-top: 5px; margin-bottom: 10px;"></div>
+                          <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">DATE OF COMPLETION</div>
+                      </div>
+                      <div style="text-align: center;">
+                          <div style="font-family: Georgia, serif; font-style: italic; font-size: 2rem; color: #1a1a1a; margin-bottom: -10px;">Mitesh Soni</div>
+                          <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-bottom: 10px;"></div>
+                          <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">CHIEF ARCHITECT</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      `;
+      document.body.appendChild(certContainer);
 
-    // FIX 1: Move off-screen vertically instead of using opacity: 0. 
-    // html2canvas will abort or render blank if it sees opacity: 0 or display: none.
-    const certContainer = document.createElement('div');
-    certContainer.style.position = 'fixed';
-    certContainer.style.top = '200%'; // Pushed far below the visible screen
-    certContainer.style.left = '0';
-    certContainer.style.zIndex = '-1';
-    
-    // FIX 2: Removed external fonts/images temporarily to ensure zero network/CORS crashes.
-    // Using standard web-safe 'Georgia' for the elegant signature look.
-    certContainer.innerHTML = `
-        <div id="hiddenCertificate" style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
-                
-                <div style="font-size: 2.5rem; font-weight: 800; color: #1a1a1a; margin-bottom: 20px;">🚀 DEVOPS BEACON</div>
-                
-                <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">DevOps Beacon Academy</div>
-                <h1 style="font-size: 4rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 2px;">CERTIFICATE</h1>
-                <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 30px;">OF ACHIEVEMENT</div>
-                <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">This is proudly presented to</div>
-                
-                <!-- Web-safe elegant font fallback -->
-                <div style="font-family: Georgia, serif; font-style: italic; font-size: 4.5rem; color: #00e5ff; margin: 20px 0; border-bottom: 2px solid #1a1a1a; padding: 0 40px; min-width: 400px;">${studentName}</div>
-                
-                <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">for successfully completing the assessment in</div>
-                <div style="font-size: 1.8rem; font-weight: 600; color: #1a1a1a; margin: 15px 0;">${passedTopic}</div>
-                <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">with a verified score of ${score}%, demonstrating practical knowledge and capability.</div>
-                
-                <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 50px; padding: 0 60px; box-sizing: border-box;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.2rem; color: #4a4a4a; font-weight: bold;">${todayDate}</div>
-                        <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-top: 5px; margin-bottom: 10px;"></div>
-                        <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">DATE OF COMPLETION</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 2rem; color: #1a1a1a; margin-bottom: -10px;">Mitesh Soni</div>
-                        <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-bottom: 10px;"></div>
-                        <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">CHIEF ARCHITECT</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.
+      setTimeout(() => {
+          const element = document.getElementById('hiddenCertificate');
+          const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
+          
+          const opt = {
+              margin: 0,
+              filename: filename,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2 }, 
+              jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+          };
+
+          try {
+              html2pdf().set(opt).from(element).save().then(() => {
+                  document.body.removeChild(certContainer);
+                  downloadBtn.innerText = originalText;
+                  downloadBtn.disabled = false;
+              }).catch(err => {
+                  console.error("PDF Gen Error:", err);
+                  alert("PDF Generation Failed. Error: " + (err.message || err));
+                  document.body.removeChild(certContainer);
+                  downloadBtn.innerText = originalText;
+                  downloadBtn.disabled = false;
+              });
+          } catch(err) {
+              alert("Critical Error: " + err.message);
+              document.body.removeChild(certContainer);
+              downloadBtn.innerText = originalText;
+              downloadBtn.disabled = false;
+          }
+      }, 500); 
+  };
+
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initQuizEngine);
