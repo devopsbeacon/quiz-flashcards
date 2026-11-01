@@ -2344,7 +2344,7 @@ function showResults() {
             <h4 style="margin: 0 0 15px 0; color: var(--db-text);">Claim Your Certificate</h4>
             <input type="text" id="dbCertName" placeholder="Enter Your Full Name" required 
                    style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--db-border); outline: none; background: var(--db-card); color: var(--db-text);">
-            <button class="db-btn" onclick="generateAndDownloadCert(${score})" style="background-color: #16a34a;">📥 Download Certificate</button>
+            <button class="db-btn" onclick="generateAndDownloadCert(${score}, event)" style="background-color: #16a34a;">📥 Download Certificate</button>
           `;
           resultsScreen.appendChild(certForm);
       }
@@ -2356,7 +2356,7 @@ function showResults() {
   }
 
 
-  window.generateAndDownloadCert = function(score, event) {
+window.generateAndDownloadCert = function(score, event) {
       const studentName = document.getElementById("dbCertName").value.trim();
       if(!studentName) {
           alert("Please enter your name to claim the certificate.");
@@ -2368,7 +2368,7 @@ function showResults() {
           return;
       }
 
-      // 1. Give the user visual feedback that it is working
+      // Visual feedback
       const downloadBtn = event ? event.target : document.querySelector('#dbCertForm .db-btn');
       const originalText = downloadBtn.innerText;
       downloadBtn.innerText = "⏳ Generating PDF (Please Wait)...";
@@ -2378,16 +2378,20 @@ function showResults() {
       const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+      // FIX 1: Keep on-screen but make invisible, prevents rendering engine clipping
       const certContainer = document.createElement('div');
       certContainer.style.position = 'absolute';
-      certContainer.style.left = '-9999px'; 
       certContainer.style.top = '0';
+      certContainer.style.left = '0';
+      certContainer.style.opacity = '0'; 
+      certContainer.style.pointerEvents = 'none';
+      certContainer.style.zIndex = '-9999';
       
-      // 2. Removed crossorigin="anonymous" which was causing the silent failure
+      // FIX 2: Added crossorigin="anonymous" to the image tag to negotiate CORS properly
       certContainer.innerHTML = `
           <div id="hiddenCertificate" style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: 'Poppins', sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
               <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
-                  <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" style="height: 85px; object-fit: contain; margin-bottom: 20px;">
+                  <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="height: 85px; object-fit: contain; margin-bottom: 20px;">
                   <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">DevOps Beacon Academy</div>
                   <h1 style="font-size: 4rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 2px;">CERTIFICATE</h1>
                   <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 30px;">OF ACHIEVEMENT</div>
@@ -2418,17 +2422,16 @@ function showResults() {
       fontLink.rel = "stylesheet";
       document.head.appendChild(fontLink);
 
-      // 3. Increased timeout to ensure the custom fonts and logo fully load before PDF generation
       setTimeout(() => {
           const element = document.getElementById('hiddenCertificate');
           const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
           
-          // 4. Added allowTaint to bypass GoDaddy cross-origin restrictions
+          // FIX 3: allowTaint MUST be false to prevent browser security from blocking the PDF download
           const opt = {
               margin: 0,
               filename: filename,
               image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2, useCORS: true, allowTaint: true },
+              html2canvas: { scale: 2, useCORS: true, allowTaint: false }, 
               jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
           };
 
@@ -2438,7 +2441,6 @@ function showResults() {
               downloadBtn.disabled = false;
           }).catch(err => {
               console.error("PDF Gen Error:", err);
-              alert("Something went wrong generating the PDF. Please try again.");
               document.body.removeChild(certContainer);
               downloadBtn.innerText = originalText;
               downloadBtn.disabled = false;
