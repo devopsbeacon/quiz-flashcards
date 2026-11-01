@@ -2378,39 +2378,42 @@ window.generateAndDownloadCert = function(score, event) {
     const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+    // FIX 1: Move off-screen vertically instead of using opacity: 0. 
+    // html2canvas will abort or render blank if it sees opacity: 0 or display: none.
     const certContainer = document.createElement('div');
-    certContainer.style.position = 'absolute';
-    certContainer.style.top = '0';
+    certContainer.style.position = 'fixed';
+    certContainer.style.top = '200%'; // Pushed far below the visible screen
     certContainer.style.left = '0';
-    certContainer.style.opacity = '0'; 
-    certContainer.style.pointerEvents = 'none';
-    certContainer.style.zIndex = '-9999';
+    certContainer.style.zIndex = '-1';
     
-    // FIX: Using a direct Base64 string bypasses all GoDaddy CORS restrictions.
-    // Replace the long string inside the src="" below with the Base64 code of your logo if you want the actual image.
-    // For now, it uses a styled text placeholder so the PDF download succeeds 100% of the time.
+    // FIX 2: Removed external fonts/images temporarily to ensure zero network/CORS crashes.
+    // Using standard web-safe 'Georgia' for the elegant signature look.
     certContainer.innerHTML = `
-        <div id="hiddenCertificate" style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: 'Poppins', sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div id="hiddenCertificate" style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
                 
-                <div style="font-size: 3rem; font-weight: 800; color: #1a1a1a; margin-bottom: 20px;">🚀 DEVOPS BEACON</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: #1a1a1a; margin-bottom: 20px;">🚀 DEVOPS BEACON</div>
                 
                 <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">DevOps Beacon Academy</div>
                 <h1 style="font-size: 4rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 2px;">CERTIFICATE</h1>
                 <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 30px;">OF ACHIEVEMENT</div>
                 <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">This is proudly presented to</div>
-                <div style="font-family: 'Great Vibes', cursive, serif; font-size: 4.5rem; color: #00e5ff; margin: 20px 0; border-bottom: 2px solid #1a1a1a; padding: 0 40px; min-width: 400px;">${studentName}</div>
+                
+                <!-- Web-safe elegant font fallback -->
+                <div style="font-family: Georgia, serif; font-style: italic; font-size: 4.5rem; color: #00e5ff; margin: 20px 0; border-bottom: 2px solid #1a1a1a; padding: 0 40px; min-width: 400px;">${studentName}</div>
+                
                 <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">for successfully completing the assessment in</div>
                 <div style="font-size: 1.8rem; font-weight: 600; color: #1a1a1a; margin: 15px 0;">${passedTopic}</div>
                 <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">with a verified score of ${score}%, demonstrating practical knowledge and capability.</div>
+                
                 <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 50px; padding: 0 60px; box-sizing: border-box;">
                     <div style="text-align: center;">
-                        <div style="font-size: 1.2rem; color: #4a4a4a;">${todayDate}</div>
+                        <div style="font-size: 1.2rem; color: #4a4a4a; font-weight: bold;">${todayDate}</div>
                         <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-top: 5px; margin-bottom: 10px;"></div>
                         <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">DATE OF COMPLETION</div>
                     </div>
                     <div style="text-align: center;">
-                        <div style="font-family: 'Great Vibes', cursive, serif; font-size: 2rem; color: #1a1a1a; margin-bottom: -10px;">Mitesh Soni</div>
+                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 2rem; color: #1a1a1a; margin-bottom: -10px;">Mitesh Soni</div>
                         <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-bottom: 10px;"></div>
                         <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">CHIEF ARCHITECT</div>
                     </div>
@@ -2418,38 +2421,7 @@ window.generateAndDownloadCert = function(score, event) {
             </div>
         </div>
     `;
-    document.body.appendChild(certContainer);
-
-    const fontLink = document.createElement('link');
-    fontLink.href = "https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap";
-    fontLink.rel = "stylesheet";
-    document.head.appendChild(fontLink);
-
-    setTimeout(() => {
-        const element = document.getElementById('hiddenCertificate');
-        const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
-        
-        // Removed useCORS entirely to prevent cross-origin rendering crashes
-        const opt = {
-            margin: 0,
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, logging: false }, 
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
-        };
-
-        html2pdf().set(opt).from(element).save().then(() => {
-            document.body.removeChild(certContainer);
-            downloadBtn.innerText = originalText;
-            downloadBtn.disabled = false;
-        }).catch(err => {
-            console.error("PDF Gen Error:", err);
-            document.body.removeChild(certContainer);
-            downloadBtn.innerText = originalText;
-            downloadBtn.disabled = false;
-        });
-    }, 1500); 
-};
+    document.body.
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initQuizEngine);
