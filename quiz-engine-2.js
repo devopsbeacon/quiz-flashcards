@@ -2355,42 +2355,47 @@ function showResults() {
     }
   }
 
-  // New function added to the global window object so the inline button can call it
-window.generateAndDownloadCert = function(score) {
+
+  window.generateAndDownloadCert = function(score, event) {
       const studentName = document.getElementById("dbCertName").value.trim();
       if(!studentName) {
           alert("Please enter your name to claim the certificate.");
           return;
       }
 
+      if (typeof html2pdf === 'undefined') {
+          alert("Certificate engine is still loading. Please wait a few seconds and click again.");
+          return;
+      }
+
+      // 1. Give the user visual feedback that it is working
+      const downloadBtn = event ? event.target : document.querySelector('#dbCertForm .db-btn');
+      const originalText = downloadBtn.innerText;
+      downloadBtn.innerText = "⏳ Generating PDF (Please Wait)...";
+      downloadBtn.disabled = true;
+
       const topicDropdown = document.getElementById("dbSubjectSelect");
       const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // Create an invisible, perfectly styled certificate container
       const certContainer = document.createElement('div');
       certContainer.style.position = 'absolute';
-      certContainer.style.left = '-9999px'; // Hide off-screen
+      certContainer.style.left = '-9999px'; 
       certContainer.style.top = '0';
       
+      // 2. Removed crossorigin="anonymous" which was causing the silent failure
       certContainer.innerHTML = `
           <div id="hiddenCertificate" style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: 'Poppins', sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
               <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
-                  
-                  <!-- DEVOPS BEACON LOGO HERE -->
-                  <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="height: 85px; object-fit: contain; margin-bottom: 20px;">
-                  
+                  <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" style="height: 85px; object-fit: contain; margin-bottom: 20px;">
                   <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">DevOps Beacon Academy</div>
                   <h1 style="font-size: 4rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 2px;">CERTIFICATE</h1>
                   <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 30px;">OF ACHIEVEMENT</div>
-                  
                   <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">This is proudly presented to</div>
                   <div style="font-family: 'Great Vibes', cursive, serif; font-size: 4.5rem; color: #00e5ff; margin: 20px 0; border-bottom: 2px solid #1a1a1a; padding: 0 40px; min-width: 400px;">${studentName}</div>
-                  
                   <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">for successfully completing the assessment in</div>
                   <div style="font-size: 1.8rem; font-weight: 600; color: #1a1a1a; margin: 15px 0;">${passedTopic}</div>
                   <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">with a verified score of ${score}%, demonstrating practical knowledge and capability.</div>
-                  
                   <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 50px; padding: 0 60px; box-sizing: border-box;">
                       <div style="text-align: center;">
                           <div style="font-size: 1.2rem; color: #4a4a4a;">${todayDate}</div>
@@ -2408,30 +2413,37 @@ window.generateAndDownloadCert = function(score) {
       `;
       document.body.appendChild(certContainer);
 
-      // Fetch the Great Vibes font for the PDF capture
       const fontLink = document.createElement('link');
       fontLink.href = "https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap";
       fontLink.rel = "stylesheet";
       document.head.appendChild(fontLink);
 
-      // Allow 500ms for the font and image to load before taking the screenshot
+      // 3. Increased timeout to ensure the custom fonts and logo fully load before PDF generation
       setTimeout(() => {
           const element = document.getElementById('hiddenCertificate');
           const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
           
+          // 4. Added allowTaint to bypass GoDaddy cross-origin restrictions
           const opt = {
               margin: 0,
               filename: filename,
               image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2, useCORS: true },
+              html2canvas: { scale: 2, useCORS: true, allowTaint: true },
               jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
           };
 
-          // Generate PDF and clean up the hidden DOM element
           html2pdf().set(opt).from(element).save().then(() => {
               document.body.removeChild(certContainer);
+              downloadBtn.innerText = originalText;
+              downloadBtn.disabled = false;
+          }).catch(err => {
+              console.error("PDF Gen Error:", err);
+              alert("Something went wrong generating the PDF. Please try again.");
+              document.body.removeChild(certContainer);
+              downloadBtn.innerText = originalText;
+              downloadBtn.disabled = false;
           });
-      }, 500);
+      }, 1500); 
   };
 
   if (document.readyState === "loading") {
