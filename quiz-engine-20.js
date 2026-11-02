@@ -2366,7 +2366,7 @@ window.generateAndDownloadCert = function(score) {
     }
 
     if (typeof html2canvas === 'undefined') {
-        alert("Image engine is still loading. Please wait 2 seconds and click again.");
+        alert("Certificate engine is still loading. Please wait 2 seconds and click again.");
         return;
     }
 
@@ -2380,95 +2380,91 @@ window.generateAndDownloadCert = function(score) {
     const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+    // Render container setup - fully compatible with html2canvas DOM parser
     const certElement = document.createElement('div');
-    certElement.style.position = 'absolute';
+    certElement.style.position = 'fixed';
     certElement.style.top = '-9999px';
     certElement.style.left = '-9999px';
     certElement.style.zIndex = '-9999';
 
     certElement.innerHTML = `
-        <div style="width: 1056px; height: 750px; background: radial-gradient(circle at 65% 50%, #111a2e 0%, #080d18 100%); position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
+        <div style="width: 1056px; height: 750px; background-color: #080d18; position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
             
-            <!-- Global SVG Gradients & Filters -->
-            <svg style="position: absolute; width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left Cyber & Gold Chevrons SVG (Self-Contained Defs) -->
+            <svg style="position: absolute; left: 0; top: 0; width: 380px; height: 100%; z-index: 2;" viewBox="0 0 380 750" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="goldShine" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="svgGoldShine" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#fff1be" />
                         <stop offset="25%" stop-color="#d4af37" />
                         <stop offset="50%" stop-color="#aa771c" />
                         <stop offset="75%" stop-color="#fdf0cd" />
                         <stop offset="100%" stop-color="#8a5a00" />
                     </linearGradient>
-                    <linearGradient id="goldBar" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#8a5a00" />
-                        <stop offset="30%" stop-color="#fdf0cd" />
-                        <stop offset="50%" stop-color="#d4af37" />
-                        <stop offset="70%" stop-color="#fdf0cd" />
-                        <stop offset="100%" stop-color="#8a5a00" />
-                    </linearGradient>
-                    <linearGradient id="cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="svgCyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#a5f3fc" />
                         <stop offset="50%" stop-color="#00e5ff" />
                         <stop offset="100%" stop-color="#007799" />
                     </linearGradient>
-                    <pattern id="fineGrid" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+                    <pattern id="svgFineGrid" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
                         <circle cx="2" cy="2" r="1.2" fill="#1e293b" opacity="0.6" />
                     </pattern>
                 </defs>
-            </svg>
 
-            <!-- Outer Gold Inset Border Frame -->
-            <div style="position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1.5px solid rgba(212, 175, 55, 0.45); pointer-events: none; z-index: 5; box-sizing: border-box;">
-                <div style="position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border: 1px solid rgba(212, 175, 55, 0.2);"></div>
-                <!-- Corner Ornaments -->
-                <div style="position: absolute; top: -1px; left: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
-                <div style="position: absolute; top: -1px; right: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
-                <div style="position: absolute; bottom: -1px; left: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
-                <div style="position: absolute; bottom: -1px; right: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
-            </div>
-
-            <!-- Left Cyber & Gold Chevrons SVG -->
-            <svg style="position: absolute; left: 0; top: 0; width: 380px; height: 100%; z-index: 2;" viewBox="0 0 380 750" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <!-- Dot Pattern -->
-                <rect x="0" y="0" width="160" height="750" fill="url(#fineGrid)" />
+                <rect x="0" y="0" width="160" height="750" fill="url(#svgFineGrid)" />
 
-                <!-- Dark polygon backdrop layers -->
-                <polygon points="0,0 240,0 130,400 250,750 0,750" fill="#060a12" />
+                <!-- Dark Polygon Backdrops -->
+                <polygon points="0,0 240,0 130,400 250,750 0,750" fill="#050810" />
                 <polygon points="0,0 270,0 160,400 280,750 0,750" fill="#0b1322" opacity="0.6" />
 
-                <!-- Primary Gold Angled Ribbon -->
-                <polyline points="310,0 185,400 320,750" stroke="url(#goldShine)" stroke-width="16" stroke-linejoin="round" fill="none" />
-                
-                <!-- Inner Gold Accent Pin-Stripe -->
+                <!-- Gold Angled Ribbon -->
+                <polyline points="310,0 185,400 320,750" stroke="url(#svgGoldShine)" stroke-width="16" stroke-linejoin="round" fill="none" />
                 <polyline points="330,0 205,400 340,750" stroke="#fff1be" stroke-width="2" stroke-linejoin="round" fill="none" opacity="0.8" />
 
-                <!-- Dual Electric Cyan Cyber Lines -->
-                <polyline points="280,0 155,400 290,750" stroke="url(#cyanNeon)" stroke-width="9" stroke-linejoin="round" fill="none" />
+                <!-- Cyan Cyber Traces -->
+                <polyline points="280,0 155,400 290,750" stroke="url(#svgCyanNeon)" stroke-width="9" stroke-linejoin="round" fill="none" />
                 <polyline points="260,0 135,400 270,750" stroke="#00e5ff" stroke-width="3" stroke-linejoin="round" fill="none" opacity="0.8" />
-                <polyline points="225,0 110,380 110,420 235,750" stroke="url(#cyanNeon)" stroke-width="4" stroke-linejoin="round" fill="none" opacity="0.5" />
+                <polyline points="225,0 110,380 110,420 235,750" stroke="url(#svgCyanNeon)" stroke-width="4" stroke-linejoin="round" fill="none" opacity="0.5" />
 
-                <!-- Circuit Nodes & Bus Bars in Gold & Cyan -->
-                <line x1="30" y1="140" x2="190" y2="140" stroke="url(#goldBar)" stroke-width="2" />
+                <!-- Circuit Nodes & Bars -->
+                <line x1="30" y1="140" x2="190" y2="140" stroke="#d4af37" stroke-width="2" />
                 <circle cx="190" cy="140" r="5" fill="#fdf0cd" />
                 <circle cx="190" cy="140" r="2.5" fill="#8a5a00" />
 
                 <line x1="50" y1="180" x2="220" y2="180" stroke="#00e5ff" stroke-width="2" opacity="0.7" />
                 <circle cx="220" cy="180" r="4" fill="#00e5ff" />
 
-                <line x1="20" y1="220" x2="140" y2="220" stroke="url(#goldBar)" stroke-width="2" />
+                <line x1="20" y1="220" x2="140" y2="220" stroke="#d4af37" stroke-width="2" />
                 <circle cx="140" cy="220" r="4.5" fill="#d4af37" />
 
                 <line x1="30" y1="570" x2="210" y2="570" stroke="#00e5ff" stroke-width="2" opacity="0.7" />
                 <circle cx="210" cy="570" r="4" fill="#00e5ff" />
 
-                <line x1="40" y1="610" x2="180" y2="610" stroke="url(#goldBar)" stroke-width="2" />
+                <line x1="40" y1="610" x2="180" y2="610" stroke="#d4af37" stroke-width="2" />
                 <circle cx="180" cy="610" r="5" fill="#fdf0cd" />
                 <circle cx="180" cy="610" r="2.5" fill="#8a5a00" />
             </svg>
 
-            <!-- Top Right Gold Constellation & Tech Grid -->
+            <!-- Outer Gold Inset Border Frame -->
+            <div style="position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1.5px solid rgba(212, 175, 55, 0.45); pointer-events: none; z-index: 5; box-sizing: border-box;">
+                <div style="position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border: 1px solid rgba(212, 175, 55, 0.2);"></div>
+                <div style="position: absolute; top: -1px; left: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
+                <div style="position: absolute; top: -1px; right: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
+                <div style="position: absolute; bottom: -1px; left: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
+                <div style="position: absolute; bottom: -1px; right: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
+            </div>
+
+            <!-- Right Constellation & Medal Seal SVG -->
             <svg style="position: absolute; right: 0; top: 0; width: 420px; height: 100%; z-index: 2; pointer-events: none;" viewBox="0 0 420 750" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Tech grid & Gold Node Links -->
+                <defs>
+                    <linearGradient id="svgSealGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fff1be" />
+                        <stop offset="35%" stop-color="#d4af37" />
+                        <stop offset="70%" stop-color="#aa771c" />
+                        <stop offset="100%" stop-color="#8a5a00" />
+                    </linearGradient>
+                </defs>
+                <!-- Constellation lines -->
                 <circle cx="380" cy="90" r="3.5" fill="#d4af37" />
                 <circle cx="300" cy="60" r="2.5" fill="#00e5ff" opacity="0.6" />
                 <circle cx="350" cy="170" r="3" fill="#d4af37" opacity="0.8" />
@@ -2478,65 +2474,73 @@ window.generateAndDownloadCert = function(score) {
                 <line x1="300" y1="60" x2="270" y2="140" stroke="#00e5ff" stroke-width="1" opacity="0.25" />
                 <line x1="270" y1="140" x2="350" y2="170" stroke="#d4af37" stroke-width="1" opacity="0.2" />
 
-                <!-- Metallic Gold Embossed Medal Seal at Bottom Right -->
+                <!-- Metallic Gold Medal Seal -->
                 <g transform="translate(305, 605)">
-                    <!-- Ribbons hanging below -->
-                    <polygon points="-18,20 -30,65 -15,58 0,65 -8,20" fill="url(#goldShine)" />
+                    <polygon points="-18,20 -30,65 -15,58 0,65 -8,20" fill="url(#svgSealGold)" />
                     <polygon points="18,20 8,20 0,65 15,58 30,65" fill="#aa771c" />
-                    <!-- Outer Serrated / Layered Ring -->
-                    <circle cx="0" cy="0" r="42" fill="url(#goldShine)" />
-                    <circle cx="0" cy="0" r="38" fill="#0b111e" />
-                    <circle cx="0" cy="0" r="35" fill="none" stroke="url(#goldShine)" stroke-width="1.5" stroke-dasharray="3 2" />
-                    <circle cx="0" cy="0" r="31" fill="url(#goldShine)" />
-                    <circle cx="0" cy="0" r="28" fill="#0b111e" />
-                    <!-- Inner Star & Text -->
-                    <path d="M0,-14 L4,-4 L14,-3 L6,4 L8,14 L0,8 L-8,14 L-6,4 L-14,-3 L-4,-4 Z" fill="url(#goldShine)" />
+                    <circle cx="0" cy="0" r="42" fill="url(#svgSealGold)" />
+                    <circle cx="0" cy="0" r="38" fill="#080d18" />
+                    <circle cx="0" cy="0" r="35" fill="none" stroke="url(#svgSealGold)" stroke-width="1.5" stroke-dasharray="3 2" />
+                    <circle cx="0" cy="0" r="31" fill="url(#svgSealGold)" />
+                    <circle cx="0" cy="0" r="28" fill="#080d18" />
+                    <path d="M0,-14 L4,-4 L14,-3 L6,4 L8,14 L0,8 L-8,14 L-6,4 L-14,-3 L-4,-4 Z" fill="url(#svgSealGold)" />
                 </g>
             </svg>
 
-            <!-- Main Content Container (Right Align / Offset) -->
-            <div style="flex-grow: 1; margin-left: 330px; padding: 50px 65px 40px 30px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; z-index: 3; box-sizing: border-box;">
+            <!-- Main Content Container -->
+            <div style="flex-grow: 1; margin-left: 330px; padding: 48px 65px 36px 30px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; z-index: 3; box-sizing: border-box;">
                 
                 <!-- Organization & Titles -->
                 <div>
-                    <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 6px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 6px; text-shadow: 0 1px 4px rgba(0,0,0,0.6);">
+                    <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 6px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 6px;">
                         DEVOPS BEACON ACADEMY
                     </div>
                     
-                    <!-- CERTIFICATE Header with Gold Gradient -->
-                    <div style="font-size: 3.9rem; font-weight: 900; letter-spacing: 4px; line-height: 1.1; margin-top: 8px; background: linear-gradient(135deg, #fff1be 0%, #d4af37 50%, #aa771c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">
-                        CERTIFICATE
+                    <!-- Clean SVG-Rendered Gold Heading (html2canvas safe) -->
+                    <div style="margin-top: 6px;">
+                        <svg width="420" height="52" viewBox="0 0 420 52" style="display: block; margin: 0 auto;">
+                            <defs>
+                                <linearGradient id="textGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fff1be" />
+                                    <stop offset="40%" stop-color="#d4af37" />
+                                    <stop offset="80%" stop-color="#aa771c" />
+                                    <stop offset="100%" stop-color="#8a5a00" />
+                                </linearGradient>
+                            </defs>
+                            <text x="50%" y="42" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="44" font-weight="900" letter-spacing="4" fill="url(#textGoldGrad)">
+                                CERTIFICATE
+                            </text>
+                        </svg>
                     </div>
                     
                     <div style="font-size: 1.45rem; font-weight: 800; letter-spacing: 7px; color: #00e5ff; text-transform: uppercase; margin-top: 4px;">
                         OF ACHIEVEMENT
                     </div>
 
-                    <!-- Thin Gold Decorative Bar -->
-                    <div style="width: 280px; height: 2px; background: url(#goldBar); margin: 12px auto 0 auto;"></div>
+                    <!-- Divider -->
+                    <div style="width: 280px; height: 2px; background: linear-gradient(to right, transparent, #d4af37, transparent); margin: 10px auto 0 auto;"></div>
                 </div>
 
                 <!-- Recipient Honors -->
-                <div style="width: 100%; margin: 10px 0;">
+                <div style="width: 100%; margin: 8px 0;">
                     <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px;">
                         PROUDLY PRESENTED TO
                     </div>
                     
-                    <!-- Recipient Name in Luxury Serif Script -->
-                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 4rem; color: #fff1be; margin: 4px auto 8px auto; line-height: 1.1; text-shadow: 0 2px 10px rgba(212,175,55,0.35);">
+                    <!-- Recipient Name -->
+                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 3.8rem; color: #fff1be; margin: 2px auto 6px auto; line-height: 1.1;">
                         ${studentName}
                     </div>
 
-                    <!-- Gold Double-Line Divider -->
-                    <div style="width: 440px; height: 1.5px; background: linear-gradient(to right, transparent, #d4af37, transparent); margin: 0 auto 18px auto;"></div>
+                    <div style="width: 440px; height: 1.5px; background: linear-gradient(to right, transparent, #d4af37, transparent); margin: 0 auto 16px auto;"></div>
 
                     <!-- Subject & Score -->
                     <div style="font-size: 0.95rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.5;">
                         FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
-                        <span style="font-size: 1.5rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 5px; text-transform: none;">
+                        <span style="font-size: 1.5rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 4px; text-transform: none;">
                             ${passedTopic}
                         </span>
-                        <div style="font-size: 0.88rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 5px;">
+                        <div style="font-size: 0.88rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 4px;">
                             VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.05rem;">${score}%</span>
                         </div>
                     </div>
@@ -2576,8 +2580,15 @@ window.generateAndDownloadCert = function(score) {
     document.body.appendChild(certElement);
 
     setTimeout(() => {
-        html2canvas(certElement, { scale: 2, useCORS: true }).then(canvas => {
-            document.body.removeChild(certElement);
+        html2canvas(certElement, { 
+            scale: 2, 
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null
+        }).then(canvas => {
+            if (document.body.contains(certElement)) {
+                document.body.removeChild(certElement);
+            }
             const imgData = canvas.toDataURL('image/png');
             const certForm = document.getElementById('dbCertForm');
             
@@ -2612,9 +2623,11 @@ window.generateAndDownloadCert = function(score) {
             finalImg.style.userSelect = 'auto';
 
         }).catch(err => {
-            console.error("Canvas Error:", err);
-            alert("Error generating image. Please try again.");
-            if (document.body.contains(certElement)) document.body.removeChild(certElement);
+            console.error("html2canvas render error:", err);
+            alert("Error rendering image: " + (err.message || err));
+            if (document.body.contains(certElement)) {
+                document.body.removeChild(certElement);
+            }
             downloadBtn.innerText = originalText;
             downloadBtn.disabled = false;
         });
