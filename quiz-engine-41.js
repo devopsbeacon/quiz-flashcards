@@ -2601,7 +2601,10 @@ let activeQuestions = [];
             finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
             finalImg.style.userSelect = 'auto';
-
+            // ⭐️ ADD THIS: Smoothly scroll the screen down to the new certificate
+            setTimeout(() => {
+                certForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }).catch(err => {
             console.error("html2canvas render error:", err);
             alert("Error rendering image. Please try again.");
