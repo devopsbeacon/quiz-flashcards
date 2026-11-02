@@ -2313,6 +2313,11 @@ function showResults() {
     const score = Math.round((trueCount / activeQuestions.length) * 100);
     document.getElementById("dbFinalScore").innerText = `${score}%`;
 
+  // ⭐️ Lock the passed subject topic permanently upon finishing
+    const topicDropdown = document.getElementById("dbSubjectSelect");
+    const passedTopicRaw = topicDropdown ? topicDropdown.options[topicDropdown.selectedIndex].text : "Assessment";
+    window.currentPassedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
+  
     if (typeof html2canvas === 'undefined') {
         const h2cScript = document.createElement("script");
         h2cScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
@@ -2373,9 +2378,8 @@ window.generateAndDownloadCert = function(score) {
         downloadBtn.disabled = true;
     }
 
-    const topicDropdown = document.getElementById("dbSubjectSelect");
-    const passedTopicRaw = topicDropdown ? topicDropdown.options[topicDropdown.selectedIndex].text : "Assessment";
-    const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
+    // ⭐️ Use the locked topic instead of reading the active dropdown state
+    const passedTopic = window.currentPassedTopic || "Assessment";
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     // 1. Master SVG Background: Perfect corners and solid masking
