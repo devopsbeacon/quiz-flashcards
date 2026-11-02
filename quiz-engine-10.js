@@ -2359,21 +2359,21 @@ window.generateAndDownloadCert = function(score, event) {
           return;
       }
 
-      if (typeof html2pdf === 'undefined') {
+      if (typeof html2canvas === 'undefined') {
           alert("Certificate engine is still loading. Please wait a few seconds and click again.");
           return;
       }
 
       const downloadBtn = event ? event.target : document.querySelector('#dbCertForm .db-btn');
       const originalText = downloadBtn.innerText;
-      downloadBtn.innerText = "⏳ Generating PDF (Please Wait)...";
+      downloadBtn.innerText = "⏳ Generating Certificate (Please Wait)...";
       downloadBtn.disabled = true;
 
       const topicDropdown = document.getElementById("dbSubjectSelect");
       const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // FIX 1: Explicitly append to DOM so html2canvas doesn't fail, but keep it hidden
+      // Render off-screen safely
       const certElement = document.createElement('div');
       certElement.style.position = 'fixed';
       certElement.style.top = '-9999px';
@@ -2407,32 +2407,37 @@ window.generateAndDownloadCert = function(score, event) {
       `;
       document.body.appendChild(certElement);
 
-      const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
-      const opt = {
-          margin: 0,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 }, 
-          jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
-      };
-
-      // FIX 2: Generate PDF directly to a blob and embed it inside the UI securely
-      html2pdf().set(opt).from(certElement).output('blob').then(function(pdfBlob) {
-          document.body.removeChild(certElement); // Clean up DOM
-          const blobUrl = URL.createObjectURL(pdfBlob);
+      // Generate a high-res Image instead of a blocked PDF file
+      html2canvas(certElement, { scale: 2 }).then(function(canvas) {
+          document.body.removeChild(certElement);
+          const imgData = canvas.toDataURL('image/png');
           const certForm = document.getElementById('dbCertForm');
           
-          // Replace form with native iframe viewer
+          // Display the image directly on the screen
           certForm.innerHTML = `
               <h4 style="margin: 0 0 10px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
-              <p style="font-size: 0.85rem; color: var(--db-muted); margin-bottom: 15px;">
-                 Click the <b>Download Icon (⬇️)</b> in the top-right corner of the viewer below to save your PDF.
+              <p style="font-size: 0.85rem; color: var(--db-muted); margin-bottom: 15px; text-align: center;">
+                 <strong>Mobile:</strong> Long-press the image below to save it.<br>
+                 <strong>Desktop:</strong> Right-click the image below and select "Save image as..."
               </p>
-              <iframe src="${blobUrl}#toolbar=1" width="100%" height="500px" style="border: 1px solid var(--db-border); border-radius: 8px; background-color: #333;"></iframe>
+              <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid var(--db-border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="DevOps Beacon Certificate">
           `;
+
+          // CRITICAL BYPASS: Stop the global anti-copy block from affecting this specific image
+          const finalImg = document.getElementById('finalCertImg');
+          finalImg.addEventListener('contextmenu', function(e) {
+              e.stopPropagation(); 
+          });
+          finalImg.addEventListener('mousedown', function(e) {
+              e.stopPropagation(); 
+          });
+          finalImg.addEventListener('touchstart', function(e) {
+              e.stopPropagation(); 
+          });
+
       }).catch(function(err) {
-          console.error("PDF Generation Error:", err);
-          alert("Error rendering PDF. Please ensure you are using a modern browser.");
+          console.error("Canvas Generation Error:", err);
+          alert("Error rendering certificate.");
           if (document.body.contains(certElement)) document.body.removeChild(certElement);
           downloadBtn.innerText = originalText;
           downloadBtn.disabled = false;
