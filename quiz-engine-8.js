@@ -2373,7 +2373,6 @@ window.generateAndDownloadCert = function(score, event) {
       const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // Create a detached DOM element to bypass screen rendering and CSS clipping bugs
       const certElement = document.createElement('div');
       certElement.innerHTML = `
           <div style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -2403,34 +2402,35 @@ window.generateAndDownloadCert = function(score, event) {
           </div>
       `;
 
+      const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
       const opt = {
           margin: 0,
-          filename: `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`,
+          filename: filename,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2 }, 
           jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
       };
 
-      // Generate PDF as an in-memory Blob instead of forcing a blocked download
-      html2pdf().set(opt).from(certElement).output('blob').then(function(pdfBlob) {
-          const blobUrl = URL.createObjectURL(pdfBlob);
+      // Export as a base64 Data URI instead of a Blob
+      html2pdf().set(opt).from(certElement).output('datauristring').then(function(pdfBase64) {
+          const certForm = document.getElementById('dbCertForm');
           
-          // Transform the button into a direct link to bypass iframe sandbox restrictions
-          downloadBtn.innerText = "✅ View & Save Certificate";
-          downloadBtn.style.backgroundColor = "#2563eb"; 
-          downloadBtn.disabled = false;
-          
-          downloadBtn.onclick = function(e) {
-              e.preventDefault();
-              window.open(blobUrl, '_blank');
-          };
+          // Replace the form with a standard HTML link. Browsers will almost never block this.
+          certForm.innerHTML = `
+              <h4 style="margin: 0 0 15px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
+              <a href="${pdfBase64}" download="${filename}" class="db-btn" style="background-color: #16a34a; color: white; text-decoration: none; display: block; text-align: center; margin-bottom: 10px; padding: 12px; border-radius: 8px; font-weight: bold;">
+                 📥 Click Here to Download PDF
+              </a>
+              <p style="font-size: 0.85rem; color: var(--db-muted); margin: 0; text-align: center;">
+                 <em>If clicking fails, Right-Click (or Long-Press) the button and select "Save link as..."</em>
+              </p>
+          `;
       }).catch(function(err) {
           alert("Error generating PDF: " + err);
           downloadBtn.innerText = originalText;
           downloadBtn.disabled = false;
       });
   };
-
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initQuizEngine);
