@@ -2373,7 +2373,11 @@ window.generateAndDownloadCert = function(score, event) {
       const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+      // FIX 1: Explicitly append to DOM so html2canvas doesn't fail, but keep it hidden
       const certElement = document.createElement('div');
+      certElement.style.position = 'fixed';
+      certElement.style.top = '-9999px';
+      certElement.style.left = '-9999px';
       certElement.innerHTML = `
           <div style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
               <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
@@ -2401,6 +2405,7 @@ window.generateAndDownloadCert = function(score, event) {
               </div>
           </div>
       `;
+      document.body.appendChild(certElement);
 
       const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
       const opt = {
@@ -2411,22 +2416,24 @@ window.generateAndDownloadCert = function(score, event) {
           jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
       };
 
-      // Export as a base64 Data URI instead of a Blob
-      html2pdf().set(opt).from(certElement).output('datauristring').then(function(pdfBase64) {
+      // FIX 2: Generate PDF directly to a blob and embed it inside the UI securely
+      html2pdf().set(opt).from(certElement).output('blob').then(function(pdfBlob) {
+          document.body.removeChild(certElement); // Clean up DOM
+          const blobUrl = URL.createObjectURL(pdfBlob);
           const certForm = document.getElementById('dbCertForm');
           
-          // Replace the form with a standard HTML link. Browsers will almost never block this.
+          // Replace form with native iframe viewer
           certForm.innerHTML = `
-              <h4 style="margin: 0 0 15px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
-              <a href="${pdfBase64}" download="${filename}" class="db-btn" style="background-color: #16a34a; color: white; text-decoration: none; display: block; text-align: center; margin-bottom: 10px; padding: 12px; border-radius: 8px; font-weight: bold;">
-                 📥 Click Here to Download PDF
-              </a>
-              <p style="font-size: 0.85rem; color: var(--db-muted); margin: 0; text-align: center;">
-                 <em>If clicking fails, Right-Click (or Long-Press) the button and select "Save link as..."</em>
+              <h4 style="margin: 0 0 10px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
+              <p style="font-size: 0.85rem; color: var(--db-muted); margin-bottom: 15px;">
+                 Click the <b>Download Icon (⬇️)</b> in the top-right corner of the viewer below to save your PDF.
               </p>
+              <iframe src="${blobUrl}#toolbar=1" width="100%" height="500px" style="border: 1px solid var(--db-border); border-radius: 8px; background-color: #333;"></iframe>
           `;
       }).catch(function(err) {
-          alert("Error generating PDF: " + err);
+          console.error("PDF Generation Error:", err);
+          alert("Error rendering PDF. Please ensure you are using a modern browser.");
+          if (document.body.contains(certElement)) document.body.removeChild(certElement);
           downloadBtn.innerText = originalText;
           downloadBtn.disabled = false;
       });
