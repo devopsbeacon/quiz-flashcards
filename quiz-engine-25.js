@@ -2370,7 +2370,7 @@ window.generateAndDownloadCert = function(score) {
     const downloadBtn = document.getElementById('dbGenCertBtn');
     const originalText = downloadBtn ? downloadBtn.innerText : "Generate";
     if (downloadBtn) {
-        downloadBtn.innerText = "⏳ Rendering Certificate...";
+        downloadBtn.innerText = "⏳ Rendering Certificate (Please Wait)...";
         downloadBtn.disabled = true;
     }
 
@@ -2379,7 +2379,82 @@ window.generateAndDownloadCert = function(score) {
     const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    // Renders off-screen horizontally to bypass html2canvas opacity/rotation bugs
+    // 1. Build the intricate cyber-gold background as an absolute SVG string
+    const bgSvg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816" width="1056" height="816">
+      <defs>
+        <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#fdf0cd" />
+          <stop offset="25%" stop-color="#d4af37" />
+          <stop offset="50%" stop-color="#aa771c" />
+          <stop offset="75%" stop-color="#d4af37" />
+          <stop offset="100%" stop-color="#fdf0cd" />
+        </linearGradient>
+        <linearGradient id="goldRibbon" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#d4af37" />
+          <stop offset="50%" stop-color="#fff1be" />
+          <stop offset="100%" stop-color="#9a6e25" />
+        </linearGradient>
+        <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1.5" fill="#1e293b" opacity="0.4" />
+        </pattern>
+      </defs>
+      
+      <!-- Base Background -->
+      <rect width="1056" height="816" fill="#080c16" />
+      <rect width="500" height="816" fill="url(#grid)" />
+      
+      <!-- Angled Dark Layers -->
+      <polygon points="0,0 280,0 120,816 0,816" fill="#0b1322" />
+      <polygon points="0,0 310,0 150,816 0,816" fill="#060a12" opacity="0.7" />
+      
+      <!-- Angled Gold and Cyan Ribbons -->
+      <polygon points="340,0 380,0 220,816 180,816" fill="url(#goldRibbon)" />
+      <polygon points="290,0 295,0 135,816 130,816" fill="url(#gold)" opacity="0.9" />
+      <polyline points="310,0 150,816" stroke="#00e5ff" stroke-width="8" fill="none" opacity="0.7" />
+      <polyline points="310,0 150,816" stroke="#ffffff" stroke-width="2.5" fill="none" />
+      <polyline points="265,0 105,816" stroke="#00e5ff" stroke-width="4" fill="none" opacity="0.6" />
+      
+      <!-- Cyber Circuit Traces -->
+      <path d="M 0 120 L 160 120 L 230 190 L 230 320" stroke="#00e5ff" stroke-width="2.5" fill="none" opacity="0.8"/>
+      <circle cx="230" cy="320" r="5" fill="#00e5ff" />
+      
+      <path d="M 0 250 L 90 250 L 140 300 L 140 460" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.8"/>
+      <circle cx="140" cy="460" r="5" fill="url(#gold)" />
+      
+      <path d="M 0 580 L 110 580 L 170 640" stroke="#00e5ff" stroke-width="2.5" fill="none" opacity="0.7"/>
+      <circle cx="170" cy="640" r="4.5" fill="#00e5ff" />
+
+      <!-- Ornate Double Gold Border -->
+      <rect x="22" y="22" width="1012" height="772" stroke="url(#gold)" stroke-width="4" fill="none" />
+      <rect x="32" y="32" width="992" height="752" stroke="url(#gold)" stroke-width="1.5" fill="none" opacity="0.7" />
+      
+      <!-- Decorative Corner Accents -->
+      <path d="M 18 55 L 55 55 L 55 18" stroke="url(#gold)" stroke-width="5" fill="none" />
+      <path d="M 1038 55 L 1001 55 L 1001 18" stroke="url(#gold)" stroke-width="5" fill="none" />
+      <path d="M 18 761 L 55 761 L 55 798" stroke="url(#gold)" stroke-width="5" fill="none" />
+      <path d="M 1038 761 L 1001 761 L 1001 798" stroke="url(#gold)" stroke-width="5" fill="none" />
+      <rect x="12" y="12" width="12" height="12" fill="url(#gold)" />
+      <rect x="1032" y="12" width="12" height="12" fill="url(#gold)" />
+      <rect x="12" y="792" width="12" height="12" fill="url(#gold)" />
+      <rect x="1032" y="792" width="12" height="12" fill="url(#gold)" />
+
+      <!-- Golden Embossed Medal Seal (Bottom Left) -->
+      <g transform="translate(170, 650)">
+        <polygon points="-28,25 -45,85 -22,72 0,85 -10,25" fill="url(#goldRibbon)" />
+        <polygon points="28,25 10,25 0,85 22,72 45,85" fill="url(#gold)" />
+        <circle cx="0" cy="0" r="50" fill="url(#gold)" />
+        <circle cx="0" cy="0" r="44" fill="#080c16" />
+        <circle cx="0" cy="0" r="40" stroke="url(#gold)" stroke-width="2.5" stroke-dasharray="5 3" fill="none" />
+        <circle cx="0" cy="0" r="34" fill="url(#gold)" />
+        <circle cx="0" cy="0" r="30" fill="#080c16" />
+        <path d="M0,-16 L5,-5 L16,-4 L8,4 L10,15 L0,9 L-10,15 L-8,4 L-16,-4 L-5,-5 Z" fill="url(#gold)" />
+      </g>
+    </svg>`;
+
+    // 2. Encode it securely to a Base64 Image to bypass all canvas parsing bugs
+    const bgBase64 = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(bgSvg)));
+
     const certElement = document.createElement('div');
     certElement.id = 'db-temp-cert-stage';
     certElement.style.position = 'absolute';
@@ -2387,86 +2462,71 @@ window.generateAndDownloadCert = function(score) {
     certElement.style.left = '-15000px'; 
     certElement.style.zIndex = '-9999';
 
+    // 3. Inject the background as a flat image, with text cleanly overlaid on top
     certElement.innerHTML = `
-        <div style="width: 1056px; height: 750px; background-color: #0b111e; position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
+        <div style="width: 1056px; height: 816px; position: relative; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
             
-            <!-- Left Cyber Borders (Pure Block Geometry) -->
-            <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 25px; background-color: #d4af37;"></div>
-            <div style="position: absolute; top: 0; left: 32px; bottom: 0; width: 6px; background-color: #00e5ff;"></div>
-            <div style="position: absolute; top: 0; left: 45px; bottom: 0; width: 2px; background-color: #00e5ff; opacity: 0.5;"></div>
-            
-            <!-- Right Cyber Borders (Pure Block Geometry) -->
-            <div style="position: absolute; top: 0; right: 0; bottom: 0; width: 25px; background-color: #d4af37;"></div>
-            <div style="position: absolute; top: 0; right: 32px; bottom: 0; width: 6px; background-color: #00e5ff;"></div>
-            <div style="position: absolute; top: 0; right: 45px; bottom: 0; width: 2px; background-color: #00e5ff; opacity: 0.5;"></div>
+            <img src="${bgBase64}" style="position: absolute; top: 0; left: 0; width: 1056px; height: 816px; z-index: 1;" />
 
-            <!-- Top and Bottom Borders -->
-            <div style="position: absolute; top: 0; left: 0; right: 0; height: 15px; background-color: #050810;"></div>
-            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 15px; background-color: #050810;"></div>
-
-            <!-- Main Content Container -->
-            <div style="position: relative; z-index: 10; flex-grow: 1; padding: 60px 80px 40px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;">
+            <!-- Main Content Container shifted right to balance the cyber layout -->
+            <div style="position: relative; z-index: 10; margin-left: 270px; flex-grow: 1; padding: 75px 80px 50px 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;">
                 
                 <div style="width: 100%;">
-                    <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 6px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">
+                    <div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 7px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">
                         DEVOPS BEACON ACADEMY
                     </div>
                     
-                    <div style="font-size: 4.2rem; font-weight: 900; letter-spacing: 5px; color: #d4af37; margin-bottom: 5px;">
+                    <div style="font-size: 4.8rem; font-weight: 900; letter-spacing: 5px; color: #d4af37; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
                         CERTIFICATE
                     </div>
                     
-                    <div style="font-size: 1.5rem; font-weight: 800; letter-spacing: 8px; color: #00e5ff; text-transform: uppercase;">
+                    <div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 8px; color: #00e5ff; text-transform: uppercase;">
                         OF ACHIEVEMENT
                     </div>
 
-                    <div style="width: 350px; height: 2px; background-color: #d4af37; margin: 20px auto 0 auto;"></div>
+                    <div style="width: 380px; height: 2px; background-color: #d4af37; margin: 25px auto 0 auto;"></div>
                 </div>
 
-                <div style="width: 100%; margin: 20px 0;">
-                    <div style="font-size: 0.9rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px;">
+                <div style="width: 100%; margin: 25px 0;">
+                    <div style="font-size: 1rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px;">
                         PROUDLY PRESENTED TO
                     </div>
                     
-                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 4.5rem; color: #fff1be; margin: 0 auto 15px auto; line-height: 1.1;">
+                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 4.8rem; color: #fff1be; margin: 0 auto 20px auto; line-height: 1.1; text-shadow: 0 2px 12px rgba(212,175,55,0.3);">
                         ${studentName}
                     </div>
 
-                    <div style="width: 480px; height: 1px; background-color: #d4af37; margin: 0 auto 20px auto;"></div>
-
-                    <div style="font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
+                    <div style="font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
                         FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
-                        <span style="font-size: 1.8rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 8px; text-transform: none;">
+                        <span style="font-size: 2rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 10px; text-transform: none;">
                             ${passedTopic}
                         </span>
-                        <div style="font-size: 1rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 8px;">
-                            VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.2rem;">${score}%</span>
+                        <div style="font-size: 1.1rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 10px;">
+                            VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.4rem;">${score}%</span>
                         </div>
                     </div>
                 </div>
 
-                <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 30px; box-sizing: border-box;">
-                    
-                    <div style="text-align: center; width: 180px;">
-                        <div style="font-size: 1.1rem; color: #f1f5f9; font-weight: 600; margin-bottom: 8px;">
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px; box-sizing: border-box;">
+                    <div style="text-align: center; width: 190px;">
+                        <div style="font-size: 1.2rem; color: #f1f5f9; font-weight: 600; margin-bottom: 8px;">
                             ${todayDate}
                         </div>
-                        <div style="width: 100%; height: 1px; background-color: #d4af37; margin-bottom: 5px;"></div>
-                        <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                        <div style="width: 100%; height: 1.5px; background-color: #d4af37; margin-bottom: 6px;"></div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                             DATE
                         </div>
                     </div>
 
-                    <div style="text-align: center; width: 220px;">
-                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.6rem; color: #fff1be; margin-bottom: 6px;">
+                    <div style="text-align: center; width: 230px;">
+                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.8rem; color: #fff1be; margin-bottom: 6px;">
                             DevOps Beacon
                         </div>
-                        <div style="width: 100%; height: 1px; background-color: #d4af37; margin-bottom: 5px;"></div>
-                        <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                        <div style="width: 100%; height: 1.5px; background-color: #d4af37; margin-bottom: 6px;"></div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                             AUTHORIZED SIGNATURE
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -2474,11 +2534,13 @@ window.generateAndDownloadCert = function(score) {
 
     document.body.appendChild(certElement);
 
+    // 4. Fire html2canvas safely on the perfectly flat DOM layout
     setTimeout(() => {
         html2canvas(certElement, { 
             scale: 2, 
             logging: false,
-            backgroundColor: '#0b111e'
+            backgroundColor: '#080c16',
+            allowTaint: true
         }).then(canvas => {
             if (document.body.contains(certElement)) {
                 document.body.removeChild(certElement);
