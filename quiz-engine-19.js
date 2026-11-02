@@ -2380,7 +2380,6 @@ window.generateAndDownloadCert = function(score) {
     const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    // Render off-screen safely
     const certElement = document.createElement('div');
     certElement.style.position = 'absolute';
     certElement.style.top = '-9999px';
@@ -2388,136 +2387,183 @@ window.generateAndDownloadCert = function(score) {
     certElement.style.zIndex = '-9999';
 
     certElement.innerHTML = `
-        <div style="width: 1056px; height: 750px; background-color: #0b111e; position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
+        <div style="width: 1056px; height: 750px; background: radial-gradient(circle at 65% 50%, #111a2e 0%, #080d18 100%); position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
             
-            <!-- Left Side Cyber / Circuit Graphic (Pure SVG vectors for flawless html2canvas capture) -->
-            <svg style="position: absolute; left: 0; top: 0; width: 360px; height: 100%; z-index: 1;" viewBox="0 0 360 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Global SVG Gradients & Filters -->
+            <svg style="position: absolute; width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#fad074" />
-                        <stop offset="50%" stop-color="#e2a84a" />
-                        <stop offset="100%" stop-color="#9a6e25" />
+                    <linearGradient id="goldShine" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fff1be" />
+                        <stop offset="25%" stop-color="#d4af37" />
+                        <stop offset="50%" stop-color="#aa771c" />
+                        <stop offset="75%" stop-color="#fdf0cd" />
+                        <stop offset="100%" stop-color="#8a5a00" />
                     </linearGradient>
-                    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#5ffbf1" />
-                        <stop offset="50%" stop-color="#00bcd4" />
-                        <stop offset="100%" stop-color="#00658f" />
+                    <linearGradient id="goldBar" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#8a5a00" />
+                        <stop offset="30%" stop-color="#fdf0cd" />
+                        <stop offset="50%" stop-color="#d4af37" />
+                        <stop offset="70%" stop-color="#fdf0cd" />
+                        <stop offset="100%" stop-color="#8a5a00" />
                     </linearGradient>
-                    <linearGradient id="glowCyan" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.8" />
-                        <stop offset="100%" stop-color="#00f2fe" stop-opacity="0" />
+                    <linearGradient id="cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#a5f3fc" />
+                        <stop offset="50%" stop-color="#00e5ff" />
+                        <stop offset="100%" stop-color="#007799" />
                     </linearGradient>
-                    <pattern id="dotGrid" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-                        <circle cx="2" cy="2" r="1.5" fill="#1e293b" />
+                    <pattern id="fineGrid" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1.2" fill="#1e293b" opacity="0.6" />
                     </pattern>
                 </defs>
-
-                <!-- Background Dot Matrix -->
-                <rect x="0" y="0" width="140" height="750" fill="url(#dotGrid)" />
-
-                <!-- Angular Dark Background Layers -->
-                <polygon points="0,0 230,0 120,400 240,750 0,750" fill="#080e18" />
-                <polygon points="0,0 260,0 150,400 270,750 0,750" fill="#0f1929" fill-opacity="0.5" />
-
-                <!-- Main Metallic Gold Angled Stripe -->
-                <polyline points="295,0 175,400 305,750" stroke="url(#goldGrad)" stroke-width="14" stroke-linejoin="round" fill="none" />
-
-                <!-- Outer Cyan Glowing Traces -->
-                <polyline points="275,0 155,400 285,750" stroke="url(#cyanGrad)" stroke-width="8" stroke-linejoin="round" fill="none" />
-                <polyline points="255,0 135,400 265,750" stroke="#00e5ff" stroke-width="2.5" stroke-linejoin="round" fill="none" opacity="0.9" />
-
-                <!-- Inner Cyber Circuit Details -->
-                <polyline points="220,0 110,370 110,430 220,750" stroke="url(#cyanGrad)" stroke-width="4" stroke-linejoin="round" fill="none" opacity="0.7" />
-                
-                <!-- Horizontal Bus Bars / Circuit Endpoints -->
-                <line x1="50" y1="180" x2="190" y2="180" stroke="#00e5ff" stroke-width="2" opacity="0.6" />
-                <circle cx="190" cy="180" r="4" fill="#00e5ff" />
-                <line x1="20" y1="210" x2="140" y2="210" stroke="#d4af37" stroke-width="2" opacity="0.5" />
-                <circle cx="140" cy="210" r="3.5" fill="#d4af37" />
-
-                <line x1="40" y1="560" x2="180" y2="560" stroke="#00e5ff" stroke-width="2" opacity="0.6" />
-                <circle cx="180" cy="560" r="4" fill="#00e5ff" />
-                <line x1="20" y1="590" x2="130" y2="590" stroke="#d4af37" stroke-width="2" opacity="0.5" />
-                <circle cx="130" cy="590" r="3.5" fill="#d4af37" />
             </svg>
 
-            <!-- Subtle Geometric Tech Constellation Background (Right side) -->
-            <svg style="position: absolute; right: 0; top: 0; width: 400px; height: 100%; z-index: 1;" viewBox="0 0 400 750" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="360" cy="120" r="3" fill="#1e293b" />
-                <circle cx="280" cy="80" r="2" fill="#00e5ff" opacity="0.4" />
-                <circle cx="340" cy="220" r="2.5" fill="#1e293b" />
-                <line x1="360" y1="120" x2="280" y2="80" stroke="#1e293b" stroke-width="1" />
-                <line x1="360" y1="120" x2="340" y2="220" stroke="#1e293b" stroke-width="1" />
-                <!-- Subtle corner spark -->
-                <path d="M360,680 L363,670 L373,667 L363,664 L360,654 L357,664 L347,667 L357,670 Z" fill="#475569" opacity="0.5" />
+            <!-- Outer Gold Inset Border Frame -->
+            <div style="position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1.5px solid rgba(212, 175, 55, 0.45); pointer-events: none; z-index: 5; box-sizing: border-box;">
+                <div style="position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border: 1px solid rgba(212, 175, 55, 0.2);"></div>
+                <!-- Corner Ornaments -->
+                <div style="position: absolute; top: -1px; left: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
+                <div style="position: absolute; top: -1px; right: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
+                <div style="position: absolute; bottom: -1px; left: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
+                <div style="position: absolute; bottom: -1px; right: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
+            </div>
+
+            <!-- Left Cyber & Gold Chevrons SVG -->
+            <svg style="position: absolute; left: 0; top: 0; width: 380px; height: 100%; z-index: 2;" viewBox="0 0 380 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Dot Pattern -->
+                <rect x="0" y="0" width="160" height="750" fill="url(#fineGrid)" />
+
+                <!-- Dark polygon backdrop layers -->
+                <polygon points="0,0 240,0 130,400 250,750 0,750" fill="#060a12" />
+                <polygon points="0,0 270,0 160,400 280,750 0,750" fill="#0b1322" opacity="0.6" />
+
+                <!-- Primary Gold Angled Ribbon -->
+                <polyline points="310,0 185,400 320,750" stroke="url(#goldShine)" stroke-width="16" stroke-linejoin="round" fill="none" />
+                
+                <!-- Inner Gold Accent Pin-Stripe -->
+                <polyline points="330,0 205,400 340,750" stroke="#fff1be" stroke-width="2" stroke-linejoin="round" fill="none" opacity="0.8" />
+
+                <!-- Dual Electric Cyan Cyber Lines -->
+                <polyline points="280,0 155,400 290,750" stroke="url(#cyanNeon)" stroke-width="9" stroke-linejoin="round" fill="none" />
+                <polyline points="260,0 135,400 270,750" stroke="#00e5ff" stroke-width="3" stroke-linejoin="round" fill="none" opacity="0.8" />
+                <polyline points="225,0 110,380 110,420 235,750" stroke="url(#cyanNeon)" stroke-width="4" stroke-linejoin="round" fill="none" opacity="0.5" />
+
+                <!-- Circuit Nodes & Bus Bars in Gold & Cyan -->
+                <line x1="30" y1="140" x2="190" y2="140" stroke="url(#goldBar)" stroke-width="2" />
+                <circle cx="190" cy="140" r="5" fill="#fdf0cd" />
+                <circle cx="190" cy="140" r="2.5" fill="#8a5a00" />
+
+                <line x1="50" y1="180" x2="220" y2="180" stroke="#00e5ff" stroke-width="2" opacity="0.7" />
+                <circle cx="220" cy="180" r="4" fill="#00e5ff" />
+
+                <line x1="20" y1="220" x2="140" y2="220" stroke="url(#goldBar)" stroke-width="2" />
+                <circle cx="140" cy="220" r="4.5" fill="#d4af37" />
+
+                <line x1="30" y1="570" x2="210" y2="570" stroke="#00e5ff" stroke-width="2" opacity="0.7" />
+                <circle cx="210" cy="570" r="4" fill="#00e5ff" />
+
+                <line x1="40" y1="610" x2="180" y2="610" stroke="url(#goldBar)" stroke-width="2" />
+                <circle cx="180" cy="610" r="5" fill="#fdf0cd" />
+                <circle cx="180" cy="610" r="2.5" fill="#8a5a00" />
             </svg>
 
-            <!-- Right Content Container -->
-            <div style="flex-grow: 1; margin-left: 310px; padding: 60px 60px 40px 30px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; z-index: 2; box-sizing: border-box;">
+            <!-- Top Right Gold Constellation & Tech Grid -->
+            <svg style="position: absolute; right: 0; top: 0; width: 420px; height: 100%; z-index: 2; pointer-events: none;" viewBox="0 0 420 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tech grid & Gold Node Links -->
+                <circle cx="380" cy="90" r="3.5" fill="#d4af37" />
+                <circle cx="300" cy="60" r="2.5" fill="#00e5ff" opacity="0.6" />
+                <circle cx="350" cy="170" r="3" fill="#d4af37" opacity="0.8" />
+                <circle cx="270" cy="140" r="2" fill="#d4af37" opacity="0.5" />
+                <line x1="380" y1="90" x2="300" y2="60" stroke="#d4af37" stroke-width="1" opacity="0.3" />
+                <line x1="380" y1="90" x2="350" y2="170" stroke="#d4af37" stroke-width="1" opacity="0.3" />
+                <line x1="300" y1="60" x2="270" y2="140" stroke="#00e5ff" stroke-width="1" opacity="0.25" />
+                <line x1="270" y1="140" x2="350" y2="170" stroke="#d4af37" stroke-width="1" opacity="0.2" />
+
+                <!-- Metallic Gold Embossed Medal Seal at Bottom Right -->
+                <g transform="translate(305, 605)">
+                    <!-- Ribbons hanging below -->
+                    <polygon points="-18,20 -30,65 -15,58 0,65 -8,20" fill="url(#goldShine)" />
+                    <polygon points="18,20 8,20 0,65 15,58 30,65" fill="#aa771c" />
+                    <!-- Outer Serrated / Layered Ring -->
+                    <circle cx="0" cy="0" r="42" fill="url(#goldShine)" />
+                    <circle cx="0" cy="0" r="38" fill="#0b111e" />
+                    <circle cx="0" cy="0" r="35" fill="none" stroke="url(#goldShine)" stroke-width="1.5" stroke-dasharray="3 2" />
+                    <circle cx="0" cy="0" r="31" fill="url(#goldShine)" />
+                    <circle cx="0" cy="0" r="28" fill="#0b111e" />
+                    <!-- Inner Star & Text -->
+                    <path d="M0,-14 L4,-4 L14,-3 L6,4 L8,14 L0,8 L-8,14 L-6,4 L-14,-3 L-4,-4 Z" fill="url(#goldShine)" />
+                </g>
+            </svg>
+
+            <!-- Main Content Container (Right Align / Offset) -->
+            <div style="flex-grow: 1; margin-left: 330px; padding: 50px 65px 40px 30px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; z-index: 3; box-sizing: border-box;">
                 
-                <!-- Organization / Subtitle -->
+                <!-- Organization & Titles -->
                 <div>
-                    <div style="font-size: 1.15rem; font-weight: 700; letter-spacing: 5px; color: #f1f5f9; text-transform: uppercase; margin-bottom: 8px;">
+                    <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 6px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 6px; text-shadow: 0 1px 4px rgba(0,0,0,0.6);">
                         DEVOPS BEACON ACADEMY
                     </div>
                     
-                    <!-- Main Title: Metallic Gold Gradient Heading -->
-                    <div style="font-size: 3.8rem; font-weight: 900; letter-spacing: 3px; line-height: 1.1; margin-top: 10px; color: #e2a84a; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+                    <!-- CERTIFICATE Header with Gold Gradient -->
+                    <div style="font-size: 3.9rem; font-weight: 900; letter-spacing: 4px; line-height: 1.1; margin-top: 8px; background: linear-gradient(135deg, #fff1be 0%, #d4af37 50%, #aa771c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">
                         CERTIFICATE
                     </div>
-                    <div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 6px; color: #00e5ff; text-transform: uppercase; margin-top: 6px;">
+                    
+                    <div style="font-size: 1.45rem; font-weight: 800; letter-spacing: 7px; color: #00e5ff; text-transform: uppercase; margin-top: 4px;">
                         OF ACHIEVEMENT
                     </div>
+
+                    <!-- Thin Gold Decorative Bar -->
+                    <div style="width: 280px; height: 2px; background: url(#goldBar); margin: 12px auto 0 auto;"></div>
                 </div>
 
-                <!-- Recipient Honor Block -->
-                <div style="width: 100%; margin: 15px 0;">
-                    <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px;">
+                <!-- Recipient Honors -->
+                <div style="width: 100%; margin: 10px 0;">
+                    <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px;">
                         PROUDLY PRESENTED TO
                     </div>
                     
-                    <!-- Recipient Name in Elegant Gold-Tinted Cursive Script -->
-                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 3.8rem; color: #fad074; margin: 5px auto 10px auto; line-height: 1.1; text-shadow: 0 2px 8px rgba(0,0,0,0.4);">
+                    <!-- Recipient Name in Luxury Serif Script -->
+                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 4rem; color: #fff1be; margin: 4px auto 8px auto; line-height: 1.1; text-shadow: 0 2px 10px rgba(212,175,55,0.35);">
                         ${studentName}
                     </div>
 
-                    <!-- Thin Gold Decorative Divider Under Name -->
-                    <div style="width: 420px; height: 1.5px; background: linear-gradient(to right, transparent, #e2a84a, transparent); margin: 0 auto 20px auto;"></div>
+                    <!-- Gold Double-Line Divider -->
+                    <div style="width: 440px; height: 1.5px; background: linear-gradient(to right, transparent, #d4af37, transparent); margin: 0 auto 18px auto;"></div>
 
-                    <!-- Course / Exam Description -->
-                    <div style="font-size: 0.95rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
+                    <!-- Subject & Score -->
+                    <div style="font-size: 0.95rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.5;">
                         FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
-                        <span style="font-size: 1.45rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 6px; text-transform: none;">
+                        <span style="font-size: 1.5rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 5px; text-transform: none;">
                             ${passedTopic}
                         </span>
-                        <div style="font-size: 0.85rem; color: #94a3b8; font-weight: 600; letter-spacing: 1px; margin-top: 4px;">
-                            VERIFIED SCORE: <span style="color: #fad074; font-weight: 800;">${score}%</span>
+                        <div style="font-size: 0.88rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 5px;">
+                            VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.05rem;">${score}%</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Footer: Date & Signature Lines -->
-                <div style="width: 100%; display: flex; justify-content: space-around; align-items: flex-end; padding: 0 40px; box-sizing: border-box; margin-top: 10px;">
+                <!-- Footer: Date & Signatures -->
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px; box-sizing: border-box;">
                     
                     <!-- Date Column -->
-                    <div style="text-align: center; width: 180px;">
-                        <div style="font-size: 0.95rem; color: #cbd5e1; font-weight: 600; margin-bottom: 6px;">
+                    <div style="text-align: center; width: 170px;">
+                        <div style="font-size: 0.95rem; color: #f1f5f9; font-weight: 600; margin-bottom: 5px;">
                             ${todayDate}
                         </div>
-                        <div style="width: 100%; height: 1px; background: #334155; margin-bottom: 6px;"></div>
-                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                        <div style="width: 100%; height: 1px; background: linear-gradient(to right, #334155, #d4af37, #334155); margin-bottom: 5px;"></div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                             DATE
                         </div>
                     </div>
 
-                    <!-- Authorized Signatory Column -->
-                    <div style="text-align: center; width: 180px;">
-                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.3rem; color: #fad074; margin-bottom: 4px;">
+                    <!-- Official Authority Column -->
+                    <div style="text-align: center; width: 190px;">
+                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.35rem; color: #fff1be; margin-bottom: 3px;">
                             DevOps Beacon
                         </div>
-                        <div style="width: 100%; height: 1px; background: #334155; margin-bottom: 6px;"></div>
-                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
-                            SIGNATURE
+                        <div style="width: 100%; height: 1px; background: linear-gradient(to right, #334155, #d4af37, #334155); margin-bottom: 5px;"></div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                            AUTHORIZED SIGNATURE
                         </div>
                     </div>
 
@@ -2540,7 +2586,7 @@ window.generateAndDownloadCert = function(score) {
                 
                 <div style="background: var(--db-primary-light); padding: 15px; border-radius: 8px; border-left: 4px solid var(--db-primary); margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: var(--db-text); line-height: 1.6;">
                     <strong>Step 1: Save Your Certificate</strong><br>
-                    Right-click (or long-press) the image below and select <em>"Save image as..."</em>
+                    Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>
                     
                     <div style="margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px;">
                         <strong>Step 2: Share on LinkedIn</strong><br>
@@ -2559,7 +2605,6 @@ window.generateAndDownloadCert = function(score) {
                 <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid var(--db-border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="DevOps Beacon Certificate">
             `;
 
-            // Unblock right-click and selection specifically for this image
             const finalImg = document.getElementById('finalCertImg');
             finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
