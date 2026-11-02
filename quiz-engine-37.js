@@ -2367,7 +2367,7 @@ if (score >= 75) {
           window.generateAndDownloadCert(score);
       };
 
-    }
+    
     } else {
       document.getElementById("dbTrophyIcon").innerText = "📚";
       document.getElementById("dbResultsHeading").innerText = "Keep Practicing!";
