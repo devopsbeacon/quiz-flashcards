@@ -2352,7 +2352,7 @@ function showResults() {
     }
   }
 
-  window.generateAndDownloadCert = function(score, event) {
+window.generateAndDownloadCert = function(score, event) {
       const studentName = document.getElementById("dbCertName").value.trim();
       if(!studentName) {
           alert("Please enter your name to claim the certificate.");
@@ -2373,18 +2373,11 @@ function showResults() {
       const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // FIX: Render off-screen safely (no opacity: 0, which breaks html2canvas)
-      const certContainer = document.createElement('div');
-      certContainer.style.position = 'fixed';
-      certContainer.style.top = '200%'; 
-      certContainer.style.left = '0';
-      certContainer.style.zIndex = '-1';
-      
-      // FIX: Replaced GoDaddy image with text placeholder to bypass strict CORS blocking.
-      certContainer.innerHTML = `
-          <div id="hiddenCertificate" style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      // Create a detached DOM element to bypass screen rendering and CSS clipping bugs
+      const certElement = document.createElement('div');
+      certElement.innerHTML = `
+          <div style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
               <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
-                  
                   <div style="font-size: 2.5rem; font-weight: 800; color: #1a1a1a; margin-bottom: 20px;">🚀 DEVOPS BEACON</div>
                   <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">DevOps Beacon Academy</div>
                   <h1 style="font-size: 4rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 2px;">CERTIFICATE</h1>
@@ -2409,39 +2402,33 @@ function showResults() {
               </div>
           </div>
       `;
-      document.body.appendChild(certContainer);
 
-      setTimeout(() => {
-          const element = document.getElementById('hiddenCertificate');
-          const filename = `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`;
+      const opt = {
+          margin: 0,
+          filename: `${studentName.replace(/\s+/g, '_')}_DevOps_Certificate.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 }, 
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+      };
+
+      // Generate PDF as an in-memory Blob instead of forcing a blocked download
+      html2pdf().set(opt).from(certElement).output('blob').then(function(pdfBlob) {
+          const blobUrl = URL.createObjectURL(pdfBlob);
           
-          const opt = {
-              margin: 0,
-              filename: filename,
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2 }, 
-              jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+          // Transform the button into a direct link to bypass iframe sandbox restrictions
+          downloadBtn.innerText = "✅ View & Save Certificate";
+          downloadBtn.style.backgroundColor = "#2563eb"; 
+          downloadBtn.disabled = false;
+          
+          downloadBtn.onclick = function(e) {
+              e.preventDefault();
+              window.open(blobUrl, '_blank');
           };
-
-          try {
-              html2pdf().set(opt).from(element).save().then(() => {
-                  document.body.removeChild(certContainer);
-                  downloadBtn.innerText = originalText;
-                  downloadBtn.disabled = false;
-              }).catch(err => {
-                  console.error("PDF Gen Error:", err);
-                  alert("PDF Generation Failed. Error: " + (err.message || err));
-                  document.body.removeChild(certContainer);
-                  downloadBtn.innerText = originalText;
-                  downloadBtn.disabled = false;
-              });
-          } catch(err) {
-              alert("Critical Error: " + err.message);
-              document.body.removeChild(certContainer);
-              downloadBtn.innerText = originalText;
-              downloadBtn.disabled = false;
-          }
-      }, 500); 
+      }).catch(function(err) {
+          alert("Error generating PDF: " + err);
+          downloadBtn.innerText = originalText;
+          downloadBtn.disabled = false;
+      });
   };
 
 
