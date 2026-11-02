@@ -2091,7 +2091,8 @@ let activeQuestions = [];
       .db-progress-track { width: 100%; height: 6px; background: var(--db-border); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
       .db-progress-bar { height: 100%; width: 0%; background: var(--db-primary); transition: width 0.3s ease; }
       .db-question-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; background: var(--db-primary-light); color: var(--db-primary); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-      .db-timer { display: inline-block; font-size: 0.85rem; font-weight: 800; color: var(--db-danger); background: var(--db-danger-bg); padding: 4px 12px; border-radius: 12px; margin-bottom: 8px; }
+      .db-timer { display: inline-block; font-size: 0.85rem; font-weight: 800; color: var(--db-text); background: var(--db-stat-bg); padding: 4px 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--db-border); }
+      #dbResultsHeading { color: var(--db-text); margin-top: 0; }
       .db-question-title { font-size: 1.1rem; font-weight: 600; color: var(--db-text); margin-bottom: 14px; line-height: 1.4; }
       .db-options-list { display: flex; flex-direction: column; gap: 8px; }
       .db-option-btn { width: 100%; padding: 12px 14px; border: 1.5px solid var(--db-border); border-radius: 8px; background: var(--db-card); color: var(--db-text); text-align: left; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease; line-height: 1.35; box-sizing: border-box; }
@@ -2278,7 +2279,7 @@ let activeQuestions = [];
     timeLeft = 30;
     const timerDisplay = document.getElementById("dbTimerDisplay");
     timerDisplay.innerText = timeLeft + "s";
-    timerDisplay.style.color = "var(--db-danger)";
+    timerDisplay.style.color = ""; // Let the CSS theme handle the color
     
     questionTimer = setInterval(() => {
       timeLeft--;
