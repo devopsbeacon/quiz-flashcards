@@ -2124,7 +2124,7 @@ let activeQuestions = [];
             <span style="font-size:1.5rem">🚀</span>
             <div>
               <h2>DevOps Beacon Exam Portal</h2>
-              <p>Interactive Knowledge Engine</p>
+              <p>Surpass the 75% threshold, Claim your Certificate ...</p>
             </div>
           </div>
           <button class="db-theme-toggle" id="dbThemeBtn" title="Toggle Light/Dark Mode">🌙</button>
