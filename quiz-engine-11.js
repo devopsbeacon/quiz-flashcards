@@ -2314,11 +2314,11 @@ function showResults() {
     const score = Math.round((trueCount / activeQuestions.length) * 100);
     document.getElementById("dbFinalScore").innerText = `${score}%`;
 
-    // Ensure html2pdf is loaded in the background
-    if (typeof html2pdf === 'undefined') {
-        const pdfScript = document.createElement("script");
-        pdfScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
-        document.head.appendChild(pdfScript);
+    // Safely load the standalone image generator
+    if (typeof html2canvas === 'undefined') {
+        const h2cScript = document.createElement("script");
+        h2cScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+        document.head.appendChild(h2cScript);
     }
 
     if (score >= 60) {
@@ -2337,13 +2337,19 @@ function showResults() {
           certForm.style.borderRadius = '12px';
           certForm.style.border = '1px solid var(--db-border)';
           
+          // Removed buggy inline onclick handler
           certForm.innerHTML = `
             <h4 style="margin: 0 0 15px 0; color: var(--db-text);">Claim Your Certificate</h4>
             <input type="text" id="dbCertName" placeholder="Enter Your Full Name" required 
                    style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--db-border); outline: none; background: var(--db-card); color: var(--db-text);">
-            <button class="db-btn" onclick="generateAndDownloadCert(${score}, event)" style="background-color: #16a34a;">📥 Download Certificate</button>
+            <button class="db-btn" id="dbGenCertBtn" style="background-color: #16a34a;">🖼️ Generate Certificate</button>
           `;
           resultsScreen.appendChild(certForm);
+          
+          // Attach click event safely
+          document.getElementById('dbGenCertBtn').onclick = function() {
+              window.generateAndDownloadCert(score);
+          };
       }
     } else {
       document.getElementById("dbTrophyIcon").innerText = "📚";
@@ -2352,7 +2358,7 @@ function showResults() {
     }
   }
 
-window.generateAndDownloadCert = function(score, event) {
+  window.generateAndDownloadCert = function(score) {
       const studentName = document.getElementById("dbCertName").value.trim();
       if(!studentName) {
           alert("Please enter your name to claim the certificate.");
@@ -2360,24 +2366,26 @@ window.generateAndDownloadCert = function(score, event) {
       }
 
       if (typeof html2canvas === 'undefined') {
-          alert("Certificate engine is still loading. Please wait a few seconds and click again.");
+          alert("Image engine is still loading. Please wait 2 seconds and click again.");
           return;
       }
 
-      const downloadBtn = event ? event.target : document.querySelector('#dbCertForm .db-btn');
+      const downloadBtn = document.getElementById('dbGenCertBtn');
       const originalText = downloadBtn.innerText;
-      downloadBtn.innerText = "⏳ Generating Certificate (Please Wait)...";
+      downloadBtn.innerText = "⏳ Generating Image (Please Wait)...";
       downloadBtn.disabled = true;
 
       const topicDropdown = document.getElementById("dbSubjectSelect");
       const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // Render off-screen safely
+      // Render off-screen safely (opacity/display none causes silent failures)
       const certElement = document.createElement('div');
-      certElement.style.position = 'fixed';
+      certElement.style.position = 'absolute';
       certElement.style.top = '-9999px';
       certElement.style.left = '-9999px';
+      certElement.style.zIndex = '-9999';
+      
       certElement.innerHTML = `
           <div style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
               <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
@@ -2407,41 +2415,37 @@ window.generateAndDownloadCert = function(score, event) {
       `;
       document.body.appendChild(certElement);
 
-      // Generate a high-res Image instead of a blocked PDF file
-      html2canvas(certElement, { scale: 2 }).then(function(canvas) {
-          document.body.removeChild(certElement);
-          const imgData = canvas.toDataURL('image/png');
-          const certForm = document.getElementById('dbCertForm');
-          
-          // Display the image directly on the screen
-          certForm.innerHTML = `
-              <h4 style="margin: 0 0 10px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
-              <p style="font-size: 0.85rem; color: var(--db-muted); margin-bottom: 15px; text-align: center;">
-                 <strong>Mobile:</strong> Long-press the image below to save it.<br>
-                 <strong>Desktop:</strong> Right-click the image below and select "Save image as..."
-              </p>
-              <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid var(--db-border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="DevOps Beacon Certificate">
-          `;
+      setTimeout(() => {
+          html2canvas(certElement, { scale: 2 }).then(canvas => {
+              document.body.removeChild(certElement);
+              const imgData = canvas.toDataURL('image/png');
+              const certForm = document.getElementById('dbCertForm');
+              
+              certForm.innerHTML = `
+                  <h4 style="margin: 0 0 10px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
+                  <div style="background: var(--db-primary-light); padding: 10px; border-left: 4px solid var(--db-primary); margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: var(--db-text);">
+                      <strong>How to save:</strong><br>
+                      💻 <strong>Desktop:</strong> Right-click the certificate below and select "Save image as..."<br>
+                      📱 <strong>Mobile:</strong> Long-press the certificate below and select "Save image".
+                  </div>
+                  <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid var(--db-border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="DevOps Beacon Certificate">
+              `;
 
-          // CRITICAL BYPASS: Stop the global anti-copy block from affecting this specific image
-          const finalImg = document.getElementById('finalCertImg');
-          finalImg.addEventListener('contextmenu', function(e) {
-              e.stopPropagation(); 
-          });
-          finalImg.addEventListener('mousedown', function(e) {
-              e.stopPropagation(); 
-          });
-          finalImg.addEventListener('touchstart', function(e) {
-              e.stopPropagation(); 
-          });
+              // Unblock right-click and selection specifically for this image
+              const finalImg = document.getElementById('finalCertImg');
+              finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
+              finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+              finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
+              finalImg.style.userSelect = 'auto';
 
-      }).catch(function(err) {
-          console.error("Canvas Generation Error:", err);
-          alert("Error rendering certificate.");
-          if (document.body.contains(certElement)) document.body.removeChild(certElement);
-          downloadBtn.innerText = originalText;
-          downloadBtn.disabled = false;
-      });
+          }).catch(err => {
+              console.error("Canvas Error:", err);
+              alert("Error generating image. Please try again.");
+              if (document.body.contains(certElement)) document.body.removeChild(certElement);
+              downloadBtn.innerText = originalText;
+              downloadBtn.disabled = false;
+          });
+      }, 500);
   };
 
   if (document.readyState === "loading") {
