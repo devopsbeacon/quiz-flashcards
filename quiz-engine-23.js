@@ -2314,7 +2314,6 @@ function showResults() {
     const score = Math.round((trueCount / activeQuestions.length) * 100);
     document.getElementById("dbFinalScore").innerText = `${score}%`;
 
-    // Load HTML2Canvas safely
     if (typeof html2canvas === 'undefined') {
         const h2cScript = document.createElement("script");
         h2cScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
@@ -2378,46 +2377,39 @@ function showResults() {
       const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // FIX 1: Container must be in the active viewport (top: 0, left: 0) but invisible (opacity: 0, zIndex: -9999)
+      // Shift horizontally off-screen instead of using opacity: 0
       const certElement = document.createElement('div');
       certElement.id = 'db-temp-cert-stage';
-      certElement.style.position = 'fixed';
+      certElement.style.position = 'absolute';
       certElement.style.top = '0px';
-      certElement.style.left = '0px';
+      certElement.style.left = '-15000px'; 
       certElement.style.zIndex = '-9999';
-      certElement.style.opacity = '0';
-      certElement.style.pointerEvents = 'none';
 
-      // FIX 2: Pure HTML/CSS geometry instead of SVGs. Zero CORS/Parser crashes.
       certElement.innerHTML = `
           <div style="width: 1056px; height: 750px; background-color: #0b111e; position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
               
-              <!-- Outer Gold Borders -->
-              <div style="position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 3px solid #d4af37; pointer-events: none; z-index: 5;"></div>
-              <div style="position: absolute; top: 22px; left: 22px; right: 22px; bottom: 22px; border: 1px solid #d4af37; opacity: 0.5; pointer-events: none; z-index: 5;"></div>
+              <!-- Left Cyber Borders (Pure Block Geometry) -->
+              <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 25px; background-color: #d4af37;"></div>
+              <div style="position: absolute; top: 0; left: 32px; bottom: 0; width: 6px; background-color: #00e5ff;"></div>
+              <div style="position: absolute; top: 0; left: 45px; bottom: 0; width: 2px; background-color: #00e5ff; opacity: 0.5;"></div>
+              
+              <!-- Right Cyber Borders (Pure Block Geometry) -->
+              <div style="position: absolute; top: 0; right: 0; bottom: 0; width: 25px; background-color: #d4af37;"></div>
+              <div style="position: absolute; top: 0; right: 32px; bottom: 0; width: 6px; background-color: #00e5ff;"></div>
+              <div style="position: absolute; top: 0; right: 45px; bottom: 0; width: 2px; background-color: #00e5ff; opacity: 0.5;"></div>
 
-              <!-- Pure CSS Cyber/Gold Geometric Accents (Replaces SVG) -->
-              <!-- Dark Angled Backdrop -->
-              <div style="position: absolute; left: -150px; top: -100px; width: 450px; height: 1000px; background-color: #050810; transform: rotate(18deg); z-index: 1;"></div>
-              
-              <!-- Thick Gold Ribbon -->
-              <div style="position: absolute; left: 150px; top: -100px; width: 25px; height: 1000px; background-color: #d4af37; transform: rotate(18deg); z-index: 2; box-shadow: 0 0 15px rgba(212,175,55,0.4);"></div>
-              <div style="position: absolute; left: 185px; top: -100px; width: 3px; height: 1000px; background-color: #fff1be; transform: rotate(18deg); z-index: 2;"></div>
-              
-              <!-- Cyan Cyber Traces -->
-              <div style="position: absolute; left: 100px; top: -100px; width: 12px; height: 1000px; background-color: #00e5ff; transform: rotate(18deg); z-index: 2; box-shadow: 0 0 15px rgba(0,229,255,0.6);"></div>
-              <div style="position: absolute; left: 120px; top: -100px; width: 2px; height: 1000px; background-color: #00e5ff; transform: rotate(18deg); z-index: 2;"></div>
+              <!-- Top and Bottom Borders -->
+              <div style="position: absolute; top: 0; left: 0; right: 0; height: 15px; background-color: #050810;"></div>
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 15px; background-color: #050810;"></div>
 
               <!-- Main Content Container -->
-              <div style="position: relative; z-index: 10; margin-left: 360px; flex-grow: 1; padding: 60px 50px 40px 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;">
+              <div style="position: relative; z-index: 10; flex-grow: 1; padding: 60px 80px 40px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;">
                   
-                  <!-- Organization & Titles -->
                   <div style="width: 100%;">
                       <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 6px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">
                           DEVOPS BEACON ACADEMY
                       </div>
                       
-                      <!-- Pure CSS Title -->
                       <div style="font-size: 4.2rem; font-weight: 900; letter-spacing: 5px; color: #d4af37; margin-bottom: 5px;">
                           CERTIFICATE
                       </div>
@@ -2426,56 +2418,49 @@ function showResults() {
                           OF ACHIEVEMENT
                       </div>
 
-                      <!-- Divider -->
                       <div style="width: 350px; height: 2px; background-color: #d4af37; margin: 20px auto 0 auto;"></div>
                   </div>
 
-                  <!-- Recipient Honors -->
                   <div style="width: 100%; margin: 20px 0;">
                       <div style="font-size: 0.9rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px;">
                           PROUDLY PRESENTED TO
                       </div>
                       
-                      <!-- Recipient Name -->
-                      <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 4rem; color: #fff1be; margin: 0 auto 15px auto; line-height: 1.1;">
+                      <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 4.5rem; color: #fff1be; margin: 0 auto 15px auto; line-height: 1.1;">
                           ${studentName}
                       </div>
 
                       <div style="width: 480px; height: 1px; background-color: #d4af37; margin: 0 auto 20px auto;"></div>
 
-                      <!-- Subject & Score -->
-                      <div style="font-size: 1rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
+                      <div style="font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
                           FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
-                          <span style="font-size: 1.6rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 8px; text-transform: none;">
+                          <span style="font-size: 1.8rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 8px; text-transform: none;">
                               ${passedTopic}
                           </span>
-                          <div style="font-size: 0.9rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 8px;">
-                              VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.1rem;">${score}%</span>
+                          <div style="font-size: 1rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 8px;">
+                              VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.2rem;">${score}%</span>
                           </div>
                       </div>
                   </div>
 
-                  <!-- Footer: Date & Signatures -->
                   <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 30px; box-sizing: border-box;">
                       
-                      <!-- Date -->
                       <div style="text-align: center; width: 180px;">
-                          <div style="font-size: 1rem; color: #f1f5f9; font-weight: 600; margin-bottom: 8px;">
+                          <div style="font-size: 1.1rem; color: #f1f5f9; font-weight: 600; margin-bottom: 8px;">
                               ${todayDate}
                           </div>
                           <div style="width: 100%; height: 1px; background-color: #d4af37; margin-bottom: 5px;"></div>
-                          <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                          <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                               DATE
                           </div>
                       </div>
 
-                      <!-- Signature -->
-                      <div style="text-align: center; width: 200px;">
-                          <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.4rem; color: #fff1be; margin-bottom: 6px;">
+                      <div style="text-align: center; width: 220px;">
+                          <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.6rem; color: #fff1be; margin-bottom: 6px;">
                               DevOps Beacon
                           </div>
                           <div style="width: 100%; height: 1px; background-color: #d4af37; margin-bottom: 5px;"></div>
-                          <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                          <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                               AUTHORIZED SIGNATURE
                           </div>
                       </div>
@@ -2487,7 +2472,6 @@ function showResults() {
 
       document.body.appendChild(certElement);
 
-      // Give DOM time to register the element before html2canvas executes
       setTimeout(() => {
           html2canvas(certElement, { 
               scale: 2, 
