@@ -2324,34 +2324,43 @@ function showResults() {
         document.head.appendChild(h2cScript);
     }
 
-    if (score >= 75) {
+if (score >= 75) {
       document.getElementById("dbTrophyIcon").innerText = "🎉";
       document.getElementById("dbResultsHeading").innerText = "Congratulations! You Passed!";
       document.getElementById("dbSummaryText").innerText = `Outstanding job! You scored ${trueCount} out of ${activeQuestions.length} (${score}%).`;
       
       triggerCelebration();
 
-      if (!document.getElementById('dbCertForm')) {
-          const certForm = document.createElement('div');
+      // ⭐️ ALWAYS capture the currently selected subject when passing
+      const topicDropdown = document.getElementById("dbSubjectSelect");
+      const passedTopicRaw = topicDropdown ? topicDropdown.options[topicDropdown.selectedIndex].text : "Assessment";
+      window.currentPassedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
+
+      // ⭐️ Always create or refresh the certificate form so it uses the new subject and score
+      let certForm = document.getElementById('dbCertForm');
+      if (!certForm) {
+          certForm = document.createElement('div');
           certForm.id = 'dbCertForm';
           certForm.style.marginTop = '25px';
           certForm.style.padding = '20px';
           certForm.style.backgroundColor = 'var(--db-stat-bg)';
           certForm.style.borderRadius = '12px';
           certForm.style.border = '1px solid var(--db-border)';
-          
-          certForm.innerHTML = `
-            <h4 style="margin: 0 0 15px 0; color: var(--db-text);">Claim Your Certificate</h4>
-            <input type="text" id="dbCertName" placeholder="Enter Your Full Name" required 
-                   style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--db-border); outline: none; background: var(--db-card); color: var(--db-text); box-sizing: border-box;">
-            <button class="db-btn" id="dbGenCertBtn" style="background-color: #16a34a; width: 100%;">🏆 Generate Certificate</button>
-          `;
           resultsScreen.appendChild(certForm);
-
-          document.getElementById('dbGenCertBtn').onclick = function() {
-              window.generateAndDownloadCert(score);
-          };
       }
+      
+      certForm.innerHTML = `
+        <h4 style="margin: 0 0 15px 0; color: var(--db-text);">Claim Your Certificate (${window.currentPassedTopic})</h4>
+        <input type="text" id="dbCertName" placeholder="Enter Your Full Name" required 
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--db-border); outline: none; background: var(--db-card); color: var(--db-text); box-sizing: border-box;">
+        <button class="db-btn" id="dbGenCertBtn" style="background-color: #16a34a; width: 100%;">🏆 Generate Certificate</button>
+      `;
+
+      document.getElementById('dbGenCertBtn').onclick = function() {
+          window.generateAndDownloadCert(score);
+      };
+
+    }
     } else {
       document.getElementById("dbTrophyIcon").innerText = "📚";
       document.getElementById("dbResultsHeading").innerText = "Keep Practicing!";
