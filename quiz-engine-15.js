@@ -2389,12 +2389,12 @@ window.generateAndDownloadCert = function(score) {
     certElement.style.left = '-9999px';
     certElement.style.zIndex = '-9999';
     
-    // Updated HTML template applying the bottom-centered badge logo
+    // Aesthetic update: Fixed html2canvas rendering bugs (removed CSS filters, replaced transforms with margins)
     certElement.innerHTML = `
         <div style="width: 1056px; height: 816px; background-color: #0f172a; padding: 25px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
             
-            <!-- Inner Parchment Surface -->
-            <div style="width: 100%; height: 100%; background: #ffffff; position: relative; display: flex; flex-direction: column; border: 4px solid #00e5ff; box-sizing: border-box;">
+            <!-- Inner Parchment Surface with Spotlight Gradient -->
+            <div style="width: 100%; height: 100%; background: radial-gradient(circle at center, #ffffff 40%, #f8fafc 100%); position: relative; display: flex; flex-direction: column; border: 4px solid #00e5ff; box-sizing: border-box;">
                 
                 <!-- Left Classical Pillar -->
                 <div style="position: absolute; left: 40px; top: 40px; bottom: 40px; width: 45px; background: linear-gradient(to right, #e2e8f0 0%, #ffffff 50%, #cbd5e1 100%); border: 1px solid #94a3b8; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 2px 0px 5px rgba(0,0,0,0.05);">
@@ -2430,7 +2430,7 @@ window.generateAndDownloadCert = function(score) {
                     <div style="text-transform: uppercase; letter-spacing: 5px; color: #64748b; font-size: 1rem; font-weight: 600; margin-bottom: 35px;">Academy</div>
                     
                     <!-- Classical Engraved Title -->
-                    <h1 style="font-family: Georgia, serif; font-size: 4.8rem; font-weight: 700; margin: 0; color: #0f172a; letter-spacing: 2px; text-shadow: 3px 3px 0px rgba(0,229,255,0.15);">CERTIFICATE</h1>
+                    <h1 style="font-family: Georgia, serif; font-size: 4.8rem; font-weight: 700; margin: 0; color: #0f172a; letter-spacing: 2px;">CERTIFICATE</h1>
                     <div style="text-transform: uppercase; letter-spacing: 6px; color: #00e5ff; font-size: 1.2rem; font-weight: 800; margin-top: 15px; margin-bottom: 40px;">Of Excellence</div>
                     
                     <div style="font-size: 1.2rem; color: #475569; margin-bottom: 10px; font-style: italic;">This honor is hereby bestowed upon</div>
@@ -2440,8 +2440,8 @@ window.generateAndDownloadCert = function(score) {
                         ${studentName}
                     </div>
                     
-                    <!-- Body Text -->
-                    <div style="font-size: 1.15rem; color: #475569; line-height: 1.8;">
+                    <!-- Body Text (Margin bottom increased to prevent badge overlap) -->
+                    <div style="font-size: 1.15rem; color: #475569; line-height: 1.8; margin-bottom: 50px;">
                         for demonstrating outstanding mastery and successful completion of<br>
                         <strong style="font-size: 1.8rem; color: #0f172a; font-family: Georgia, serif; font-weight: bold; display: inline-block; margin: 12px 0;">${passedTopic}</strong><br>
                         passing with a verified score of <strong style="color: #00e5ff; font-size: 1.4rem;">${score}%</strong>.
@@ -2451,20 +2451,19 @@ window.generateAndDownloadCert = function(score) {
                     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding: 0 10px; position: relative;">
                         
                         <!-- Date Block -->
-                        <div style="text-align: center; width: 200px;">
+                        <div style="text-align: center; width: 200px; position: relative; z-index: 2;">
                             <div style="font-size: 1.1rem; color: #0f172a; font-weight: bold; margin-bottom: 5px;">${todayDate}</div>
                             <div style="border-top: 1px solid #94a3b8; margin-bottom: 5px;"></div>
                             <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Awarded Date</div>
                         </div>
                         
-                        <!-- SEAL BADGE EMBED: Houses the DevOps Beacon Rocket Logo directly bypass CORS/Sandbox rules -->
-                        <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: -15px; width: 100px; height: 100px; background: #0f172a; border-radius: 50%; border: 4px solid #00e5ff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); overflow: hidden;">
-                            <!-- Uses Base64/Inline Asset logic to remain block-proof inside custom HTML frames -->
-                            <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0px 2px 4px rgba(0,229,255,0.45));">
+                        <!-- SEAL BADGE EMBED: Fixed for html2canvas (removed filter/transform/overflow) -->
+                        <div style="position: absolute; left: 50%; margin-left: -55px; bottom: 0px; width: 110px; height: 110px; background: #0f172a; border-radius: 50%; border: 4px solid #00e5ff; display: flex; align-items: center; justify-content: center; z-index: 10;">
+                            <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="width: 70px; height: 70px; border-radius: 50%;">
                         </div>
                         
                         <!-- Signature Block -->
-                        <div style="text-align: center; width: 200px;">
+                        <div style="text-align: center; width: 200px; position: relative; z-index: 2;">
                             <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.6rem; color: #0f172a; margin-bottom: 5px;">DevOps Beacon</div>
                             <div style="border-top: 1px solid #94a3b8; margin-bottom: 5px;"></div>
                             <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Official Certification</div>
@@ -2493,6 +2492,7 @@ window.generateAndDownloadCert = function(score) {
                 <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid var(--db-border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="DevOps Beacon Certificate">
             `;
 
+            // Unblock right-click and selection specifically for this image
             const finalImg = document.getElementById('finalCertImg');
             finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
