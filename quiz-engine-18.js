@@ -2372,7 +2372,7 @@ window.generateAndDownloadCert = function(score) {
 
     const downloadBtn = document.getElementById('dbGenCertBtn');
     const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "⏳ Generating Image (Please Wait)...";
+    downloadBtn.innerText = "⏳ Generating Certificate (Please Wait)...";
     downloadBtn.disabled = true;
 
     const topicDropdown = document.getElementById("dbSubjectSelect");
@@ -2380,66 +2380,153 @@ window.generateAndDownloadCert = function(score) {
     const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+    // Render off-screen safely
     const certElement = document.createElement('div');
     certElement.style.position = 'absolute';
     certElement.style.top = '-9999px';
     certElement.style.left = '-9999px';
     certElement.style.zIndex = '-9999';
-    
+
     certElement.innerHTML = `
-        <div style="width: 1056px; height: 816px; background-color: #f8fafc; padding: 35px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        <div style="width: 1056px; height: 750px; background-color: #0b111e; position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
             
-            <!-- Crisp White Card with Modern Accent Border -->
-            <div style="width: 100%; height: 100%; background: #ffffff; position: relative; display: flex; flex-direction: column; border-top: 8px solid #00e5ff; border-bottom: 2px solid #cbd5e1; border-left: 2px solid #cbd5e1; border-right: 2px solid #cbd5e1; box-shadow: 0 15px 30px rgba(0,0,0,0.05); padding: 50px 70px; box-sizing: border-box; justify-content: space-between;">
+            <!-- Left Side Cyber / Circuit Graphic (Pure SVG vectors for flawless html2canvas capture) -->
+            <svg style="position: absolute; left: 0; top: 0; width: 360px; height: 100%; z-index: 1;" viewBox="0 0 360 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fad074" />
+                        <stop offset="50%" stop-color="#e2a84a" />
+                        <stop offset="100%" stop-color="#9a6e25" />
+                    </linearGradient>
+                    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#5ffbf1" />
+                        <stop offset="50%" stop-color="#00bcd4" />
+                        <stop offset="100%" stop-color="#00658f" />
+                    </linearGradient>
+                    <linearGradient id="glowCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.8" />
+                        <stop offset="100%" stop-color="#00f2fe" stop-opacity="0" />
+                    </linearGradient>
+                    <pattern id="dotGrid" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1.5" fill="#1e293b" />
+                    </pattern>
+                </defs>
+
+                <!-- Background Dot Matrix -->
+                <rect x="0" y="0" width="140" height="750" fill="url(#dotGrid)" />
+
+                <!-- Angular Dark Background Layers -->
+                <polygon points="0,0 230,0 120,400 240,750 0,750" fill="#080e18" />
+                <polygon points="0,0 260,0 150,400 270,750 0,750" fill="#0f1929" fill-opacity="0.5" />
+
+                <!-- Main Metallic Gold Angled Stripe -->
+                <polyline points="295,0 175,400 305,750" stroke="url(#goldGrad)" stroke-width="14" stroke-linejoin="round" fill="none" />
+
+                <!-- Outer Cyan Glowing Traces -->
+                <polyline points="275,0 155,400 285,750" stroke="url(#cyanGrad)" stroke-width="8" stroke-linejoin="round" fill="none" />
+                <polyline points="255,0 135,400 265,750" stroke="#00e5ff" stroke-width="2.5" stroke-linejoin="round" fill="none" opacity="0.9" />
+
+                <!-- Inner Cyber Circuit Details -->
+                <polyline points="220,0 110,370 110,430 220,750" stroke="url(#cyanGrad)" stroke-width="4" stroke-linejoin="round" fill="none" opacity="0.7" />
                 
-                <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="height: 42px; object-fit: contain;">
-                        <span style="font-size: 1.3rem; font-weight: 900; color: #0f172a; letter-spacing: 2px;">DEVOPS BEACON</span>
+                <!-- Horizontal Bus Bars / Circuit Endpoints -->
+                <line x1="50" y1="180" x2="190" y2="180" stroke="#00e5ff" stroke-width="2" opacity="0.6" />
+                <circle cx="190" cy="180" r="4" fill="#00e5ff" />
+                <line x1="20" y1="210" x2="140" y2="210" stroke="#d4af37" stroke-width="2" opacity="0.5" />
+                <circle cx="140" cy="210" r="3.5" fill="#d4af37" />
+
+                <line x1="40" y1="560" x2="180" y2="560" stroke="#00e5ff" stroke-width="2" opacity="0.6" />
+                <circle cx="180" cy="560" r="4" fill="#00e5ff" />
+                <line x1="20" y1="590" x2="130" y2="590" stroke="#d4af37" stroke-width="2" opacity="0.5" />
+                <circle cx="130" cy="590" r="3.5" fill="#d4af37" />
+            </svg>
+
+            <!-- Subtle Geometric Tech Constellation Background (Right side) -->
+            <svg style="position: absolute; right: 0; top: 0; width: 400px; height: 100%; z-index: 1;" viewBox="0 0 400 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="360" cy="120" r="3" fill="#1e293b" />
+                <circle cx="280" cy="80" r="2" fill="#00e5ff" opacity="0.4" />
+                <circle cx="340" cy="220" r="2.5" fill="#1e293b" />
+                <line x1="360" y1="120" x2="280" y2="80" stroke="#1e293b" stroke-width="1" />
+                <line x1="360" y1="120" x2="340" y2="220" stroke="#1e293b" stroke-width="1" />
+                <!-- Subtle corner spark -->
+                <path d="M360,680 L363,670 L373,667 L363,664 L360,654 L357,664 L347,667 L357,670 Z" fill="#475569" opacity="0.5" />
+            </svg>
+
+            <!-- Right Content Container -->
+            <div style="flex-grow: 1; margin-left: 310px; padding: 60px 60px 40px 30px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; z-index: 2; box-sizing: border-box;">
+                
+                <!-- Organization / Subtitle -->
+                <div>
+                    <div style="font-size: 1.15rem; font-weight: 700; letter-spacing: 5px; color: #f1f5f9; text-transform: uppercase; margin-bottom: 8px;">
+                        DEVOPS BEACON ACADEMY
                     </div>
-                    <div style="background: #eff6ff; color: #2563eb; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Official Certificate</div>
+                    
+                    <!-- Main Title: Metallic Gold Gradient Heading -->
+                    <div style="font-size: 3.8rem; font-weight: 900; letter-spacing: 3px; line-height: 1.1; margin-top: 10px; color: #e2a84a; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+                        CERTIFICATE
+                    </div>
+                    <div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 6px; color: #00e5ff; text-transform: uppercase; margin-top: 6px;">
+                        OF ACHIEVEMENT
+                    </div>
                 </div>
 
-                <!-- Main Content -->
-                <div style="text-align: center;">
-                    <div style="text-transform: uppercase; letter-spacing: 5px; color: #64748b; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">Certificate of Proficiency</div>
-                    <h1 style="font-size: 3.2rem; font-weight: 900; margin: 0 0 25px 0; color: #0f172a; letter-spacing: 1px;">EXCELLENCE IN ENGINEERING</h1>
+                <!-- Recipient Honor Block -->
+                <div style="width: 100%; margin: 15px 0;">
+                    <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px;">
+                        PROUDLY PRESENTED TO
+                    </div>
                     
-                    <p style="color: #64748b; font-size: 1.1rem; margin: 0 0 10px 0;">This document is proudly presented to</p>
-                    
-                    <div style="font-family: Georgia, serif; font-size: 3.5rem; color: #0f172a; font-weight: bold; margin: 10px 0 20px 0; border-bottom: 2px solid #00e5ff; display: inline-block; padding-bottom: 5px; min-width: 450px;">
+                    <!-- Recipient Name in Elegant Gold-Tinted Cursive Script -->
+                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 3.8rem; color: #fad074; margin: 5px auto 10px auto; line-height: 1.1; text-shadow: 0 2px 8px rgba(0,0,0,0.4);">
                         ${studentName}
                     </div>
-                    
-                    <p style="color: #475569; font-size: 1.15rem; line-height: 1.6; max-width: 750px; margin: 0 auto;">
-                        for proving technical excellence and comprehensive skill mastery in<br>
-                        <strong style="color: #0f172a; font-size: 1.6rem; display: inline-block; margin-top: 6px;">${passedTopic}</strong><br>
-                        verified with a high-performance score of <span style="color: #00e5ff; font-weight: 800;">${score}%</span>.
-                    </p>
+
+                    <!-- Thin Gold Decorative Divider Under Name -->
+                    <div style="width: 420px; height: 1.5px; background: linear-gradient(to right, transparent, #e2a84a, transparent); margin: 0 auto 20px auto;"></div>
+
+                    <!-- Course / Exam Description -->
+                    <div style="font-size: 0.95rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
+                        FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
+                        <span style="font-size: 1.45rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 6px; text-transform: none;">
+                            ${passedTopic}
+                        </span>
+                        <div style="font-size: 0.85rem; color: #94a3b8; font-weight: 600; letter-spacing: 1px; margin-top: 4px;">
+                            VERIFIED SCORE: <span style="color: #fad074; font-weight: 800;">${score}%</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Footer Layout -->
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; border-top: 1px solid #e2e8f0; padding-top: 20px; box-sizing: border-box;">
-                    <div>
-                        <div style="font-size: 1rem; color: #0f172a; font-weight: bold; margin-bottom: 3px;">${todayDate}</div>
-                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Date of Verification</div>
-                    </div>
+                <!-- Footer: Date & Signature Lines -->
+                <div style="width: 100%; display: flex; justify-content: space-around; align-items: flex-end; padding: 0 40px; box-sizing: border-box; margin-top: 10px;">
                     
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="width: 10px; height: 10px; background: #00e5ff; border-radius: 50%;"></div>
-                        <span style="font-size: 0.8rem; font-weight: bold; color: #64748b; letter-spacing: 1.5px; text-transform: uppercase;">Verified DevOps Standard</span>
+                    <!-- Date Column -->
+                    <div style="text-align: center; width: 180px;">
+                        <div style="font-size: 0.95rem; color: #cbd5e1; font-weight: 600; margin-bottom: 6px;">
+                            ${todayDate}
+                        </div>
+                        <div style="width: 100%; height: 1px; background: #334155; margin-bottom: 6px;"></div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                            DATE
+                        </div>
                     </div>
 
-                    <div style="text-align: right;">
-                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.4rem; color: #0f172a; margin-bottom: 3px;">DevOps Beacon</div>
-                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Lead Architect</div>
+                    <!-- Authorized Signatory Column -->
+                    <div style="text-align: center; width: 180px;">
+                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.3rem; color: #fad074; margin-bottom: 4px;">
+                            DevOps Beacon
+                        </div>
+                        <div style="width: 100%; height: 1px; background: #334155; margin-bottom: 6px;"></div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                            SIGNATURE
+                        </div>
                     </div>
+
                 </div>
 
             </div>
         </div>
     `;
+
     document.body.appendChild(certElement);
 
     setTimeout(() => {
@@ -2450,23 +2537,29 @@ window.generateAndDownloadCert = function(score) {
             
             certForm.innerHTML = `
                 <h4 style="margin: 0 0 10px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
+                
                 <div style="background: var(--db-primary-light); padding: 15px; border-radius: 8px; border-left: 4px solid var(--db-primary); margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: var(--db-text); line-height: 1.6;">
-                    <strong>Step 1: Save Your Image</strong><br>
-                    Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>
+                    <strong>Step 1: Save Your Certificate</strong><br>
+                    Right-click (or long-press) the image below and select <em>"Save image as..."</em>
                     
                     <div style="margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px;">
                         <strong>Step 2: Share on LinkedIn</strong><br>
-                        Let your professional network see your verified technical badge.
+                        Click the button below to open LinkedIn, attach your saved image, and celebrate your achievement!
                         <div style="margin-top: 10px;">
                             <a href="https://www.linkedin.com/feed/?shareActive=true" target="_blank" style="background-color: #0a66c2; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
+                                </svg>
                                 Post to LinkedIn
                             </a>
                         </div>
                     </div>
                 </div>
+                
                 <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid var(--db-border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="DevOps Beacon Certificate">
             `;
 
+            // Unblock right-click and selection specifically for this image
             const finalImg = document.getElementById('finalCertImg');
             finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
