@@ -2358,7 +2358,7 @@ function showResults() {
     }
   }
 
-  window.generateAndDownloadCert = function(score) {
+window.generateAndDownloadCert = function(score) {
       const studentName = document.getElementById("dbCertName").value.trim();
       if(!studentName) {
           alert("Please enter your name to claim the certificate.");
@@ -2376,39 +2376,75 @@ function showResults() {
       downloadBtn.disabled = true;
 
       const topicDropdown = document.getElementById("dbSubjectSelect");
-      const passedTopic = topicDropdown.options[topicDropdown.selectedIndex].text;
+      const passedTopicRaw = topicDropdown.options[topicDropdown.selectedIndex].text;
+      
+      // Clean the topic name by stripping the question count (e.g. "(3 Qs)")
+      const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // Render off-screen safely (opacity/display none causes silent failures)
+      // Render off-screen safely
       const certElement = document.createElement('div');
       certElement.style.position = 'absolute';
       certElement.style.top = '-9999px';
       certElement.style.left = '-9999px';
       certElement.style.zIndex = '-9999';
       
+      // Professional, achievement-centric aesthetic with refined alignment and muted colors
       certElement.innerHTML = `
-          <div style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: Arial, sans-serif; padding: 40px; box-sizing: border-box; border: 15px solid #00e5ff; outline: 5px solid #1a1a1a; outline-offset: -20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-              <div style="border: 2px dashed #cccccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center;">
-                  <div style="font-size: 2.5rem; font-weight: 800; color: #1a1a1a; margin-bottom: 20px;">🚀 DEVOPS BEACON</div>
-                  <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">DevOps Beacon Academy</div>
-                  <h1 style="font-size: 4rem; font-weight: 700; margin: 0 0 20px 0; letter-spacing: 2px;">CERTIFICATE</h1>
-                  <div style="text-transform: uppercase; letter-spacing: 4px; color: #00e5ff; font-size: 1.2rem; font-weight: 700; margin-bottom: 30px;">OF ACHIEVEMENT</div>
-                  <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">This is proudly presented to</div>
-                  <div style="font-family: Georgia, serif; font-style: italic; font-size: 4.5rem; color: #00e5ff; margin: 20px 0; border-bottom: 2px solid #1a1a1a; padding: 0 40px; min-width: 400px;">${studentName}</div>
-                  <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">for successfully completing the assessment in</div>
-                  <div style="font-size: 1.8rem; font-weight: 600; color: #1a1a1a; margin: 15px 0;">${passedTopic}</div>
-                  <div style="font-size: 1.2rem; color: #4a4a4a; margin: 15px 0;">with a verified score of ${score}%, demonstrating practical knowledge and capability.</div>
-                  <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 50px; padding: 0 60px; box-sizing: border-box;">
+          <div style="width: 1056px; height: 816px; background-color: #ffffff; color: #1a1a1a; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 25px; box-sizing: border-box;">
+              <div style="border: 2px solid #00e5ff; height: 100%; padding: 6px; box-sizing: border-box;">
+                  <div style="border: 1px solid #00e5ff; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 80px; box-sizing: border-box; background: linear-gradient(to bottom, #ffffff 0%, #f7fbfc 100%);">
+                      
+                      <!-- Header -->
                       <div style="text-align: center;">
-                          <div style="font-size: 1.2rem; color: #4a4a4a; font-weight: bold;">${todayDate}</div>
-                          <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-top: 5px; margin-bottom: 10px;"></div>
-                          <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">DATE OF COMPLETION</div>
+                          <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                              <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="height: 50px; object-fit: contain; margin-right: 15px;">
+                              <span style="font-size: 1.8rem; font-weight: 800; color: #1a1a1a; letter-spacing: 2px;">DEVOPS BEACON</span>
+                          </div>
+                          <div style="text-transform: uppercase; letter-spacing: 6px; color: #666; font-size: 1rem; font-weight: 600;">Academy</div>
                       </div>
+
+                      <!-- Title -->
                       <div style="text-align: center;">
-                          <div style="font-family: Georgia, serif; font-style: italic; font-size: 2rem; color: #1a1a1a; margin-bottom: -10px;">Mitesh Soni</div>
-                          <div style="width: 200px; border-bottom: 2px solid #1a1a1a; margin-bottom: 10px;"></div>
-                          <div style="font-size: 0.9rem; color: #4a4a4a; font-weight: 600;">CHIEF ARCHITECT</div>
+                          <h1 style="font-size: 4.5rem; font-weight: 700; margin: 0 0 10px 0; color: #111; letter-spacing: 4px;">CERTIFICATE</h1>
+                          <div style="text-transform: uppercase; letter-spacing: 5px; color: #00e5ff; font-size: 1.4rem; font-weight: 600;">Of Achievement</div>
                       </div>
+
+                      <!-- Body -->
+                      <div style="text-align: center; max-width: 750px; margin: 0 auto;">
+                          <p style="font-size: 1.2rem; color: #555; margin: 0 0 20px 0;">This is proudly presented to</p>
+                          
+                          <div style="font-family: Georgia, serif; font-style: italic; font-size: 4rem; color: #111; margin: 0 auto 30px auto; border-bottom: 2px solid #ddd; padding-bottom: 10px; line-height: 1.1;">
+                              ${studentName}
+                          </div>
+                          
+                          <p style="font-size: 1.2rem; color: #555; line-height: 1.7; margin: 0;">
+                              for successfully completing the assessment in<br>
+                              <strong style="font-size: 1.8rem; color: #222; font-weight: 600; display: inline-block; margin: 15px 0;">${passedTopic}</strong><br>
+                              with a verified score of <strong>${score}%</strong>, demonstrating practical knowledge and capability.
+                          </p>
+                      </div>
+
+                      <!-- Footer Signatures -->
+                      <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 40px; box-sizing: border-box; margin-top: 30px;">
+                          <div style="text-align: center; width: 220px;">
+                              <div style="font-size: 1.2rem; color: #222; font-weight: bold; margin-bottom: 5px; height: 35px; display: flex; align-items: flex-end; justify-content: center;">
+                                  ${todayDate}
+                              </div>
+                              <div style="border-top: 2px solid #555; margin-bottom: 10px;"></div>
+                              <div style="font-size: 0.85rem; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Date of Completion</div>
+                          </div>
+                          
+                          <!-- DevOps Beacon Official Seal / Signature Area -->
+                          <div style="text-align: center; width: 220px;">
+                              <div style="font-family: Georgia, serif; font-size: 1.8rem; font-style: italic; color: #111; margin-bottom: 5px; height: 35px; display: flex; align-items: flex-end; justify-content: center;">
+                                  DevOps Beacon
+                              </div>
+                              <div style="border-top: 2px solid #555; margin-bottom: 10px;"></div>
+                              <div style="font-size: 0.85rem; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Authorized Signature</div>
+                          </div>
+                      </div>
+
                   </div>
               </div>
           </div>
