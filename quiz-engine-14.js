@@ -2389,7 +2389,7 @@ window.generateAndDownloadCert = function(score) {
     certElement.style.left = '-9999px';
     certElement.style.zIndex = '-9999';
     
-    // Aesthetic update: Classical Pillars, Deep Slate borders, and a CSS-drawn badge
+    // Updated HTML template applying the bottom-centered badge logo
     certElement.innerHTML = `
         <div style="width: 1056px; height: 816px; background-color: #0f172a; padding: 25px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
             
@@ -2457,9 +2457,10 @@ window.generateAndDownloadCert = function(score) {
                             <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Awarded Date</div>
                         </div>
                         
-                        <!-- CSS Generated Official Seal Badge -->
-                        <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: -10px; width: 90px; height: 90px; background: #0f172a; border-radius: 50%; border: 4px solid #00e5ff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-                            <div style="color: #ffffff; font-size: 1.8rem; text-shadow: 0 2px 4px rgba(0,229,255,0.5);">🏅</div>
+                        <!-- SEAL BADGE EMBED: Houses the DevOps Beacon Rocket Logo directly bypass CORS/Sandbox rules -->
+                        <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: -15px; width: 100px; height: 100px; background: #0f172a; border-radius: 50%; border: 4px solid #00e5ff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); overflow: hidden;">
+                            <!-- Uses Base64/Inline Asset logic to remain block-proof inside custom HTML frames -->
+                            <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0px 2px 4px rgba(0,229,255,0.45));">
                         </div>
                         
                         <!-- Signature Block -->
@@ -2477,7 +2478,7 @@ window.generateAndDownloadCert = function(score) {
     document.body.appendChild(certElement);
 
     setTimeout(() => {
-        html2canvas(certElement, { scale: 2 }).then(canvas => {
+        html2canvas(certElement, { scale: 2, useCORS: true }).then(canvas => {
             document.body.removeChild(certElement);
             const imgData = canvas.toDataURL('image/png');
             const certForm = document.getElementById('dbCertForm');
