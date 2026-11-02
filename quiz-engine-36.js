@@ -2099,7 +2099,7 @@
     `;
     document.head.appendChild(style);
 
-    root.setAttribute("data-theme", "light");
+    root.setAttribute("data-theme", "dark");
 
     root.innerHTML = `
       <div class="db-card">
@@ -2204,10 +2204,17 @@
     restartExam();
   }
 
-  function restartExam() {
+function restartExam() {
     currentIndex = 0; attemptedCount = 0; trueCount = 0; falseCount = 0; userSelection = null;
     document.getElementById("dbQuizScreen").style.display = "block";
     document.getElementById("dbResultsScreen").style.display = "none";
+    
+    // ⭐️ ADD THIS: Safely clear the previous certificate form so it doesn't break layout
+    const certForm = document.getElementById('dbCertForm');
+    if (certForm) {
+        certForm.remove();
+    }
+    
     updateStats();
     renderQuestion();
   }
@@ -2313,7 +2320,7 @@ function showResults() {
     const score = Math.round((trueCount / activeQuestions.length) * 100);
     document.getElementById("dbFinalScore").innerText = `${score}%`;
 
-  // ⭐️ Lock the passed subject topic permanently upon finishing
+// ⭐️ ENSURE THIS REMAINS HERE: Lock the passed subject topic permanently upon finishing
     const topicDropdown = document.getElementById("dbSubjectSelect");
     const passedTopicRaw = topicDropdown ? topicDropdown.options[topicDropdown.selectedIndex].text : "Assessment";
     window.currentPassedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
