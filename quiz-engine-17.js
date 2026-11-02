@@ -2387,52 +2387,53 @@ window.generateAndDownloadCert = function(score) {
     certElement.style.zIndex = '-9999';
     
     certElement.innerHTML = `
-        <div style="width: 1056px; height: 816px; background-color: #0b0f19; padding: 30px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        <div style="width: 1056px; height: 816px; background-color: #f8fafc; padding: 35px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
             
-            <!-- Outer Glow Border -->
-            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111827 0%, #030712 100%); position: relative; display: flex; flex-direction: column; border: 2px solid #00e5ff; box-shadow: inset 0 0 40px rgba(0,229,255,0.1); padding: 50px 70px; box-sizing: border-box; justify-content: space-between;">
+            <!-- Crisp White Card with Modern Accent Border -->
+            <div style="width: 100%; height: 100%; background: #ffffff; position: relative; display: flex; flex-direction: column; border-top: 8px solid #00e5ff; border-bottom: 2px solid #cbd5e1; border-left: 2px solid #cbd5e1; border-right: 2px solid #cbd5e1; box-shadow: 0 15px 30px rgba(0,0,0,0.05); padding: 50px 70px; box-sizing: border-box; justify-content: space-between;">
                 
-                <!-- Top Header: Logo & Academy -->
+                <!-- Header -->
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="height: 45px; object-fit: contain;">
-                        <span style="font-size: 1.4rem; font-weight: 900; color: #ffffff; letter-spacing: 3px;">DEVOPS BEACON</span>
+                        <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="height: 42px; object-fit: contain;">
+                        <span style="font-size: 1.3rem; font-weight: 900; color: #0f172a; letter-spacing: 2px;">DEVOPS BEACON</span>
                     </div>
-                    <div style="color: #94a3b8; font-size: 0.9rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;">Verified Credential</div>
+                    <div style="background: #eff6ff; color: #2563eb; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Official Certificate</div>
                 </div>
 
-                <!-- Center Achievement Block -->
-                <div style="text-align: center; margin: 20px 0;">
-                    <div style="text-transform: uppercase; letter-spacing: 6px; color: #00e5ff; font-size: 1rem; font-weight: 800; margin-bottom: 10px;">Certificate of Completion</div>
-                    <h1 style="font-size: 3.8rem; font-weight: 800; margin: 0 0 20px 0; color: #ffffff; letter-spacing: 2px;">ACHIEVEMENT AWARD</h1>
+                <!-- Main Content -->
+                <div style="text-align: center;">
+                    <div style="text-transform: uppercase; letter-spacing: 5px; color: #64748b; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">Certificate of Proficiency</div>
+                    <h1 style="font-size: 3.2rem; font-weight: 900; margin: 0 0 25px 0; color: #0f172a; letter-spacing: 1px;">EXCELLENCE IN ENGINEERING</h1>
                     
-                    <p style="color: #94a3b8; font-size: 1.1rem; margin: 0 0 15px 0;">This certifies that</p>
+                    <p style="color: #64748b; font-size: 1.1rem; margin: 0 0 10px 0;">This document is proudly presented to</p>
                     
-                    <div style="font-family: Georgia, serif; font-style: italic; font-size: 3.5rem; color: #00e5ff; margin: 0 auto 20px auto; border-bottom: 2px solid #1e293b; padding-bottom: 8px; display: inline-block; min-width: 450px;">
+                    <div style="font-family: Georgia, serif; font-size: 3.5rem; color: #0f172a; font-weight: bold; margin: 10px 0 20px 0; border-bottom: 2px solid #00e5ff; display: inline-block; padding-bottom: 5px; min-width: 450px;">
                         ${studentName}
                     </div>
                     
-                    <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                        has successfully passed rigorous technical assessments in<br>
-                        <strong style="color: #ffffff; font-size: 1.6rem; font-family: Georgia, serif; display: inline-block; margin-top: 8px;">${passedTopic}</strong><br>
-                        with an elite verified score of <span style="color: #00e5ff; font-weight: bold;">${score}%</span>.
+                    <p style="color: #475569; font-size: 1.15rem; line-height: 1.6; max-width: 750px; margin: 0 auto;">
+                        for proving technical excellence and comprehensive skill mastery in<br>
+                        <strong style="color: #0f172a; font-size: 1.6rem; display: inline-block; margin-top: 6px;">${passedTopic}</strong><br>
+                        verified with a high-performance score of <span style="color: #00e5ff; font-weight: 800;">${score}%</span>.
                     </p>
                 </div>
 
-                <!-- Bottom Footer Layout -->
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; border-top: 1px solid #1e293b; padding-top: 25px; box-sizing: border-box;">
-                    <div style="text-align: left;">
-                        <div style="font-size: 1rem; color: #ffffff; font-weight: bold; margin-bottom: 4px;">${todayDate}</div>
-                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Date of Issue</div>
+                <!-- Footer Layout -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; border-top: 1px solid #e2e8f0; padding-top: 20px; box-sizing: border-box;">
+                    <div>
+                        <div style="font-size: 1rem; color: #0f172a; font-weight: bold; margin-bottom: 3px;">${todayDate}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Date of Verification</div>
                     </div>
                     
-                    <div style="text-align: center; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.3); padding: 8px 20px; border-radius: 6px;">
-                        <span style="color: #00e5ff; font-size: 0.85rem; font-weight: bold; letter-spacing: 2px;">SECURE DIGITAL BADGE</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 10px; height: 10px; background: #00e5ff; border-radius: 50%;"></div>
+                        <span style="font-size: 0.8rem; font-weight: bold; color: #64748b; letter-spacing: 1.5px; text-transform: uppercase;">Verified DevOps Standard</span>
                     </div>
 
                     <div style="text-align: right;">
-                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.4rem; color: #ffffff; margin-bottom: 4px;">DevOps Beacon</div>
-                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Authorized Authority</div>
+                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.4rem; color: #0f172a; margin-bottom: 3px;">DevOps Beacon</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Lead Architect</div>
                     </div>
                 </div>
 
@@ -2455,7 +2456,7 @@ window.generateAndDownloadCert = function(score) {
                     
                     <div style="margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px;">
                         <strong>Step 2: Share on LinkedIn</strong><br>
-                        Upload this glowing tech credential to your feed and tag your network.
+                        Let your professional network see your verified technical badge.
                         <div style="margin-top: 10px;">
                             <a href="https://www.linkedin.com/feed/?shareActive=true" target="_blank" style="background-color: #0a66c2; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;">
                                 Post to LinkedIn
