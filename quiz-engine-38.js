@@ -2206,19 +2206,23 @@
 
 function restartExam() {
     currentIndex = 0; attemptedCount = 0; trueCount = 0; falseCount = 0; userSelection = null;
-    document.getElementById("dbQuizScreen").style.display = "block";
-    document.getElementById("dbResultsScreen").style.display = "none";
     
-    // ⭐️ ADD THIS: Safely clear the previous certificate form so it doesn't break layout
+    // ⭐️ FIX: Ensure the DOM elements exist before attempting to style them
+    const quizScreen = document.getElementById("dbQuizScreen");
+    const resultsScreen = document.getElementById("dbResultsScreen");
+    
+    if (quizScreen) quizScreen.style.display = "block";
+    if (resultsScreen) resultsScreen.style.display = "none";
+    
+    // Safely remove the certificate form from the DOM before rendering
     const certForm = document.getElementById('dbCertForm');
-    if (certForm) {
-        certForm.remove();
+    if (certForm && certForm.parentNode) {
+        certForm.parentNode.removeChild(certForm);
     }
     
     updateStats();
     renderQuestion();
-  }
-
+}
   function updateStats() {
     document.getElementById("dbStatTotal").innerText = activeQuestions.length;
     document.getElementById("dbStatAttempted").innerText = attemptedCount;
