@@ -2379,62 +2379,71 @@ window.generateAndDownloadCert = function(score) {
     const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    // 1. Adjusted SVG Background - Cyber lines pushed tightly into the corners to avoid text
+    // 1. Master SVG Background: Hardcoded gaps and extreme corner pinning to prevent all collisions
     const bgSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816" width="1056" height="816">
       <defs>
         <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#fdf0cd" />
-          <stop offset="25%" stop-color="#d4af37" />
-          <stop offset="50%" stop-color="#aa771c" />
-          <stop offset="75%" stop-color="#d4af37" />
-          <stop offset="100%" stop-color="#fdf0cd" />
+          <stop offset="0%" stop-color="#E5C07B" />
+          <stop offset="50%" stop-color="#F3E5AB" />
+          <stop offset="100%" stop-color="#C69C4E" />
         </linearGradient>
         <linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#00f2fe" />
-          <stop offset="100%" stop-color="#00e5ff" />
+          <stop offset="0%" stop-color="#00E5FF" />
+          <stop offset="100%" stop-color="#007799" />
         </linearGradient>
-        <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1.2" fill="#1e293b" opacity="0.5" />
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5" opacity="0.5"/>
         </pattern>
       </defs>
 
-      <rect width="1056" height="816" fill="#060912" />
+      <!-- Deep Luxury Background -->
+      <rect width="1056" height="816" fill="#0A0F1D" />
       <rect width="1056" height="816" fill="url(#grid)" />
 
-      <!-- Top-Left Cyber Nodes (Pushed into corner) -->
-      <path d="M 0 90 L 80 90 L 140 150" stroke="url(#cyan)" stroke-width="3" fill="none" opacity="0.7"/>
-      <circle cx="140" cy="150" r="5" fill="#00e5ff" />
-      <path d="M 100 0 L 100 50 L 160 110" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="160" cy="110" r="4" fill="url(#gold)" />
+      <!-- Cyber Accents (Pinned strictly to the extreme corners to prevent text overlap) -->
+      <path d="M 0 60 L 60 60 L 90 90" stroke="url(#cyan)" stroke-width="2" fill="none"/>
+      <circle cx="90" cy="90" r="3" fill="#00E5FF" />
+      
+      <path d="M 1056 60 L 996 60 L 966 90" stroke="url(#gold)" stroke-width="2" fill="none"/>
+      <circle cx="966" cy="90" r="3" fill="url(#gold)" />
 
-      <!-- Bottom-Right Cyber Nodes (Pushed into corner to clear signature) -->
-      <path d="M 1056 726 L 976 726 L 916 666" stroke="url(#cyan)" stroke-width="3" fill="none" opacity="0.7"/>
-      <circle cx="916" cy="666" r="5" fill="#00e5ff" />
-      <path d="M 956 816 L 956 766 L 896 706" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="896" cy="706" r="4" fill="url(#gold)" />
+      <path d="M 0 756 L 60 756 L 90 726" stroke="url(#gold)" stroke-width="2" fill="none"/>
+      <circle cx="90" cy="726" r="3" fill="url(#gold)" />
 
-      <!-- Borders -->
-      <rect x="30" y="30" width="996" height="756" stroke="url(#gold)" stroke-width="4" fill="none" />
-      <rect x="42" y="42" width="972" height="732" stroke="#00e5ff" stroke-width="1.5" fill="none" opacity="0.5" />
+      <path d="M 1056 756 L 996 756 L 966 726" stroke="url(#cyan)" stroke-width="2" fill="none"/>
+      <circle cx="966" cy="726" r="3" fill="#00E5FF" />
 
-      <!-- Elegant Bracket Corners -->
-      <path d="M 25 70 L 70 70 L 70 25" stroke="url(#gold)" stroke-width="6" fill="none" />
-      <path d="M 1031 70 L 986 70 L 986 25" stroke="url(#gold)" stroke-width="6" fill="none" />
-      <path d="M 25 746 L 70 746 L 70 791" stroke="url(#gold)" stroke-width="6" fill="none" />
-      <path d="M 1031 746 L 986 746 L 986 791" stroke="url(#gold)" stroke-width="6" fill="none" />
+      <!-- Master Borders: Physically broken at the bottom center so no lines cross the medal -->
+      <path d="M 40 40 L 1016 40 L 1016 740 L 620 740" stroke="url(#gold)" stroke-width="3" fill="none" />
+      <path d="M 436 740 L 40 740 L 40 40" stroke="url(#gold)" stroke-width="3" fill="none" />
+      
+      <path d="M 50 50 L 1006 50 L 1006 730 L 610 730" stroke="#00E5FF" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M 446 730 L 50 730 L 50 50" stroke="#00E5FF" stroke-width="1" fill="none" opacity="0.6"/>
 
-      <!-- Perfect Bottom-Center Medal -->
-      <g transform="translate(528, 715)">
-        <circle cx="0" cy="0" r="55" fill="#060912" />
-        <polygon points="-30,25 -45,85 -20,70 0,85 -10,25" fill="#d4af37" />
-        <polygon points="30,25 10,25 0,85 20,70 45,85" fill="#aa771c" />
+      <!-- Ornate Corner Brackets -->
+      <path d="M 35 75 L 75 75 L 75 35" stroke="url(#gold)" stroke-width="5" fill="none" />
+      <path d="M 1021 75 L 981 75 L 981 35" stroke="url(#gold)" stroke-width="5" fill="none" />
+      <path d="M 35 705 L 75 705 L 75 745" stroke="url(#gold)" stroke-width="5" fill="none" />
+      <path d="M 1021 705 L 981 705 L 981 745" stroke="url(#gold)" stroke-width="5" fill="none" />
+
+      <!-- Center Medal: Completely isolated in the border gap -->
+      <g transform="translate(528, 740)">
+        <!-- Solid Knockout Background prevents any grid or line bleed -->
+        <polygon points="-35,20 -50,75 -25,65 0,80 25,65 50,75 35,20" fill="#0A0F1D" />
+        <circle cx="0" cy="0" r="52" fill="#0A0F1D" />
+
+        <!-- Dropped Ribbons -->
+        <polygon points="-30,20 -45,75 -20,60 0,75 -10,20" fill="#C69C4E" />
+        <polygon points="30,20 10,20 0,75 20,60 45,75" fill="#E5C07B" />
+        
+        <!-- Detailed Medal Body -->
         <circle cx="0" cy="0" r="48" fill="url(#gold)" />
-        <circle cx="0" cy="0" r="42" fill="#060912" />
-        <circle cx="0" cy="0" r="38" stroke="url(#gold)" stroke-width="2.5" stroke-dasharray="5 4" fill="none" />
-        <circle cx="0" cy="0" r="32" fill="url(#gold)" />
-        <circle cx="0" cy="0" r="28" fill="#060912" />
-        <path d="M0,-14 L4,-4 L14,-3 L7,4 L9,14 L0,9 L-9,14 L-7,4 L-14,-3 L-4,-4 Z" fill="url(#gold)" />
+        <circle cx="0" cy="0" r="43" fill="#0A0F1D" />
+        <circle cx="0" cy="0" r="39" stroke="url(#gold)" stroke-width="2" stroke-dasharray="4 3" fill="none" />
+        <circle cx="0" cy="0" r="33" fill="url(#gold)" />
+        <circle cx="0" cy="0" r="29" fill="#0A0F1D" />
+        <path d="M0,-15 L4,-4 L15,-3 L7,5 L9,16 L0,10 L-9,16 L-7,5 L-15,-3 L-4,-4 Z" fill="url(#gold)" />
       </g>
     </svg>`;
 
@@ -2447,75 +2456,61 @@ window.generateAndDownloadCert = function(score) {
     certElement.style.left = '-15000px'; 
     certElement.style.zIndex = '-9999';
 
-    // 2. HTML Layout - Signature block widened and forced to single line
+    // 2. HTML Text Layout: Perfectly centered, generous padding, cursive signature
     certElement.innerHTML = `
-        <div style="width: 1056px; height: 816px; position: relative; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
+        <div style="width: 1056px; height: 816px; position: relative; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; align-items: center; color: #ffffff;">
             
             <img src="${bgBase64}" style="position: absolute; top: 0; left: 0; width: 1056px; height: 816px; z-index: 1;" />
-
-            <div style="position: relative; z-index: 10; width: 100%; height: 100%; padding: 85px 80px 60px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;">
+            
+            <div style="position: relative; z-index: 10; width: 100%; height: 100%; padding: 100px 80px 80px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-sizing: border-box;">
                 
-                <div style="width: 100%;">
-                    <div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 7px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">
-                        DEVOPS BEACON ACADEMY
-                    </div>
-                    
-                    <div style="font-size: 5rem; font-weight: 900; letter-spacing: 6px; color: #d4af37; margin-bottom: 8px; text-shadow: 0 4px 8px rgba(0,0,0,0.6);">
-                        CERTIFICATE
-                    </div>
-                    
-                    <div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 8px; color: #00e5ff; text-transform: uppercase;">
-                        OF ACHIEVEMENT
-                    </div>
-
-                    <div style="width: 400px; height: 2px; background-color: #d4af37; margin: 30px auto 0 auto; box-shadow: 0 0 8px rgba(212,175,55,0.5);"></div>
+                <!-- HEADER -->
+                <div style="text-align: center;">
+                    <div style="font-size: 1.2rem; font-weight: 800; letter-spacing: 8px; color: #F3E5AB; text-transform: uppercase; margin-bottom: 15px;">DEVOPS BEACON ACADEMY</div>
+                    <div style="font-size: 5.5rem; font-weight: 900; letter-spacing: 6px; color: #E5C07B; text-shadow: 0 4px 10px rgba(0,0,0,0.5); margin-bottom: 5px;">CERTIFICATE</div>
+                    <div style="font-size: 1.7rem; font-weight: 800; letter-spacing: 10px; color: #00E5FF; text-transform: uppercase;">OF ACHIEVEMENT</div>
+                    <div style="width: 150px; height: 3px; background-color: #E5C07B; margin: 30px auto 0 auto; border-radius: 2px;"></div>
                 </div>
 
-                <div style="width: 100%;">
-                    <div style="font-size: 1.1rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px;">
-                        PROUDLY PRESENTED TO
-                    </div>
+                <!-- BODY -->
+                <div style="text-align: center; width: 100%;">
+                    <div style="font-size: 1.2rem; font-weight: 700; letter-spacing: 5px; color: #94a3b8; text-transform: uppercase; margin-bottom: 20px;">PROUDLY PRESENTED TO</div>
                     
-                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 5rem; color: #fff1be; margin: 0 auto 20px auto; line-height: 1.1; text-shadow: 0 2px 12px rgba(212,175,55,0.3);">
+                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 5.5rem; color: #ffffff; margin-bottom: 25px; text-shadow: 0 2px 8px rgba(229,192,123,0.4);">
                         ${studentName}
                     </div>
-
-                    <div style="font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
+                    
+                    <div style="font-size: 1.3rem; font-weight: 600; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.8;">
                         FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
-                        <span style="font-size: 2.2rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 10px; text-transform: none;">
+                        <span style="font-size: 2.4rem; font-weight: 800; color: #00E5FF; letter-spacing: 1px; display: inline-block; margin-top: 10px; text-transform: none;">
                             ${passedTopic}
                         </span>
-                        <div style="font-size: 1.2rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 12px;">
-                            VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.5rem;">${score}%</span>
+                        <div style="font-size: 1.3rem; color: #94a3b8; font-weight: 700; letter-spacing: 2px; margin-top: 15px;">
+                            VERIFIED SCORE: <span style="color: #F3E5AB; font-weight: 900; font-size: 1.6rem;">${score}%</span>
                         </div>
                     </div>
                 </div>
 
-                <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px; margin-bottom: 30px; box-sizing: border-box;">
+                <!-- FOOTER -->
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px; box-sizing: border-box; margin-bottom: 20px;">
                     
-                    <div style="text-align: center; width: 220px;">
-                        <div style="font-size: 1.3rem; color: #f1f5f9; font-weight: 600; margin-bottom: 8px;">
-                            ${todayDate}
-                        </div>
-                        <div style="width: 100%; height: 1.5px; background-color: #d4af37; margin-bottom: 6px;"></div>
-                        <div style="font-size: 0.9rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
-                            DATE
-                        </div>
+                    <!-- Date Container -->
+                    <div style="text-align: center; width: 260px;">
+                        <div style="font-size: 1.4rem; font-weight: 600; color: #F3E5AB; margin-bottom: 10px;">${todayDate}</div>
+                        <div style="width: 100%; height: 2px; background-color: #E5C07B; margin-bottom: 8px;"></div>
+                        <div style="font-size: 0.9rem; font-weight: 800; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase;">DATE</div>
                     </div>
 
-                    <div style="width: 180px;"></div>
+                    <div style="width: 200px;"></div>
 
-                    <!-- Signature block widened and forced to nowrap to fix line break -->
-                    <div style="text-align: center; width: 280px;">
-                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 2rem; color: #fff1be; margin-bottom: 6px; white-space: nowrap;">
+                    <!-- Signature Container: Widened and styling updated for authentic look -->
+                    <div style="text-align: center; width: 260px;">
+                        <div style="font-family: 'Brush Script MT', 'Lucida Handwriting', Georgia, cursive; font-size: 2.8rem; color: #ffffff; margin-bottom: 5px; line-height: 1; white-space: nowrap;">
                             DevOps Beacon
                         </div>
-                        <div style="width: 100%; height: 1.5px; background-color: #d4af37; margin-bottom: 6px;"></div>
-                        <div style="font-size: 0.9rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
-                            AUTHORIZED SIGNATURE
-                        </div>
+                        <div style="width: 100%; height: 2px; background-color: #E5C07B; margin-bottom: 8px;"></div>
+                        <div style="font-size: 0.9rem; font-weight: 800; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase;">AUTHORIZED SIGNATURE</div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -2527,7 +2522,7 @@ window.generateAndDownloadCert = function(score) {
         html2canvas(certElement, { 
             scale: 2, 
             logging: false,
-            backgroundColor: '#060912',
+            backgroundColor: '#0A0F1D',
             allowTaint: true
         }).then(canvas => {
             if (document.body.contains(certElement)) {
@@ -2579,7 +2574,6 @@ window.generateAndDownloadCert = function(score) {
         });
     }, 500);
 };
-
   // Safe DOM ready loader
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initQuizEngine);
