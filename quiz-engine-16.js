@@ -2377,100 +2377,65 @@ window.generateAndDownloadCert = function(score) {
 
     const topicDropdown = document.getElementById("dbSubjectSelect");
     const passedTopicRaw = topicDropdown.options[topicDropdown.selectedIndex].text;
-    
-    // Clean the topic name by stripping the question count (e.g. "(3 Qs)")
     const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    // Render off-screen safely
     const certElement = document.createElement('div');
     certElement.style.position = 'absolute';
     certElement.style.top = '-9999px';
     certElement.style.left = '-9999px';
     certElement.style.zIndex = '-9999';
     
-    // Aesthetic update: Fixed html2canvas rendering bugs (removed CSS filters, replaced transforms with margins)
     certElement.innerHTML = `
-        <div style="width: 1056px; height: 816px; background-color: #0f172a; padding: 25px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        <div style="width: 1056px; height: 816px; background-color: #0b0f19; padding: 30px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
             
-            <!-- Inner Parchment Surface with Spotlight Gradient -->
-            <div style="width: 100%; height: 100%; background: radial-gradient(circle at center, #ffffff 40%, #f8fafc 100%); position: relative; display: flex; flex-direction: column; border: 4px solid #00e5ff; box-sizing: border-box;">
+            <!-- Outer Glow Border -->
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #111827 0%, #030712 100%); position: relative; display: flex; flex-direction: column; border: 2px solid #00e5ff; box-shadow: inset 0 0 40px rgba(0,229,255,0.1); padding: 50px 70px; box-sizing: border-box; justify-content: space-between;">
                 
-                <!-- Left Classical Pillar -->
-                <div style="position: absolute; left: 40px; top: 40px; bottom: 40px; width: 45px; background: linear-gradient(to right, #e2e8f0 0%, #ffffff 50%, #cbd5e1 100%); border: 1px solid #94a3b8; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-shadow: 2px 0px 5px rgba(0,0,0,0.05);">
-                    <div style="width: 65px; height: 18px; background: #475569; border-radius: 2px; border-bottom: 2px solid #0f172a;"></div>
-                    <div style="flex-grow: 1; width: 100%; display: flex; justify-content: space-evenly; padding: 0 8px; box-sizing: border-box;">
-                        <div style="width: 1px; height: 100%; background: rgba(0,0,0,0.1);"></div>
-                        <div style="width: 1px; height: 100%; background: rgba(0,0,0,0.1);"></div>
-                        <div style="width: 1px; height: 100%; background: rgba(0,0,0,0.1);"></div>
+                <!-- Top Header: Logo & Academy -->
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="height: 45px; object-fit: contain;">
+                        <span style="font-size: 1.4rem; font-weight: 900; color: #ffffff; letter-spacing: 3px;">DEVOPS BEACON</span>
                     </div>
-                    <div style="width: 65px; height: 24px; background: #475569; border-radius: 2px; border-top: 2px solid #0f172a;"></div>
+                    <div style="color: #94a3b8; font-size: 0.9rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;">Verified Credential</div>
                 </div>
 
-                <!-- Right Classical Pillar -->
-                <div style="position: absolute; right: 40px; top: 40px; bottom: 40px; width: 45px; background: linear-gradient(to right, #cbd5e1 0%, #ffffff 50%, #e2e8f0 100%); border: 1px solid #94a3b8; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-shadow: -2px 0px 5px rgba(0,0,0,0.05);">
-                    <div style="width: 65px; height: 18px; background: #475569; border-radius: 2px; border-bottom: 2px solid #0f172a;"></div>
-                    <div style="flex-grow: 1; width: 100%; display: flex; justify-content: space-evenly; padding: 0 8px; box-sizing: border-box;">
-                        <div style="width: 1px; height: 100%; background: rgba(0,0,0,0.1);"></div>
-                        <div style="width: 1px; height: 100%; background: rgba(0,0,0,0.1);"></div>
-                        <div style="width: 1px; height: 100%; background: rgba(0,0,0,0.1);"></div>
-                    </div>
-                    <div style="width: 65px; height: 24px; background: #475569; border-radius: 2px; border-top: 2px solid #0f172a;"></div>
-                </div>
-
-                <!-- Center Content Architecture -->
-                <div style="margin: 0 130px; padding: 50px 30px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; position: relative;">
+                <!-- Center Achievement Block -->
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="text-transform: uppercase; letter-spacing: 6px; color: #00e5ff; font-size: 1rem; font-weight: 800; margin-bottom: 10px;">Certificate of Completion</div>
+                    <h1 style="font-size: 3.8rem; font-weight: 800; margin: 0 0 20px 0; color: #ffffff; letter-spacing: 2px;">ACHIEVEMENT AWARD</h1>
                     
-                    <!-- Top Structural Line -->
-                    <div style="width: 100%; display: flex; justify-content: center; margin-bottom: 25px;">
-                        <div style="width: 60%; border-top: 3px solid #0f172a; border-bottom: 1px solid #0f172a; height: 6px;"></div>
-                    </div>
-
-                    <div style="text-transform: uppercase; letter-spacing: 8px; color: #0f172a; font-size: 1.6rem; font-weight: 900; margin-bottom: 5px;">DEVOPS BEACON</div>
-                    <div style="text-transform: uppercase; letter-spacing: 5px; color: #64748b; font-size: 1rem; font-weight: 600; margin-bottom: 35px;">Academy</div>
+                    <p style="color: #94a3b8; font-size: 1.1rem; margin: 0 0 15px 0;">This certifies that</p>
                     
-                    <!-- Classical Engraved Title -->
-                    <h1 style="font-family: Georgia, serif; font-size: 4.8rem; font-weight: 700; margin: 0; color: #0f172a; letter-spacing: 2px;">CERTIFICATE</h1>
-                    <div style="text-transform: uppercase; letter-spacing: 6px; color: #00e5ff; font-size: 1.2rem; font-weight: 800; margin-top: 15px; margin-bottom: 40px;">Of Excellence</div>
-                    
-                    <div style="font-size: 1.2rem; color: #475569; margin-bottom: 10px; font-style: italic;">This honor is hereby bestowed upon</div>
-                    
-                    <!-- Student Name -->
-                    <div style="font-family: Georgia, serif; font-style: italic; font-size: 4rem; color: #0f172a; margin: 0 auto 30px auto; border-bottom: 2px solid #00e5ff; padding-bottom: 10px; min-width: 500px; display: inline-block;">
+                    <div style="font-family: Georgia, serif; font-style: italic; font-size: 3.5rem; color: #00e5ff; margin: 0 auto 20px auto; border-bottom: 2px solid #1e293b; padding-bottom: 8px; display: inline-block; min-width: 450px;">
                         ${studentName}
                     </div>
                     
-                    <!-- Body Text (Margin bottom increased to prevent badge overlap) -->
-                    <div style="font-size: 1.15rem; color: #475569; line-height: 1.8; margin-bottom: 50px;">
-                        for demonstrating outstanding mastery and successful completion of<br>
-                        <strong style="font-size: 1.8rem; color: #0f172a; font-family: Georgia, serif; font-weight: bold; display: inline-block; margin: 12px 0;">${passedTopic}</strong><br>
-                        passing with a verified score of <strong style="color: #00e5ff; font-size: 1.4rem;">${score}%</strong>.
+                    <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; margin: 0;">
+                        has successfully passed rigorous technical assessments in<br>
+                        <strong style="color: #ffffff; font-size: 1.6rem; font-family: Georgia, serif; display: inline-block; margin-top: 8px;">${passedTopic}</strong><br>
+                        with an elite verified score of <span style="color: #00e5ff; font-weight: bold;">${score}%</span>.
+                    </p>
+                </div>
+
+                <!-- Bottom Footer Layout -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; border-top: 1px solid #1e293b; padding-top: 25px; box-sizing: border-box;">
+                    <div style="text-align: left;">
+                        <div style="font-size: 1rem; color: #ffffff; font-weight: bold; margin-bottom: 4px;">${todayDate}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Date of Issue</div>
                     </div>
                     
-                    <!-- Bottom Signatures and Seal Layout -->
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding: 0 10px; position: relative;">
-                        
-                        <!-- Date Block -->
-                        <div style="text-align: center; width: 200px; position: relative; z-index: 2;">
-                            <div style="font-size: 1.1rem; color: #0f172a; font-weight: bold; margin-bottom: 5px;">${todayDate}</div>
-                            <div style="border-top: 1px solid #94a3b8; margin-bottom: 5px;"></div>
-                            <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Awarded Date</div>
-                        </div>
-                        
-                        <!-- SEAL BADGE EMBED: Fixed for html2canvas (removed filter/transform/overflow) -->
-                        <div style="position: absolute; left: 50%; margin-left: -55px; bottom: 0px; width: 110px; height: 110px; background: #0f172a; border-radius: 50%; border: 4px solid #00e5ff; display: flex; align-items: center; justify-content: center; z-index: 10;">
-                            <img src="https://img1.wsimg.com/isteam/ip/d95f0b97-065a-4f71-a5cf-fe90d1d80e21/Certificate-Logo.png" crossorigin="anonymous" style="width: 70px; height: 70px; border-radius: 50%;">
-                        </div>
-                        
-                        <!-- Signature Block -->
-                        <div style="text-align: center; width: 200px; position: relative; z-index: 2;">
-                            <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.6rem; color: #0f172a; margin-bottom: 5px;">DevOps Beacon</div>
-                            <div style="border-top: 1px solid #94a3b8; margin-bottom: 5px;"></div>
-                            <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Official Certification</div>
-                        </div>
-                        
+                    <div style="text-align: center; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.3); padding: 8px 20px; border-radius: 6px;">
+                        <span style="color: #00e5ff; font-size: 0.85rem; font-weight: bold; letter-spacing: 2px;">SECURE DIGITAL BADGE</span>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.4rem; color: #ffffff; margin-bottom: 4px;">DevOps Beacon</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Authorized Authority</div>
                     </div>
                 </div>
+
             </div>
         </div>
     `;
@@ -2484,15 +2449,23 @@ window.generateAndDownloadCert = function(score) {
             
             certForm.innerHTML = `
                 <h4 style="margin: 0 0 10px 0; color: var(--db-text);">🎉 Your Certificate is Ready!</h4>
-                <div style="background: var(--db-primary-light); padding: 10px; border-left: 4px solid var(--db-primary); margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: var(--db-text);">
-                    <strong>How to save:</strong><br>
-                    💻 <strong>Desktop:</strong> Right-click the certificate below and select "Save image as..."<br>
-                    📱 <strong>Mobile:</strong> Long-press the certificate below and select "Save image".
+                <div style="background: var(--db-primary-light); padding: 15px; border-radius: 8px; border-left: 4px solid var(--db-primary); margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: var(--db-text); line-height: 1.6;">
+                    <strong>Step 1: Save Your Image</strong><br>
+                    Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>
+                    
+                    <div style="margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px;">
+                        <strong>Step 2: Share on LinkedIn</strong><br>
+                        Upload this glowing tech credential to your feed and tag your network.
+                        <div style="margin-top: 10px;">
+                            <a href="https://www.linkedin.com/feed/?shareActive=true" target="_blank" style="background-color: #0a66c2; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;">
+                                Post to LinkedIn
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid var(--db-border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="DevOps Beacon Certificate">
             `;
 
-            // Unblock right-click and selection specifically for this image
             const finalImg = document.getElementById('finalCertImg');
             finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
