@@ -2379,8 +2379,7 @@ window.generateAndDownloadCert = function(score) {
     const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    // 1. Perfectly Symmetrical "Executive" SVG Background
-    // No angled full-screen layers. Borders and accents are precisely mapped.
+    // 1. Adjusted SVG Background - Cyber lines pushed tightly into the corners to avoid text
     const bgSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816" width="1056" height="816">
       <defs>
@@ -2400,26 +2399,23 @@ window.generateAndDownloadCert = function(score) {
         </pattern>
       </defs>
 
-      <!-- Deep Space Background & Grid -->
       <rect width="1056" height="816" fill="#060912" />
       <rect width="1056" height="816" fill="url(#grid)" />
 
-      <!-- Top-Left Cyber Nodes -->
-      <path d="M 0 120 L 120 120 L 200 200" stroke="url(#cyan)" stroke-width="3" fill="none" opacity="0.7"/>
-      <circle cx="200" cy="200" r="5" fill="#00e5ff" />
-      <path d="M 150 0 L 150 90 L 230 170" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="230" cy="170" r="4" fill="url(#gold)" />
+      <!-- Top-Left Cyber Nodes (Pushed into corner) -->
+      <path d="M 0 90 L 80 90 L 140 150" stroke="url(#cyan)" stroke-width="3" fill="none" opacity="0.7"/>
+      <circle cx="140" cy="150" r="5" fill="#00e5ff" />
+      <path d="M 100 0 L 100 50 L 160 110" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.8"/>
+      <circle cx="160" cy="110" r="4" fill="url(#gold)" />
 
-      <!-- Bottom-Right Cyber Nodes -->
-      <path d="M 1056 696 L 936 696 L 856 616" stroke="url(#cyan)" stroke-width="3" fill="none" opacity="0.7"/>
-      <circle cx="856" cy="616" r="5" fill="#00e5ff" />
-      <path d="M 906 816 L 906 726 L 826 646" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="826" cy="646" r="4" fill="url(#gold)" />
+      <!-- Bottom-Right Cyber Nodes (Pushed into corner to clear signature) -->
+      <path d="M 1056 726 L 976 726 L 916 666" stroke="url(#cyan)" stroke-width="3" fill="none" opacity="0.7"/>
+      <circle cx="916" cy="666" r="5" fill="#00e5ff" />
+      <path d="M 956 816 L 956 766 L 896 706" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.8"/>
+      <circle cx="896" cy="706" r="4" fill="url(#gold)" />
 
-      <!-- Strict, perfectly constrained double borders -->
-      <!-- Outer thick gold border -->
+      <!-- Borders -->
       <rect x="30" y="30" width="996" height="756" stroke="url(#gold)" stroke-width="4" fill="none" />
-      <!-- Inner thin cyan border -->
       <rect x="42" y="42" width="972" height="732" stroke="#00e5ff" stroke-width="1.5" fill="none" opacity="0.5" />
 
       <!-- Elegant Bracket Corners -->
@@ -2428,28 +2424,22 @@ window.generateAndDownloadCert = function(score) {
       <path d="M 25 746 L 70 746 L 70 791" stroke="url(#gold)" stroke-width="6" fill="none" />
       <path d="M 1031 746 L 986 746 L 986 791" stroke="url(#gold)" stroke-width="6" fill="none" />
 
-      <!-- Perfect Bottom-Center Medal (Drawn LAST so it completely overlaps any borders) -->
+      <!-- Perfect Bottom-Center Medal -->
       <g transform="translate(528, 715)">
-        <!-- Solid knockout background prevents ANY lines from crossing through the medal -->
         <circle cx="0" cy="0" r="55" fill="#060912" />
-        
         <polygon points="-30,25 -45,85 -20,70 0,85 -10,25" fill="#d4af37" />
         <polygon points="30,25 10,25 0,85 20,70 45,85" fill="#aa771c" />
-        
         <circle cx="0" cy="0" r="48" fill="url(#gold)" />
         <circle cx="0" cy="0" r="42" fill="#060912" />
         <circle cx="0" cy="0" r="38" stroke="url(#gold)" stroke-width="2.5" stroke-dasharray="5 4" fill="none" />
         <circle cx="0" cy="0" r="32" fill="url(#gold)" />
         <circle cx="0" cy="0" r="28" fill="#060912" />
-        <!-- Star Inside Medal -->
         <path d="M0,-14 L4,-4 L14,-3 L7,4 L9,14 L0,9 L-9,14 L-7,4 L-14,-3 L-4,-4 Z" fill="url(#gold)" />
       </g>
     </svg>`;
 
-    // Base64 encode the SVG to bypass canvas parsing bugs
     const bgBase64 = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(bgSvg)));
 
-    // Off-screen rendering container
     const certElement = document.createElement('div');
     certElement.id = 'db-temp-cert-stage';
     certElement.style.position = 'absolute';
@@ -2457,16 +2447,14 @@ window.generateAndDownloadCert = function(score) {
     certElement.style.left = '-15000px'; 
     certElement.style.zIndex = '-9999';
 
-    // 2. Perfectly Centered HTML Layout
+    // 2. HTML Layout - Signature block widened and forced to single line
     certElement.innerHTML = `
         <div style="width: 1056px; height: 816px; position: relative; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
             
             <img src="${bgBase64}" style="position: absolute; top: 0; left: 0; width: 1056px; height: 816px; z-index: 1;" />
 
-            <!-- Fully Centered Wrapper -->
             <div style="position: relative; z-index: 10; width: 100%; height: 100%; padding: 85px 80px 60px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;">
                 
-                <!-- Headers -->
                 <div style="width: 100%;">
                     <div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 7px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">
                         DEVOPS BEACON ACADEMY
@@ -2483,7 +2471,6 @@ window.generateAndDownloadCert = function(score) {
                     <div style="width: 400px; height: 2px; background-color: #d4af37; margin: 30px auto 0 auto; box-shadow: 0 0 8px rgba(212,175,55,0.5);"></div>
                 </div>
 
-                <!-- Recipient Info -->
                 <div style="width: 100%;">
                     <div style="font-size: 1.1rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px;">
                         PROUDLY PRESENTED TO
@@ -2504,7 +2491,6 @@ window.generateAndDownloadCert = function(score) {
                     </div>
                 </div>
 
-                <!-- Footer: Date, Space for Medal, and Signature -->
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px; margin-bottom: 30px; box-sizing: border-box;">
                     
                     <div style="text-align: center; width: 220px;">
@@ -2517,11 +2503,11 @@ window.generateAndDownloadCert = function(score) {
                         </div>
                     </div>
 
-                    <!-- Invisible Spacer to perfectly frame the SVG Medal sitting underneath -->
                     <div style="width: 180px;"></div>
 
-                    <div style="text-align: center; width: 220px;">
-                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 2rem; color: #fff1be; margin-bottom: 6px;">
+                    <!-- Signature block widened and forced to nowrap to fix line break -->
+                    <div style="text-align: center; width: 280px;">
+                        <div style="font-family: Georgia, serif; font-style: italic; font-size: 2rem; color: #fff1be; margin-bottom: 6px; white-space: nowrap;">
                             DevOps Beacon
                         </div>
                         <div style="width: 100%; height: 1.5px; background-color: #d4af37; margin-bottom: 6px;"></div>
@@ -2537,7 +2523,6 @@ window.generateAndDownloadCert = function(score) {
 
     document.body.appendChild(certElement);
 
-    // 3. Fire html2canvas safely
     setTimeout(() => {
         html2canvas(certElement, { 
             scale: 2, 
