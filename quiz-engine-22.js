@@ -2314,13 +2314,14 @@ function showResults() {
     const score = Math.round((trueCount / activeQuestions.length) * 100);
     document.getElementById("dbFinalScore").innerText = `${score}%`;
 
+    // Load HTML2Canvas safely
     if (typeof html2canvas === 'undefined') {
         const h2cScript = document.createElement("script");
         h2cScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
         document.head.appendChild(h2cScript);
     }
 
-    if (score >= 75) {
+    if (score >= 60) {
       document.getElementById("dbTrophyIcon").innerText = "🎉";
       document.getElementById("dbResultsHeading").innerText = "Congratulations! You Passed!";
       document.getElementById("dbSummaryText").innerText = `Outstanding job! You scored ${trueCount} out of ${activeQuestions.length} (${score}%).`;
@@ -2377,184 +2378,121 @@ function showResults() {
       const passedTopic = passedTopicRaw.replace(/\s*\(\d+\s*Qs\)/, '').trim();
       const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // Build standalone cert container attached directly to body
+      // FIX 1: Container must be in the active viewport (top: 0, left: 0) but invisible (opacity: 0, zIndex: -9999)
       const certElement = document.createElement('div');
       certElement.id = 'db-temp-cert-stage';
       certElement.style.position = 'fixed';
-      certElement.style.top = '-9999px';
-      certElement.style.left = '-9999px';
+      certElement.style.top = '0px';
+      certElement.style.left = '0px';
       certElement.style.zIndex = '-9999';
+      certElement.style.opacity = '0';
+      certElement.style.pointerEvents = 'none';
 
+      // FIX 2: Pure HTML/CSS geometry instead of SVGs. Zero CORS/Parser crashes.
       certElement.innerHTML = `
-          <div style="width: 1056px; height: 750px; background: radial-gradient(circle at 65% 50%, #111a2e 0%, #080d18 100%); position: relative; overflow: hidden; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; color: #ffffff;">
+          <div style="width: 1056px; height: 750px; background-color: #0b111e; position: relative; overflow: hidden; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; color: #ffffff;">
               
-              <!-- Outer Gold Accent Border -->
-              <div style="position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1.5px solid rgba(212, 175, 55, 0.45); pointer-events: none; z-index: 5; box-sizing: border-box;">
-                  <div style="position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border: 1px solid rgba(212, 175, 55, 0.2);"></div>
-                  <div style="position: absolute; top: -1px; left: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
-                  <div style="position: absolute; top: -1px; right: -1px; width: 16px; height: 16px; border-top: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
-                  <div style="position: absolute; bottom: -1px; left: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-left: 3px solid #fdf0cd;"></div>
-                  <div style="position: absolute; bottom: -1px; right: -1px; width: 16px; height: 16px; border-bottom: 3px solid #fdf0cd; border-right: 3px solid #fdf0cd;"></div>
-              </div>
+              <!-- Outer Gold Borders -->
+              <div style="position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 3px solid #d4af37; pointer-events: none; z-index: 5;"></div>
+              <div style="position: absolute; top: 22px; left: 22px; right: 22px; bottom: 22px; border: 1px solid #d4af37; opacity: 0.5; pointer-events: none; z-index: 5;"></div>
 
-              <!-- Left Cyber Circuit Graphic -->
-              <svg style="position: absolute; left: 0; top: 0; width: 380px; height: 100%; z-index: 2;" viewBox="0 0 380 750" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                      <linearGradient id="goldShine" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stop-color="#fff1be" />
-                          <stop offset="25%" stop-color="#d4af37" />
-                          <stop offset="50%" stop-color="#aa771c" />
-                          <stop offset="75%" stop-color="#fdf0cd" />
-                          <stop offset="100%" stop-color="#8a5a00" />
-                      </linearGradient>
-                      <linearGradient id="cyanNeon" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stop-color="#a5f3fc" />
-                          <stop offset="50%" stop-color="#00e5ff" />
-                          <stop offset="100%" stop-color="#007799" />
-                      </linearGradient>
-                      <pattern id="fineGrid" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
-                          <circle cx="2" cy="2" r="1.2" fill="#1e293b" opacity="0.6" />
-                      </pattern>
-                  </defs>
+              <!-- Pure CSS Cyber/Gold Geometric Accents (Replaces SVG) -->
+              <!-- Dark Angled Backdrop -->
+              <div style="position: absolute; left: -150px; top: -100px; width: 450px; height: 1000px; background-color: #050810; transform: rotate(18deg); z-index: 1;"></div>
+              
+              <!-- Thick Gold Ribbon -->
+              <div style="position: absolute; left: 150px; top: -100px; width: 25px; height: 1000px; background-color: #d4af37; transform: rotate(18deg); z-index: 2; box-shadow: 0 0 15px rgba(212,175,55,0.4);"></div>
+              <div style="position: absolute; left: 185px; top: -100px; width: 3px; height: 1000px; background-color: #fff1be; transform: rotate(18deg); z-index: 2;"></div>
+              
+              <!-- Cyan Cyber Traces -->
+              <div style="position: absolute; left: 100px; top: -100px; width: 12px; height: 1000px; background-color: #00e5ff; transform: rotate(18deg); z-index: 2; box-shadow: 0 0 15px rgba(0,229,255,0.6);"></div>
+              <div style="position: absolute; left: 120px; top: -100px; width: 2px; height: 1000px; background-color: #00e5ff; transform: rotate(18deg); z-index: 2;"></div>
 
-                  <rect x="0" y="0" width="160" height="750" fill="url(#fineGrid)" />
-                  <polygon points="0,0 240,0 130,400 250,750 0,750" fill="#060a12" />
-                  <polygon points="0,0 270,0 160,400 280,750 0,750" fill="#0b1322" opacity="0.6" />
-
-                  <!-- Chevron Ribbons -->
-                  <polyline points="310,0 185,400 320,750" stroke="url(#goldShine)" stroke-width="16" stroke-linejoin="round" fill="none" />
-                  <polyline points="330,0 205,400 340,750" stroke="#fff1be" stroke-width="2" stroke-linejoin="round" fill="none" opacity="0.8" />
-                  <polyline points="280,0 155,400 290,750" stroke="url(#cyanNeon)" stroke-width="9" stroke-linejoin="round" fill="none" />
-                  <polyline points="260,0 135,400 270,750" stroke="#00e5ff" stroke-width="3" stroke-linejoin="round" fill="none" opacity="0.8" />
-                  <polyline points="225,0 110,380 110,420 235,750" stroke="url(#cyanNeon)" stroke-width="4" stroke-linejoin="round" fill="none" opacity="0.5" />
-
-                  <!-- Nodes -->
-                  <line x1="30" y1="140" x2="190" y2="140" stroke="#d4af37" stroke-width="2" />
-                  <circle cx="190" cy="140" r="5" fill="#fdf0cd" />
-                  <circle cx="190" cy="140" r="2.5" fill="#8a5a00" />
-
-                  <line x1="50" y1="180" x2="220" y2="180" stroke="#00e5ff" stroke-width="2" opacity="0.7" />
-                  <circle cx="220" cy="180" r="4" fill="#00e5ff" />
-
-                  <line x1="20" y1="220" x2="140" y2="220" stroke="#d4af37" stroke-width="2" />
-                  <circle cx="140" cy="220" r="4.5" fill="#d4af37" />
-
-                  <line x1="30" y1="570" x2="210" y2="570" stroke="#00e5ff" stroke-width="2" opacity="0.7" />
-                  <circle cx="210" cy="570" r="4" fill="#00e5ff" />
-
-                  <line x1="40" y1="610" x2="180" y2="610" stroke="#d4af37" stroke-width="2" />
-                  <circle cx="180" cy="610" r="5" fill="#fdf0cd" />
-                  <circle cx="180" cy="610" r="2.5" fill="#8a5a00" />
-              </svg>
-
-              <!-- Right Medal & Constellation Graphic -->
-              <svg style="position: absolute; right: 0; top: 0; width: 420px; height: 100%; z-index: 2; pointer-events: none;" viewBox="0 0 420 750" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                      <linearGradient id="sealGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stop-color="#fff1be" />
-                          <stop offset="35%" stop-color="#d4af37" />
-                          <stop offset="70%" stop-color="#aa771c" />
-                          <stop offset="100%" stop-color="#8a5a00" />
-                      </linearGradient>
-                  </defs>
-
-                  <circle cx="380" cy="90" r="3.5" fill="#d4af37" />
-                  <circle cx="300" cy="60" r="2.5" fill="#00e5ff" opacity="0.6" />
-                  <circle cx="350" cy="170" r="3" fill="#d4af37" opacity="0.8" />
-                  <circle cx="270" cy="140" r="2" fill="#d4af37" opacity="0.5" />
-                  <line x1="380" y1="90" x2="300" y2="60" stroke="#d4af37" stroke-width="1" opacity="0.3" />
-                  <line x1="380" y1="90" x2="350" y2="170" stroke="#d4af37" stroke-width="1" opacity="0.3" />
-                  <line x1="300" y1="60" x2="270" y2="140" stroke="#00e5ff" stroke-width="1" opacity="0.25" />
-                  <line x1="270" y1="140" x2="350" y2="170" stroke="#d4af37" stroke-width="1" opacity="0.2" />
-
-                  <!-- Medal Seal -->
-                  <g transform="translate(305, 605)">
-                      <polygon points="-18,20 -30,65 -15,58 0,65 -8,20" fill="url(#sealGold)" />
-                      <polygon points="18,20 8,20 0,65 15,58 30,65" fill="#aa771c" />
-                      <circle cx="0" cy="0" r="42" fill="url(#sealGold)" />
-                      <circle cx="0" cy="0" r="38" fill="#080d18" />
-                      <circle cx="0" cy="0" r="35" fill="none" stroke="url(#sealGold)" stroke-width="1.5" stroke-dasharray="3 2" />
-                      <circle cx="0" cy="0" r="31" fill="url(#sealGold)" />
-                      <circle cx="0" cy="0" r="28" fill="#080d18" />
-                      <path d="M0,-14 L4,-4 L14,-3 L6,4 L8,14 L0,8 L-8,14 L-6,4 L-14,-3 L-4,-4 Z" fill="url(#sealGold)" />
-                  </g>
-              </svg>
-
-              <!-- Center Text Content -->
-              <div style="flex-grow: 1; margin-left: 330px; padding: 48px 65px 36px 30px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; z-index: 3; box-sizing: border-box;">
+              <!-- Main Content Container -->
+              <div style="position: relative; z-index: 10; margin-left: 360px; flex-grow: 1; padding: 60px 50px 40px 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;">
                   
-                  <div>
-                      <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 6px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 6px;">
+                  <!-- Organization & Titles -->
+                  <div style="width: 100%;">
+                      <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 6px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">
                           DEVOPS BEACON ACADEMY
                       </div>
                       
-                      <div style="font-size: 3.6rem; font-weight: 900; letter-spacing: 4px; line-height: 1.1; margin-top: 6px; color: #d4af37;">
+                      <!-- Pure CSS Title -->
+                      <div style="font-size: 4.2rem; font-weight: 900; letter-spacing: 5px; color: #d4af37; margin-bottom: 5px;">
                           CERTIFICATE
                       </div>
                       
-                      <div style="font-size: 1.45rem; font-weight: 800; letter-spacing: 7px; color: #00e5ff; text-transform: uppercase; margin-top: 4px;">
+                      <div style="font-size: 1.5rem; font-weight: 800; letter-spacing: 8px; color: #00e5ff; text-transform: uppercase;">
                           OF ACHIEVEMENT
                       </div>
 
-                      <div style="width: 280px; height: 2px; background: linear-gradient(to right, transparent, #d4af37, transparent); margin: 10px auto 0 auto;"></div>
+                      <!-- Divider -->
+                      <div style="width: 350px; height: 2px; background-color: #d4af37; margin: 20px auto 0 auto;"></div>
                   </div>
 
-                  <div style="width: 100%; margin: 8px 0;">
-                      <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px;">
+                  <!-- Recipient Honors -->
+                  <div style="width: 100%; margin: 20px 0;">
+                      <div style="font-size: 0.9rem; font-weight: 700; letter-spacing: 4px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px;">
                           PROUDLY PRESENTED TO
                       </div>
                       
-                      <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 3.8rem; color: #fff1be; margin: 2px auto 6px auto; line-height: 1.1;">
+                      <!-- Recipient Name -->
+                      <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 4rem; color: #fff1be; margin: 0 auto 15px auto; line-height: 1.1;">
                           ${studentName}
                       </div>
 
-                      <div style="width: 440px; height: 1.5px; background: linear-gradient(to right, transparent, #d4af37, transparent); margin: 0 auto 16px auto;"></div>
+                      <div style="width: 480px; height: 1px; background-color: #d4af37; margin: 0 auto 20px auto;"></div>
 
-                      <div style="font-size: 0.95rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.5;">
+                      <!-- Subject & Score -->
+                      <div style="font-size: 1rem; font-weight: 700; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.6;">
                           FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
-                          <span style="font-size: 1.5rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 4px; text-transform: none;">
+                          <span style="font-size: 1.6rem; font-weight: 800; color: #00e5ff; letter-spacing: 1px; display: inline-block; margin-top: 8px; text-transform: none;">
                               ${passedTopic}
                           </span>
-                          <div style="font-size: 0.88rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 4px;">
-                              VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.05rem;">${score}%</span>
+                          <div style="font-size: 0.9rem; color: #94a3b8; font-weight: 700; letter-spacing: 1.5px; margin-top: 8px;">
+                              VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 800; font-size: 1.1rem;">${score}%</span>
                           </div>
                       </div>
                   </div>
 
-                  <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px; box-sizing: border-box;">
-                      <div style="text-align: center; width: 170px;">
-                          <div style="font-size: 0.95rem; color: #f1f5f9; font-weight: 600; margin-bottom: 5px;">
+                  <!-- Footer: Date & Signatures -->
+                  <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 30px; box-sizing: border-box;">
+                      
+                      <!-- Date -->
+                      <div style="text-align: center; width: 180px;">
+                          <div style="font-size: 1rem; color: #f1f5f9; font-weight: 600; margin-bottom: 8px;">
                               ${todayDate}
                           </div>
-                          <div style="width: 100%; height: 1px; background: linear-gradient(to right, #334155, #d4af37, #334155); margin-bottom: 5px;"></div>
-                          <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                          <div style="width: 100%; height: 1px; background-color: #d4af37; margin-bottom: 5px;"></div>
+                          <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                               DATE
                           </div>
                       </div>
 
-                      <div style="text-align: center; width: 190px;">
-                          <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.35rem; color: #fff1be; margin-bottom: 3px;">
+                      <!-- Signature -->
+                      <div style="text-align: center; width: 200px;">
+                          <div style="font-family: Georgia, serif; font-style: italic; font-size: 1.4rem; color: #fff1be; margin-bottom: 6px;">
                               DevOps Beacon
                           </div>
-                          <div style="width: 100%; height: 1px; background: linear-gradient(to right, #334155, #d4af37, #334155); margin-bottom: 5px;"></div>
-                          <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                          <div style="width: 100%; height: 1px; background-color: #d4af37; margin-bottom: 5px;"></div>
+                          <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                               AUTHORIZED SIGNATURE
                           </div>
                       </div>
-                  </div>
 
+                  </div>
               </div>
           </div>
       `;
 
       document.body.appendChild(certElement);
 
+      // Give DOM time to register the element before html2canvas executes
       setTimeout(() => {
           html2canvas(certElement, { 
               scale: 2, 
-              useCORS: true,
-              allowTaint: true,
-              backgroundColor: '#080d18'
+              logging: false,
+              backgroundColor: '#0b111e'
           }).then(canvas => {
               if (document.body.contains(certElement)) {
                   document.body.removeChild(certElement);
