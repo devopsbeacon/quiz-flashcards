@@ -2167,9 +2167,7 @@ let activeQuestions = [];
           <label for="dbSubjectSelect">📚 Select Subject:</label>
           <select id="dbSubjectSelect" class="db-select">
             <option value="all">⚡ All Topics (285 Questions)</option>
-            <option value="foundations">🐳 Docker Foundations & Mindset (3 Qs)</option>
-            <option value="multistage">🛠️ Multi-Stage Builds & Compose (4 Qs)</option>
-            <option value="security">🔒 Advanced Security & Hardening (3 Qs)</option>
+            <option value="docker_foundations">🐳 Docker Foundations & Mindset (10 Qs)</option>
             <option value="change_governance">🧘 AI-Assisted Change Governance (35 Qs)</option>
             <option value="jenkins">🎩 Jenkins CI/CD Fundamentals (20 Qs)</option>
             <option value="gitlab-ci">🦊 GitLab CI (20 Qs)</option>
