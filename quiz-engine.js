@@ -1,76 +1,75 @@
 /**
  * DevOps Beacon Quiz Engine v2.1 (with Passing Celebration)
  * GitHub: devopsbeacon/quiz
- * CDN: [suspicious link removed]
  */
 
 (function () {
   const quizDataset = [
   {
-    "subject": "foundations",
+    "subject": "docker_foundations",
     "subjectLabel": "Docker Foundations & Mindset",
     "question": "1. What is the primary characteristic of the Indian Monk mindset in container design?",
     "options": "WyJCdWlsZGluZyBoZWF2eSBndWVzdCBPUyBpbWFnZXMgd2l0aCBhbGwgZGVidWdnaW5nIHRvb2xzIGluY2x1ZGVkIiwiQ3JlYXRpbmcgY2xlYW4sIGVwaGVtZXJhbCwgc3RhdGVsZXNzIG1pY3JvLWVudmlyb25tZW50cyB0aGF0IGxlYXZlIHplcm8gdHJhY2Ugd2hlbiBkZXN0cm95ZWQiLCJFbmZvcmNpbmcgcGVybWFuZW50IHJvb3QgcGVybWlzc2lvbnMgYWNyb3NzIGFsbCBwcm9kdWN0aW9uIGNvbnRhaW5lcnMiLCJEZXBsb3lpbmcgbW9ub2xpdGhpYyBhcmNoaXRlY3R1cmVzIGluc2lkZSBzaW5nbGUgY29udGFpbmVycyJd",
     "answer": "MQ=="
   },
   {
-    "subject": "foundations",
+    "subject": "docker_foundations",
     "subjectLabel": "Docker Foundations & Mindset",
     "question": "2. What occurs when a container is executed with the '--rm' runtime flag?",
     "options": "WyJJdCBydW5zIGNvbnRpbnVvdXNseSBpbiBkZXRhY2hlZCBiYWNrZ3JvdW5kIG1vZGUiLCJJdCBhdXRvbWF0aWNhbGx5IGRlbGV0ZXMgaXRzZWxmIGFuZCBpdHMgd3JpdGFibGUgbGF5ZXIgdXBvbiBleGl0IiwiSXQgbW91bnRzIGEgcGVyc2lzdGVudCBob3N0IHZvbHVtZSBhdXRvbWF0aWNhbGx5IiwiSXQgYnlwYXNzZXMgY29udGFpbmVyIG5ldHdvcmsgaXNvbGF0aW9uIl0=",
     "answer": "MQ=="
   },
   {
-    "subject": "foundations",
+    "subject": "docker_foundations",
     "subjectLabel": "Docker Foundations & Mindset",
     "question": "3. Which command provides real-time streaming metrics for active container CPU and RAM usage?",
     "options": "WyJkb2NrZXIgaW5zcGVjdCIsImRvY2tlciBsb2dzIiwiZG9ja2VyIHN0YXRzIiwiZG9ja2VyIHBzIC1hIl0=",
     "answer": "Mg=="
   },
   {
-    "subject": "multistage",
+    "subject": "docker_foundations",
     "subjectLabel": "Multi-Stage Builds & Compose",
     "question": "4. Why are multi-stage Dockerfiles recommended for Java application deployments?",
     "options": "WyJUaGV5IGluY3JlYXNlIGNvbXBpbGF0aW9uIHNwZWVkIGJ5IGRpc2FibGluZyB1bml0IHRlc3RzIiwiVGhleSBzZXBhcmF0ZSBoZWF2eSBKREsgYnVpbGQgZW52aXJvbm1lbnRzIGZyb20gbGlnaHR3ZWlnaHQgSlJFIHJ1bnRpbWUgaW1hZ2VzIiwiVGhleSBlbmZvcmNlIHJvb3QgcGVybWlzc2lvbnMgZm9yIGFwcGxpY2F0aW9uIGV4ZWN1dGlvbiIsIlRoZXkgYnlwYXNzIERvY2tlcidzIGxheWVyIGNhY2hpbmcgbWVjaGFuaXNtIl0=",
     "answer": "MQ=="
   },
   {
-    "subject": "multistage",
+    "subject": "docker_foundations",
     "subjectLabel": "Multi-Stage Builds & Compose",
     "question": "5. What root cause does Exit Code 137 (OOMKilled) indicate in container diagnostics?",
     "options": "WyJOZXR3b3JrIHBvcnQgYmluZGluZyBjb25mbGljdCBvbiB0aGUgaG9zdCBzZXJ2ZXIiLCJNaXNzaW5nIGZvcmVncm91bmQgZW50cnlwb2ludCBzY3JpcHQiLCJUaGUgY29udGFpbmVyIHByb2Nlc3MgZXhjZWVkZWQgaXRzIGFsbG9jYXRlZCBSQU0gbGltaXRzIGFuZCB3YXMgdGVybWluYXRlZCBieSB0aGUga2VybmVsIiwiU3VjY2Vzc2Z1bCBhcHBsaWNhdGlvbiBwcm9jZXNzIHNodXRkb3duIl0=",
     "answer": "Mg=="
   },
   {
-    "subject": "multistage",
+    "subject": "docker_foundations",
     "subjectLabel": "Multi-Stage Builds & Compose",
     "question": "6. In Docker Compose, how do you ensure a web API waits until PostgreSQL is ready for connections?",
     "options": "WyJCeSBzZXR0aW5nICdyZXN0YXJ0OiBhbHdheXMnIiwiVXNpbmcgJ2RlcGVuZHNfb24nIHBhaXJlZCB3aXRoICdjb25kaXRpb246IHNlcnZpY2VfaGVhbHRoeSciLCJCeSBtYXBwaW5nIGhvc3QgcG9ydHMgZXhwbGljaXRseSIsIkJ5IGRlZmluaW5nIHZhcmlhYmxlcyBpbnNpZGUgYSAuZW52IGZpbGUiXQ==",
     "answer": "MQ=="
   },
   {
-    "subject": "multistage",
+    "subject": "docker_foundations",
     "subjectLabel": "Multi-Stage Builds & Compose",
     "question": "7. Why should 'COPY pom.xml .' precede 'COPY src ./src' in a Java Dockerfile?",
     "options": "WyJUbyBlbmFibGUgcm9vdCBleGVjdXRpb24gcGVybWlzc2lvbnMiLCJUbyBtYXhpbWl6ZSBsYXllciBjYWNoaW5nIGZvciBkb3dubG9hZGVkIGRlcGVuZGVuY2llcyB3aGVuIHNvdXJjZSBjb2RlIGNoYW5nZXMiLCJUbyBlbmZvcmNlIG1lbW9yeSBib3VuZGFyeSBsaW1pdHMiLCJUbyBieXBhc3MgdGhlIC5kb2NrZXJpZ25vcmUgZmlsZSJd",
     "answer": "MQ=="
   },
   {
-    "subject": "security",
+    "subject": "docker_foundations",
     "subjectLabel": "Advanced Security & Hardening",
     "question": "8. Why are Google Distroless base images significantly more secure than standard OS images?",
     "options": "WyJUaGV5IGluY2x1ZGUgcHJlLWluc3RhbGxlZCBkZWJ1Z2dpbmcgdG9vbHMgYW5kIHNoZWxscyIsIlRoZXkgY29udGFpbiBubyBzaGVsbCBiaW5hcmllcyAoc2gvYmFzaCkgb3IgcGFja2FnZSBtYW5hZ2VycywgZWxpbWluYXRpbmcgcmVtb3RlIHNoZWxsIGFjY2VzcyIsIlRoZXkgZXhlY3V0ZSBwcm9jZXNzZXMgYXMgcm9vdCBieSBkZWZhdWx0IiwiVGhleSBieXBhc3MgaG9zdCBrZXJuZWwgZmlyZXdhbGwgcnVsZXMiXQ==",
     "answer": "MQ=="
   },
   {
-    "subject": "security",
+    "subject": "docker_foundations",
     "subjectLabel": "Advanced Security & Hardening",
     "question": "9. What security boundary is enforced by running a container with the '--read-only' flag?",
     "options": "WyJJdCByZW5kZXJzIGNvbnRhaW5lciBsb2cgZmlsZXMgcmVhZC1vbmx5IiwiSXQgbG9ja3MgdGhlIHJvb3QgZmlsZXN5c3RlbSB0byBwcmV2ZW50IHVuYXV0aG9yaXplZCBiaW5hcnkgd3JpdGVzIG9yIG1hbHdhcmUgZHJvcHMiLCJJdCBkaXNhYmxlcyB2b2x1bWUgbW91bnRpbmcgY29tcGxldGVseSIsIkl0IHJlc3RyaWN0cyBjb250YWluZXIgbmV0d29yayBiYW5kd2lkdGgiXQ==",
     "answer": "MQ=="
   },
   {
-    "subject": "security",
+    "subject": "docker_foundations",
     "subjectLabel": "Advanced Security & Hardening",
     "question": "10. How should build secrets be passed in a Dockerfile using BuildKit to prevent layer leaks?",
     "options": "WyJVc2luZyBzdGFuZGFyZCBBUkcgdmFyaWFibGVzIiwiVXNpbmcgc3RhbmRhcmQgRU5WIHZhcmlhYmxlcyIsIlVzaW5nICdSVU4gLS1tb3VudD10eXBlPXNlY3JldCciLCJIYXJkY29kaW5nIGNyZWRlbnRpYWxzIGRpcmVjdGx5IGluc2lkZSBwb20ueG1sIl0=",
@@ -85,204 +84,238 @@
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "12. What fundamental shift defines the transition from traditional CABs to AI-assisted change governance?",
     "options": "WyJNb3ZpbmcgZnJvbSBtYW51YWwgZm9ybS1jaGVja2luZyB0byBldmlkZW5jZS1jZW50cmljIGZsb3cgcG93ZXJlZCBieSBhdXRvbWF0ZWQgRGVjaXNpb24gUGFja3MiLCJTaGlmdGluZyB0b3RhbCBvcGVyYXRpb25hbCBsaWFiaWxpdHkgZnJvbSBodW1hbiBlbmdpbmVlcnMgdG8gdGhpcmQtcGFydHkgc29mdHdhcmUgdmVuZG9ycyIsIlJlcGxhY2luZyBhbGwgR2l0IHJlcG9zaXRvcmllcyB3aXRoIGNlbnRyYWxpemVkIHBhcGVyLWJhc2VkIHNpZ24tb2ZmIGJpbmRlcnMiLCJFbGltaW5hdGluZyBwcmUtcHJvZHVjdGlvbiB0ZXN0aW5nIGluIGZhdm9yIG9mIGxpdmUgY3VzdG9tZXIgdGVzdGluZyJd",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "13. In Info-Gap Decision Theory (IGDT), what does the 'Robustness' metric quantify?",
     "options": "WyJUaGUgdG90YWwgbW9uZXRhcnkgY29zdCBvZiBydW5uaW5nIGEgS3ViZXJuZXRlcyBjbHVzdGVyIGZvciBvbmUgeWVhciIsIkhvdyBzYWZlbHkgYSBwcm9wb3NlZCBjaGFuZ2UgdG9sZXJhdGVzIG9wZXJhdGlvbmFsIHVuY2VydGFpbnR5IGFuZCB1bmV4cGVjdGVkIGZhaWx1cmUgbW9kZXMiLCJUaGUgZXhhY3QgbnVtYmVyIG9mIGxpbmVzIG9mIGNvZGUgYWRkZWQgaW4gYSBwdWxsIHJlcXVlc3QiLCJUaGUgc3BlZWQgYXQgd2hpY2ggYW4gQUkgYWdlbnQgZ2VuZXJhdGVzIHRleHQgcmVzcG9uc2VzIl0=",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "14. How is 'Opportuneness' defined when evaluating a change request under Info-Gap Decision Theory?",
     "options": "WyJUaGUgZmluYW5jaWFsIHBlbmFsdHkgaW5jdXJyZWQgaWYgYSBzb2Z0d2FyZSBsaWNlbnNlIGV4cGlyZXMiLCJUaGUgcGVyY2VudGFnZSBvZiBDUFUgbWVtb3J5IGNvbnN1bWVkIGR1cmluZyBhIGRhdGFiYXNlIG1pZ3JhdGlvbiIsIlRoZSB0b3RhbCBudW1iZXIgb2YgYXR0ZW5kZWVzIHByZXNlbnQgaW4gYSBDaGFuZ2UgQWR2aXNvcnkgQm9hcmQgbWVldGluZyIsIlRoZSB1cHNpZGUgdmFsdWUgb3IgcmlzayByZWR1Y3Rpb24gdW5sb2NrZWQgYnkgYWN0aW5nIHN3aWZ0bHkgd2l0aG91dCB1bm5lY2Vzc2FyeSBkZWxheSJd",
     "answer": "Mw=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "15. How does Info-Gap Decision Theory differ from traditional 'Low/Medium/High' static risk buckets?",
     "options": "WyJJdCBlbGltaW5hdGVzIGh1bWFuIGRlY2lzaW9uLW1ha2luZyBlbnRpcmVseSBmcm9tIHRoZSByZWxlYXNlIHBpcGVsaW5lIiwiSXQgcmVxdWlyZXMgYWxsIHJlbGVhc2VzIHRvIGJlIGNsYXNzaWZpZWQgYXMgSGlnaCBSaXNrIHJlZ2FyZGxlc3Mgb2YgdGVzdCBjb3ZlcmFnZSIsIkl0IGV2YWx1YXRlcyBjaGFuZ2VzIGFjcm9zcyBkdWFsIGRpbWVuc2lvbnMgb2YgdW5jZXJ0YWludHkgdG9sZXJhbmNlIGFuZCB0aW1lLXNlbnNpdGl2ZSBvcHBvcnR1bml0eSIsIkl0IHJlbGllcyBvbiBzdWJqZWN0aXZlIGd1ZXNzZXMgbWFkZSBieSBleHRlcm5hbCBjb25zdWx0YW50cyJd",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "16. What critical security feature ensures Gemini Enterprise agents respect user permission boundaries?",
     "options": "WyJXb3JrZm9yY2UgSWRlbnRpdHkgRmVkZXJhdGlvbiwgZW5zdXJpbmcgYWdlbnRzIG9ubHkgYWNjZXNzIGRhdGEgdGhlIGh1bWFuIHVzZXIgaXMgYXV0aG9yaXplZCB0byBzZWUiLCJIYXJkY29kaW5nIHJvb3QgYWRtaW5pc3RyYXRpdmUgcGFzc3dvcmRzIGRpcmVjdGx5IGluc2lkZSBBSSBwcm9tcHQgdGVtcGxhdGVzIiwiRGlzYWJsaW5nIGFsbCBmaXJld2FsbCBydWxlcyBkdXJpbmcgZXZpZGVuY2UgY29sbGVjdGlvbiIsIlN0b3JpbmcgYWxsIG9wZXJhdGlvbmFsIGxvZ3MgaW4gcHVibGljIHdlYiByZXBvc2l0b3JpZXMiXQ==",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "17. What role do enterprise connectors play in the Gemini Enterprise Enabled Architecture?",
     "options": "WyJUaGV5IGF1dG9tYXRpY2FsbHkgZGVsZXRlIG91dGRhdGVkIHNvdXJjZSBjb2RlIHJlcG9zaXRvcmllcyBldmVyeSB3ZWVrZW5kIiwiVGhleSBhbGxvdyBleHRlcm5hbCBoYWNrZXJzIHRvIGluc3BlY3QgaW50ZXJuYWwgcHJvZHVjdGlvbiBkYXRhYmFzZXMiLCJUaGV5IHNlY3VyZWx5IHB1bGwgY29udGV4dCBhY3Jvc3MgR2l0IHJlcG9zLCBDSS9DRCBsb2dzLCBKaXJhIHRpY2tldHMsIGFuZCBTTE8gZGFzaGJvYXJkcyBpbnRvIERlY2lzaW9uIFBhY2tzIiwiVGhleSByZXBsYWNlIGh1bWFuIGRldmVsb3BlcnMgYnkgd3JpdGluZyBlbnRpcmUgYXBwbGljYXRpb24gY29kZWJhc2VzIGF1dG9tYXRpY2FsbHkiXQ==",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "18. What are the four core layers of the Human + AI Change Governance Model?",
     "options": "WyJQbGFubmluZywgQ29kaW5nLCBUZXN0aW5nLCBhbmQgTWFya2V0aW5nIiwiQWxlcnRpbmcsIElnbm9yaW5nLCBSZXN0YXJ0aW5nLCBhbmQgRXNjYWxhdGluZyIsIkRyYWZ0aW5nLCBQcmludGluZywgRmlsaW5nLCBhbmQgQXJjaGl2aW5nIiwiQUkgRXZpZGVuY2UgU3ludGhlc2lzLCBIdW1hbiBKdWRnbWVudCwgRGV0ZXJtaW5pc3RpYyBFeGVjdXRpb24sIGFuZCBDbG9zZWQtTG9vcCBMZWFybmluZyJd",
     "answer": "Mw=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "19. In the Human + AI Governance Model, what executes an approved change in production?",
     "options": "WyJHZW5lcmF0aXZlIEFJIGFnZW50cyB3cml0aW5nIGRpcmVjdGx5IHRvIHByb2R1Y3Rpb24gc2VydmVycyIsIkRldGVybWluaXN0aWMgYXV0b21hdGlvbiB0b29scyBzdWNoIGFzIENJL0NEIHBpcGVsaW5lcywgR2l0T3BzIHN5bmMsIGFuZCBwb2xpY3ktYXMtY29kZSBnYXRlcyIsIk1hbnVhbCB0ZXJtaW5hbCBjb21tYW5kcyB0eXBlZCBieSBqdW5pb3IgaGVscGRlc2sgc3RhZmYiLCJVbnZlcmlmaWVkIHRoaXJkLXBhcnR5IGJyb3dzZXIgZXh0ZW5zaW9ucyJd",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "20. What does the Zen metaphor of 'carrying water buckets vs. building aqueducts' represent for IT leaders?",
     "options": "WyJNb3ZpbmcgZnJvbSBtYW51YWwsIHJlcGV0aXRpdmUgdGlja2V0IHJldmlld3MgKGJ1Y2tldHMpIHRvIGJ1aWxkaW5nIGF1dG9tYXRlZCBldmlkZW5jZSBwaXBlbGluZXMgKGFxdWVkdWN0cykiLCJTd2l0Y2hpbmcgZnJvbSBjbG91ZCBjb21wdXRpbmcgYmFjayB0byBwaHlzaWNhbCBvbi1wcmVtaXNlIGRhdGEgY2VudGVycyIsIlJlcGxhY2luZyBzb2Z0d2FyZSBlbmdpbmVlcnMgd2l0aCBjaXZpbCBpbmZyYXN0cnVjdHVyZSB3b3JrZXJzIiwiSWdub3Jpbmcgb3BlcmF0aW9uYWwgZWZmaWNpZW5jeSB0byBmb2N1cyBzb2xlbHkgb24gaGFyZHdhcmUgY29vbGluZyBzeXN0ZW1zIl0=",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "21. How does the role of a 'Human-AI Orchestrator' differ from a traditional 'Change Approver'?",
     "options": "WyJPcmNoZXN0cmF0b3JzIHJ1YmJlci1zdGFtcCBhbGwgQUkgb3V0cHV0cyB3aXRob3V0IHJlYWRpbmcgdGhlIGF0dGFjaGVkIGV2aWRlbmNlIiwiT3JjaGVzdHJhdG9ycyBzcGVuZCAxMDAlIG9mIHRoZWlyIGRheSB3cml0aW5nIHJhdyBZQU1MIGZpbGVzIGJ5IGhhbmQiLCJPcmNoZXN0cmF0b3JzIGRlc2lnbiBkZWNpc2lvbiBzeXN0ZW1zLCBzZXQgcmlzayBndWFyZHJhaWxzLCBhbmQgZXZhbHVhdGUgdHJhZGUtb2ZmcyByYXRoZXIgdGhhbiBtYW51YWxseSBodW50aW5nIGxvZ3MiLCJPcmNoZXN0cmF0b3JzIGRlbGVnYXRlIGxlZ2FsIGFjY291bnRhYmlsaXR5IGZvciBvdXRhZ2VzIHRvIEFJIHNvZnR3YXJlIHZlbmRvcnMiXQ==",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "22. Which new skill is required for an AI-augmented change expert to query operational data effectively?",
     "options": "WyJNYW51YWwgYXNzZW1ibHkgb2YgcGFwZXIgYXVkaXQgYmluZGVycyIsIlN0cmF0ZWdpYyBQcm9tcHQgRGVzaWduIGFuZCBjb250ZXh0IGZyYW1pbmciLCJIaWdoLXNwZWVkIGFscGhhbnVtZXJpYyBkYXRhIGVudHJ5IiwiQ29ib2wgcHJvZ3JhbW1pbmcgbGFuZ3VhZ2UgdHJhbnNsYXRpb24iXQ==",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "23. Why is 'Critical Data Evaluation' an essential skill when working with AI decision support systems?",
     "options": "WyJUbyBlbmFibGUgaHVtYW4gcmV2aWV3ZXJzIHRvIG1lbW9yaXplIGFsbCBzeXN0ZW0gbG9nIGVudHJpZXMgYnkgaGVhcnQiLCJUbyBjb252ZXJ0IG51bWVyaWMgbWV0cmljcyBpbnRvIGhhbmR3cml0dGVuIGNoYXJ0cyIsIlRvIGJ5cGFzcyBhbGwgY29ycG9yYXRlIHNlY3VyaXR5IGFuZCBjb21wbGlhbmNlIHJ1bGVzIiwiVG8gZW5zdXJlIGh1bWFuIHJldmlld2VycyBjYW4gc3BvdCBtaXNzaW5nIHRlbGVtZXRyeSwgd2VhayBhc3N1bXB0aW9ucywgb3IgcG90ZW50aWFsIG1vZGVsIGhhbGx1Y2luYXRpb25zIl0=",
     "answer": "Mw=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "24. How does 'Counterfactual Reasoning' help a Change Advisory Board approve an urgent release safely?",
     "options": "WyJJdCBwcmVkaWN0cyB3aGF0IGd1YXJkcmFpbHMgKGUuZy4sIGNhbmFyeSByb2xsb3V0cyBvciBTTE8gZ2F0ZXMpIHdpbGwgZWxldmF0ZSBhIGNoYW5nZSdzIHNhZmV0eSBzY29yZSIsIkl0IHByb3ZlcyB0aGF0IHNvZnR3YXJlIGNoYW5nZXMgbmV2ZXIgY2F1c2UgcHJvZHVjdGlvbiBvdXRhZ2VzIiwiSXQgYXV0b21hdGljYWxseSBnZW5lcmF0ZXMgbGVnYWwgZGlzY2xhaW1lcnMgZm9yIGVuZC11c2VyIGxpY2Vuc2UgYWdyZWVtZW50cyIsIkl0IGZvcmNlcyByZXZpZXdlcnMgdG8gcmVqZWN0IGFsbCBlbWVyZ2VuY3kgcGF0Y2hlcyBieSBkZWZhdWx0Il0=",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "25. What is contained within an AI-generated 'Decision Pack' prepared for a CAB review?",
     "options": "WyJSYXcsIHVuZm9ybWF0dGVkIHN5c3RlbSBsb2dzIHNwYW5uaW5nIDUwMCBwYWdlcyB3aXRob3V0IHN1bW1hcmllcyIsIkltcGFjdCBtYXBwaW5nLCBoaXN0b3JpY2FsIGZhaWx1cmUgc2lnbmFscywgSW5mby1HYXAgc2NvcmVzLCBYQUkgbm90ZXMsIGFuZCByZWNvbW1lbmRlZCBndWFyZHJhaWxzIiwiTWFya2V0aW5nIGJyb2NodXJlcyBhbmQgZW1wbG95ZWUgYXR0ZW5kYW5jZSByZWNvcmRzIiwiRW5jcnlwdGVkIHNvdXJjZSBjb2RlIHRoYXQgY2Fubm90IGJlIGluc3BlY3RlZCBieSBodW1hbiByZXZpZXdlcnMiXQ==",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "26. In the CAB case study, how should a low-urgency, non-critical monitoring agent upgrade be handled?",
     "options": "WyJUcmVhdCBpdCBhcyBhbiBlbWVyZ2VuY3kgcGF0Y2ggYW5kIGRlcGxveSBpdCBpbW1lZGlhdGVseSBhdCBtaWRuaWdodCIsIlN1YmplY3QgaXQgdG8gYSA0LWhvdXIgZXhlY3V0aXZlIHJldmlldyBib2FyZCBtZWV0aW5nIHdpdGggYWxsIEMtbGV2ZWwgb2ZmaWNlcnMiLCJCdW5kbGUgaXQgaW50byBzY2hlZHVsZWQgbWFpbnRlbmFuY2Ugb3IgY2xhc3NpZnkgaXQgYXMgYSBwcmUtYXBwcm92ZWQgc3RhbmRhcmQgY2hhbmdlIiwiUmVqZWN0IGl0IHBlcm1hbmVudGx5IHRvIHByZXZlbnQgYW55IG1vZGlmaWNhdGlvbiB0byBtb25pdG9yaW5nIHRvb2xzIl0=",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "27. In the Change Approval Matrix, what action is recommended for Quadrant I (High Robustness + High Opportuneness)?",
     "options": "WyJEZWZlciBhcHByb3ZhbCB1bnRpbCBwcmUtcHJvZHVjdGlvbiB0ZXN0aW5nIGlzIHJlcGVhdGVkIGZpdmUgdGltZXMiLCJSZWplY3QgdGhlIGNoYW5nZSBkdWUgdG8gZXhjZXNzIGJ1c2luZXNzIHZhbHVlIiwiUm91dGUgdGhlIGNoYW5nZSB0byBhbiBvZmZsaW5lIGV4dGVybmFsIGF1ZGl0IGNvbW1pdHRlZSIsIkZhc3QtVHJhY2sgYXBwcm92YWwgdGhyb3VnaCBhY2NlbGVyYXRlZCwgY29udHJvbGxlZCBhdXRvbWF0aW9uIHBpcGVsaW5lcyJd",
     "answer": "Mw=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "28. How should a change in Quadrant II (Low Robustness + High Opportuneness, e.g., an emergency patch) be governed?",
     "options": "WyJBcHBseSB0YXJnZXRlZCBndWFyZHJhaWxzIChlLmcuLCBzaW5nbGUtY2x1c3RlciBjYW5hcnkgKyBhdXRvbWF0ZWQgU0xPIGdhdGVzKSB0byBlbGV2YXRlIHNhZmV0eSBiZWZvcmUgYXBwcm92YWwiLCJSZWplY3QgdGhlIHBhdGNoIGltbWVkaWF0ZWx5IGFuZCBhY2NlcHQgemVyby1kYXkgc2VjdXJpdHkgZXhwbG9pdGF0aW9uIiwiQnlwYXNzIGFsbCByZXZpZXdzIGFuZCBkZXBsb3kgZ2xvYmFsbHkgd2l0aG91dCB0ZWxlbWV0cnkgbW9uaXRvcmluZyIsIkFyY2hpdmUgdGhlIGNoYW5nZSB0aWNrZXQgYW5kIHJlLWV2YWx1YXRlIGluIHRoZSBuZXh0IHF1YXJ0ZXIiXQ==",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "29. What is the recommended strategy for Quadrant III changes (High Robustness + Low Opportuneness)?",
     "options": "WyJGYXN0LXRyYWNrIGFzIGFuIGVtZXJnZW5jeSByZWxlYXNlIGR1cmluZyBwZWFrIGJ1c2luZXNzIGhvdXJzIiwiU2NoZWR1bGUgZHVyaW5nIHJvdXRpbmUgbWFpbnRlbmFuY2Ugd2luZG93cywgYnVuZGxlIHdpdGggb3RoZXIgdXBkYXRlcywgb3IgY29udmVydCB0byBhIHN0YW5kYXJkIGNoYW5nZSIsIkVzY2FsYXRlIGRpcmVjdGx5IHRvIHRoZSBCb2FyZCBvZiBEaXJlY3RvcnMgZm9yIHJpc2sgYXBwcm92YWwiLCJEZWxldGUgdGhlIHB1bGwgcmVxdWVzdCB0byByZWR1Y2UgYmFja2xvZyBzaXplIl0=",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "30. What action does the Change Approval Matrix specify for Quadrant IV (Low Robustness + Low Opportuneness)?",
     "options": "WyJBcHByb3ZlIGltbWVkaWF0ZWx5IHdpdGhvdXQgdGVzdGluZyIsIkZhc3QtdHJhY2sgdGhyb3VnaCBjYW5hcnkgcGlwZWxpbmVzIiwiRGVmZXIgYXBwcm92YWwsIHJlcXVpcmUgcHJlLXByb2R1Y3Rpb24gdmFsaWRhdGlvbiwgYW5kIGdhdGhlciBtaXNzaW5nIHRlbGVtZXRyeSBldmlkZW5jZSIsIkdyYW50IHBlcm1hbmVudCBhZG1pbmlzdHJhdGl2ZSBieXBhc3MgcHJpdmlsZWdlcyB0byB0aGUgYXV0aG9yIl0=",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "31. What takes place during the 'Closed-Loop Learning' stage of the Gemini Enterprise architecture?",
     "options": "WyJBbGwgb3BlcmF0aW9uYWwgbG9ncyBhcmUgZXJhc2VkIHRvIHNhdmUgY2xvdWQgc3RvcmFnZSBzcGFjZSIsIkRldmVsb3BlcnMgYXJlIGZvcmJpZGRlbiBmcm9tIG1vZGlmeWluZyBkZXBsb3llZCBtaWNyb3NlcnZpY2VzIiwiQUkgYWdlbnRzIG1vbml0b3IgcG9zdC1kZXBsb3ltZW50IFNMT3MgYW5kIGNvbnZlcnQgc3VjY2Vzc2Z1bCByZWxlYXNlIHBhdHRlcm5zIGludG8gcHJlLWFwcHJvdmVkIHN0YW5kYXJkIHJ1bGVzIiwiQUkgYWdlbnRzIGF1dG9ub21vdXNseSByZXdyaXRlIGNvcnBvcmF0ZSBnb3Zlcm5hbmNlIHBvbGljaWVzIHdpdGhvdXQgaHVtYW4gb3ZlcnNpZ2h0Il0=",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "32. During an emergency CVE 9.8 vulnerability disclosure, why is 'Opportuneness' considered exceptionally high?",
     "options": "WyJCZWNhdXNlIGVtZXJnZW5jeSBwYXRjaGVzIGFyZSBmcmVlIG9mIHRlY2huaWNhbCBkZWJ0IiwiQmVjYXVzZSB6ZXJvLWRheSB2dWxuZXJhYmlsaXRpZXMgaW5jcmVhc2Ugc3lzdGVtIHByb2Nlc3Npbmcgc3BlZWQiLCJCZWNhdXNlIHNlY3VyaXR5IGZpeGVzIGRvIG5vdCByZXF1aXJlIHRlc3Rpbmcgb3IgdmFsaWRhdGlvbiIsIkJlY2F1c2UgZGVsYXlpbmcgdGhlIHBhdGNoIGxlYXZlcyBjcml0aWNhbCBpbnRlcm5ldC1mYWNpbmcgYXNzZXRzIGV4cG9zZWQgdG8gYWN0aXZlIGV4cGxvaXRhdGlvbiJd",
     "answer": "Mw=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "33. How does counterfactual guidance assist security leaders during an emergency patching event?",
     "options": "WyJJdCBwcm92ZXMgdGhhdCBzZWN1cml0eSBwYXRjaGVzIGFyZSB1bm5lY2Vzc2FyeSIsIkl0IGlkZW50aWZpZXMgZXhhY3Qgb3BlcmF0aW9uYWwgY29uc3RyYWludHMgKGUuZy4sIHJlc3RyaWN0aW5nIHJvbGxvdXQgdG8gQ2x1c3RlciBBKSB0aGF0IHJhaXNlIFJvYnVzdG5lc3MgdG8gYWNjZXB0YWJsZSBsZXZlbHMiLCJJdCBhdXRvbWF0aWNhbGx5IGRpc2FibGVzIGV4dGVybmFsIG5ldHdvcmsgdHJhZmZpYyBhY3Jvc3MgdGhlIGVudGlyZSBlbnRlcnByaXNlIiwiSXQgZ2VuZXJhdGVzIHJhbmRvbSByaXNrIHNjb3JlcyB0byBzYXRpc2Z5IGNvbXBsaWFuY2UgYXVkaXRzIl0=",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "34. Why is human-in-the-loop (HITL) authorization legally and operationally non-negotiable in AI governance?",
     "options": "WyJCZWNhdXNlIEFJIG1vZGVscyBjYW5ub3QgaG9sZCBsZWdhbCBhY2NvdW50YWJpbGl0eSwgYWNjZXB0IGJ1c2luZXNzIHJpc2ssIG9yIHVuZGVyc3RhbmQgZW50ZXJwcmlzZSBjb250ZXh0IiwiQmVjYXVzZSBzb2Z0d2FyZSBkZXZlbG9wZXJzIGVuam95IGF0dGVuZGluZyBsZW5ndGh5IGFwcHJvdmFsIG1lZXRpbmdzIiwiQmVjYXVzZSBBSSBzeXN0ZW1zIGFyZSBpbmNhcGFibGUgb2YgcmVhZGluZyBkaWdpdGFsIGxvZyBmaWxlcyIsIkJlY2F1c2UgY2xvdWQgcHJvdmlkZXJzIHByb2hpYml0IHRoZSB1c2Ugb2YgYXV0b21hdGlvbiBpbiBwcm9kdWN0aW9uIl0=",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "35. What is 'automation bias' in the context of Change Advisory Board reviews?",
     "options": "WyJUaGUgcmVmdXNhbCBvZiBzb2Z0d2FyZSBlbmdpbmVlcnMgdG8gdXNlIGF1dG9tYXRlZCBkZXBsb3ltZW50IHBpcGVsaW5lcyIsIkEgYnVnIGluIENJL0NEIHBpcGVsaW5lcyB0aGF0IGNhdXNlcyBidWlsZCBzZXJ2ZXJzIHRvIGNyYXNoIiwiVGhlIHRlbmRlbmN5IGZvciBodW1hbiByZXZpZXdlcnMgdG8gdW5jcml0aWNhbGx5IHJ1YmJlci1zdGFtcCBBSSByZWNvbW1lbmRhdGlvbnMgd2l0aG91dCB2YWxpZGF0aW5nIGV2aWRlbmNlIiwiVGhlIHByZWZlcmVuY2UgZm9yIG1hbnVhbCBwYXBlciBmb3JtcyBvdmVyIGRpZ2l0YWwgdGlja2V0cyJd",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "36. How do SHAP/LIME feature attributions improve Explainable AI (XAI) transparency for reviewers?",
     "options": "WyJUaGV5IHRyYW5zbGF0ZSBjb2RlIGNvbW1lbnRzIGludG8gYW5jaWVudCBsYW5ndWFnZXMiLCJUaGV5IGJyZWFrIGRvd24gZXhhY3QgcmlzayBkcml2ZXJzIChlLmcuLCAtMzAlIFVudGVzdGVkIFJvbGxiYWNrLCArMjAlIENhbmFyeSBDb3ZlcmFnZSkgYmVoaW5kIGEgc2NvcmUiLCJUaGV5IGhpZGUgcmlzayBzY29yZXMgYmVoaW5kIGVuY3J5cHRlZCBzZWN1cml0eSBwYXNzd29yZHMiLCJUaGV5IGF1dG9tYXRpY2FsbHkgYXBwcm92ZSBhbGwgcHVsbCByZXF1ZXN0cyBzdWJtaXR0ZWQgYnkgc2VuaW9yIGRldmVsb3BlcnMiXQ==",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "37. What is the purpose of a 'Visible Assumption Log' in an AI-generated Decision Pack?",
     "options": "WyJUbyBleHBvc2UgdW52ZXJpZmllZCBvciB3ZWFrIGRhdGEgYXNzdW1wdGlvbnMgc28gaHVtYW4gcmV2aWV3ZXJzIGNhbiBjaGFsbGVuZ2UgdGhlbSBkdXJpbmcgQ0FCIHJldmlld3MiLCJUbyByZWNvcmQgZGV2ZWxvcGVyIGF0dGVuZGFuY2UgZHVyaW5nIHNwcmludCBwbGFubmluZyBzZXNzaW9ucyIsIlRvIHN0b3JlIHVzZXIgcGFzc3dvcmRzIGluIHBsYWluIHRleHQgZm9yIGVhc3kgYXVkaXRpbmciLCJUbyB0cmFjayBoYXJkd2FyZSBjb29saW5nIHRlbXBlcmF0dXJlcyBpbiBkYXRhIGNlbnRlcnMiXQ==",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "38. Which international standard defines guidelines for an AI Management System (AIMS) in enterprise operations?",
     "options": "WyJJU08gOTAwMSIsIklFRUUgODAyLjMiLCJQQ0ktRFNTIDMuMiIsIklTTy9JRUMgNDIwMDEiXQ==",
     "answer": "Mw=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "39. Under ISO/IEC 42001 guidelines, how are production-impacting decision-support agents classified?",
     "options": "WyJBcyBVbnJlZ3VsYXRlZCBDb25zdW1lciBUb3lzIHdpdGggemVybyBjb21wbGlhbmNlIG92ZXJzaWdodCIsIkFzIEhpZ2gtUmlzayBBSSBTeXN0ZW1zIHJlcXVpcmluZyBmb3JtYWwgcmlzayBtYW5hZ2VtZW50LCB0cmFuc3BhcmVuY3ksIGFuZCBodW1hbiBvdmVyc2lnaHQiLCJBcyBBdXRvbm9tb3VzIFN5c3RlbXMgd2l0aCBjb21wbGV0ZSBhdXRob3JpdHkgb3ZlciBwcm9kdWN0aW9uIGVudmlyb25tZW50cyIsIkFzIERlcHJlY2F0ZWQgTGVnYWN5IFNvZnR3YXJlIHNjaGVkdWxlZCBmb3IgZGVsZXRpb24iXQ==",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "40. How does Gemini Enterprise prevent 'governance bypass' by rogue or compromised agents?",
     "options": "WyJCeSBkaXNhYmxpbmcgYWxsIHNlY3VyaXR5IGxvZ2dpbmcgYWNyb3NzIHByb2R1Y3Rpb24gY2x1c3RlcnMiLCJCeSBhbGxvd2luZyBhZ2VudHMgdG8gbW9kaWZ5IHRoZWlyIG93biBhZG1pbmlzdHJhdGl2ZSBwZXJtaXNzaW9ucyBkeW5hbWljYWxseSIsIkJ5IGVuZm9yY2luZyBhZ2VudCBhY3Rpb24gcmVnaXN0cmllcyB0aGF0IHJlc3RyaWN0IEFJIGFnZW50cyB0byBldmlkZW5jZSBjb2xsZWN0aW9uIHdoaWxlIGJsb2NraW5nIGF1dG9ub21vdXMgZXhlY3V0aW9uIiwiQnkgcmVxdWlyaW5nIGh1bWFuIGVuZ2luZWVycyB0byBzaGFyZSByb290IHBhc3N3b3JkcyB3aXRoIEFJIG1vZGVscyJd",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "41. Why are vanity activity metrics (e.g., number of tickets processed) flawed indicators of governance success?",
     "options": "WyJCZWNhdXNlIGNsb3VkIHBsYXRmb3JtcyBkbyBub3QgZ2VuZXJhdGUgdGlja2V0IGRhdGEiLCJCZWNhdXNlIG1lYXN1cmluZyB0aWNrZXQgdGhyb3VnaHB1dCBjYXVzZXMgQ0kvQ0QgcGlwZWxpbmVzIHRvIGZhaWwiLCJCZWNhdXNlIHZhbml0eSBtZXRyaWNzIGFyZSBwcm9oaWJpdGVkIGJ5IGludGVybmF0aW9uYWwgYWNjb3VudGluZyBsYXdzIiwiQmVjYXVzZSBwcm9jZXNzaW5nIG1vcmUgdGlja2V0cyBtYW51YWxseSBkb2VzIG5vdCBtZWFuIHN5c3RlbSBzdGFiaWxpdHkgb3IgcmVsZWFzZSBzYWZldHkgaGFzIGltcHJvdmVkIl0=",
     "answer": "Mw=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "42. Which metric directly measures the security value delivered by fast-tracking emergency patches?",
     "options": "WyJTZWN1cml0eSBFeHBvc3VyZSBEYXlzIEF2b2lkZWQiLCJUb3RhbCBsaW5lcyBvZiBkb2N1bWVudGF0aW9uIHdyaXR0ZW4iLCJOdW1iZXIgb2YgcmV2aWV3IGJvYXJkIG1lZXRpbmdzIGhlbGQiLCJBdmVyYWdlIGFnZSBvZiBkYXRhIGNlbnRlciBzZXJ2ZXIgcmFja3MiXQ==",
     "answer": "MA=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "43. How is toil reduction measured in an AI-assisted change governance framework?",
     "options": "WyJCeSBjb3VudGluZyB0aGUgbnVtYmVyIG9mIGVtYWlscyBzZW50IGR1cmluZyBhIHN5c3RlbSBvdXRhZ2UiLCJCeSBjYWxjdWxhdGluZyBtYW51YWwgcHJlcGFyYXRpb24gYW5kIGNvbnRleHQtZ2F0aGVyaW5nIGhvdXJzIHNhdmVkIGZvciBTUkVzIGFuZCBkZXZlbG9wZXJzIiwiQnkgdHJhY2tpbmcgdGhlIGRlY3JlYXNlIGluIHBoeXNpY2FsIG9mZmljZSBhdHRlbmRhbmNlIiwiQnkgbWVhc3VyaW5nIGtleWJvYXJkIHR5cGluZyBzcGVlZCBhY3Jvc3MgZW5naW5lZXJpbmcgdGVhbXMiXQ==",
     "answer": "MQ=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "44. What is Step 1 in the Executive Roadmap for implementing AI-assisted change governance?",
     "options": "WyJSZXBsYWNlIGFsbCBDaGFuZ2UgQWR2aXNvcnkgQm9hcmRzIGFjcm9zcyB0aGUgZW50aXJlIGVudGVycHJpc2UgaW4gYSBzaW5nbGUgd2Vla2VuZCIsIlB1cmNoYXNlIHRlbiBkaWZmZXJlbnQgQUkgdG9vbHMgd2l0aG91dCBzZXR0aW5nIGdvdmVybmFuY2UgcG9saWNpZXMiLCJTdGFydCBzbWFsbCB3aXRoIGEgZm9jdXNlZCBwaWxvdCBpbiBhIGhpZ2gtdmFsdWUgZG9tYWluIChlLmcuLCBLdWJlcm5ldGVzIHVwZ3JhZGVzKSIsIkJhbiBhbGwgcHJvZHVjdGlvbiBkZXBsb3ltZW50cyBmb3Igc2l4IG1vbnRocyB0byBjb25kdWN0IGF1ZGl0cyJd",
     "answer": "Mg=="
   },
   {
     "subject": "change_governance",
+    "subjectLabel": "🧘 AI-Assisted Change Governance & AIOps",
     "question": "45. What is the ultimate goal of Step 6 (Transformation) in the Sixfold Leadership Roadmap?",
     "options": "WyJSZXBsYWNpbmcgYWxsIGh1bWFuIHNvZnR3YXJlIGRldmVsb3BlcnMgd2l0aCBvZmZzaG9yZSBjb250cmFjdG9ycyIsIkJ1aWxkaW5nIGEgc2VsZi1pbXByb3ZpbmcgZGVjaXNpb24gc3lzdGVtIHRoYXQgbGVhcm5zIGZyb20gcG9zdC1jaGFuZ2UgdGVsZW1ldHJ5IHRvIHN0cmVhbWxpbmUgZnV0dXJlIHJlbGVhc2VzIiwiRWxpbWluYXRpbmcgYWxsIGNvbXBsaWFuY2UgYW5kIGF1ZGl0aW5nIHJlcXVpcmVtZW50cyBwZXJtYW5lbnRseSIsIk1pZ3JhdGluZyBhbGwgZW50ZXJwcmlzZSBhcHBsaWNhdGlvbnMgYmFjayB0byBtYWluZnJhbWUgY29tcHV0ZXJzIl0=",
     "answer": "MQ=="
