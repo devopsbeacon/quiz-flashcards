@@ -82,17 +82,12 @@ const initScenarioEngine = () => {
     </div>
 
     <style>
-      /* --- Karma Shield: Disable Highlighting --- */
       #karma-shield-active { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-      
-      /* --- Title Block --- */
-      .zen-title-wrapper { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 10px 10px; margin-bottom: 24px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); width: 100%; box-sizing: border-box; }
+      .zen-title-wrapper { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 32px 24px; margin-bottom: 24px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); width: 100%; box-sizing: border-box; }
       .zen-title-tag { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: #38bdf8; text-transform: uppercase; margin-bottom: 12px; }
       .zen-title-main { font-size: 32px; font-weight: 800; color: #f8fafc; margin: 0 0 16px; line-height: 1.2; }
       .zen-divider { width: 40px; height: 3px; background: #22c55e; border-radius: 2px; margin: 0 auto 16px; }
       .zen-subtitle { font-size: 16px; color: #94a3b8; line-height: 1.5; margin: 0; }
-
-      /* --- Scenario Engine --- */
       .zen-scenario-wrapper { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #e2e8f0; display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); height: 100%; min-height: 550px; margin: 0 auto; }
       .zen-scenario-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background-color: #020617; border-bottom: 1px solid #1e293b; }
       .header-left, .header-right { display: flex; align-items: center; gap: 16px; }
@@ -114,20 +109,17 @@ const initScenarioEngine = () => {
       .challenge-question { font-size: 18px; font-weight: 600; line-height: 1.4; margin: 0 0 8px 0; color: #f8fafc; }
       .challenge-subtext { font-size: 14px; color: #94a3b8; margin-bottom: 24px; }
       .options-grid { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-      
       .zen-option { display: flex; align-items: flex-start; padding: 14px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
       .zen-option:hover:not(.disabled) { border-color: #38bdf8; background-color: rgba(56, 189, 248, 0.05); }
       .zen-option.disabled { cursor: not-allowed; opacity: 0.7; }
       .zen-option.correct { background-color: rgba(34, 197, 94, 0.15); border-color: #22c55e; }
       .zen-option.incorrect { background-color: rgba(239, 68, 68, 0.15); border-color: #ef4444; }
-      
       .zen-option input[type="radio"] { margin-top: 4px; margin-right: 12px; accent-color: #22c55e; }
       .option-text { font-size: 14px; line-height: 1.5; color: #cbd5e1; }
       .zen-ghost-btn { background: transparent; color: #f8fafc; border: 1px solid #334155; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s ease;}
       .zen-ghost-btn:hover { background: #1e293b; }
       .zen-submit-btn { background-color: #22c55e; color: #020617; font-weight: 700; font-size: 15px; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; }
       .zen-submit-btn.disabled { opacity: 0.5; cursor: not-allowed; }
-
       @media (max-width: 900px) {
         .zen-split-layout { flex-direction: column; overflow-y: auto; }
         .zen-scenario-wrapper { height: auto; max-height: none; }
@@ -752,12 +744,11 @@ const initScenarioEngine = () => {
   const updateProgress = () => {
     const currentQuestionNum = currentIndex + 1;
     const total = activeScenarios.length;
-    progressText.textContent = `Scenario ${currentQuestionNum} of ${total}`;
+    progressText.textContent = "Scenario " + currentQuestionNum + " of " + total;
     
-    // If the question is answered/timed out, increment the bar to include it
     let barProgress = currentIndex;
     if (userSelection !== null) { barProgress = currentQuestionNum; }
-    progressBar.style.width = \`\${(barProgress / total) * 100}%\`;
+    progressBar.style.width = ((barProgress / total) * 100) + "%";
   };
 
   const submitAnswer = () => {
