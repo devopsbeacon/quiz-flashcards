@@ -89,7 +89,7 @@ const initScenarioEngine = () => {
       .zen-title-main { font-size: 32px; font-weight: 800; color: #f8fafc; margin: 0 0 16px; line-height: 1.2; }
       .zen-divider { width: 40px; height: 3px; background: #22c55e; border-radius: 2px; margin: 0 auto 16px; }
       .zen-subtitle { font-size: 16px; color: #94a3b8; line-height: 1.5; margin: 0; }
-      .zen-scenario-wrapper { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: visible; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #e2e8f0; display: block; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); min-height: 550px; margin: 0 auto; }
+      .zen-scenario-wrapper { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: visible; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #e2e8f0; display: block; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); min-height: 550px; height: auto; margin: 0 auto; }
       .zen-scenario-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background-color: #020617; border-bottom: 1px solid #1e293b; }
       .header-left, .header-right { display: flex; align-items: center; gap: 16px; }
       .zen-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #38bdf8; text-transform: uppercase; }
@@ -1012,7 +1012,8 @@ html2canvas(certElement, {
                 '<strong>Save Your Certificate</strong><br>' +
                 'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
             '</div>' +
-            '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">';
+            '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">' +
+            '<input type="text" id="scroll-anchor" style="opacity:0; position:absolute; bottom:0; height:1px; width:1px; z-index:-1;">'; // Invisible anchor added here
 
         const finalImg = document.getElementById('finalCertImg');
         finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
@@ -1020,11 +1021,16 @@ html2canvas(certElement, {
         finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
         finalImg.style.userSelect = 'auto';
         
-        // 3. IFRAME-SAFE SCROLL: Use relative downward push, bypassing GoDaddy interceptors
+        // 3. IFRAME-SAFE SCROLL: Force browser to target the invisible anchor
         setTimeout(() => {
             certForm.style.minHeight = "auto"; // Release the height lock
-            window.scrollBy({ top: 800, left: 0, behavior: 'smooth' });
-        }, 100);
+            const anchor = document.getElementById("scroll-anchor");
+            if (anchor) {
+                anchor.focus({ preventScroll: false });
+                anchor.blur();
+            }
+            certForm.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 150);
         
     }).catch(err => {
         console.error("html2canvas render error:", err);
@@ -1038,6 +1044,7 @@ html2canvas(certElement, {
         }
     });
 }, 500);
+  }; // <--- THIS WAS THE MISSING CLOSING BRACE CAUSING THE PREVIOUS FILE TO CRASH
   
   // Event Listeners
   subjectSelector.addEventListener("change", initializeSubject);
