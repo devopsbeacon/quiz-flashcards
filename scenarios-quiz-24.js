@@ -897,8 +897,10 @@ const initScenarioEngine = () => {
     }
   };
 
-  // --- CERTIFICATE GENERATOR & SMOOTH SCROLL ---
-  window.generateAndDownloadCert = function(score) {
+// --- CERTIFICATE GENERATOR & SMOOTH SCROLL ---
+  window.generateAndDownloadCert = function(score, event) {
+    if (event) event.preventDefault();
+    
     const studentName = document.getElementById("dbCertName").value.trim();
     if (!studentName) {
         alert("Please enter your name to claim the certificate.");
@@ -911,7 +913,6 @@ const initScenarioEngine = () => {
     }
 
     const downloadBtn = document.getElementById('dbGenCertBtn');
-    const originalText = downloadBtn ? downloadBtn.innerText : "Generate";
     if (downloadBtn) {
         downloadBtn.innerText = "⏳ Rendering Master Certificate...";
         downloadBtn.disabled = true;
@@ -920,6 +921,7 @@ const initScenarioEngine = () => {
     const passedTopic = window.currentPassedTopic || "Assessment";
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+    // Certificate SVG Template
     const bgSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816" width="1056" height="816">' +
       '<defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fdf0cd" /><stop offset="25%" stop-color="#d4af37" /><stop offset="50%" stop-color="#aa771c" /><stop offset="75%" stop-color="#d4af37" /><stop offset="100%" stop-color="#fdf0cd" /></linearGradient><linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f2fe" /><stop offset="100%" stop-color="#00e5ff" /></linearGradient><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#1e293b" opacity="0.4" /></pattern></defs>' +
       '<rect width="1056" height="816" fill="#0A0F1D" /><rect width="1056" height="816" fill="url(#grid)" />' +
@@ -929,11 +931,14 @@ const initScenarioEngine = () => {
       '<g transform="translate(528, 781)"><circle cx="0" cy="0" r="65" fill="#0A0F1D" /><polygon points="-30,-10 -45,35 -20,25 0,35 -10,-10" fill="#aa771c" /><polygon points="30,-10 10,-10 0,35 20,25 45,35" fill="#d4af37" /><circle cx="0" cy="-25" r="48" fill="url(#gold)" /><circle cx="0" cy="-25" r="42" fill="#0A0F1D" /><circle cx="0" cy="-25" r="38" stroke="url(#gold)" stroke-width="2.5" stroke-dasharray="5 3" fill="none" /><circle cx="0" cy="-25" r="33" fill="url(#gold)" /><circle cx="0" cy="-25" r="29" fill="#0A0F1D" /><path d="M0,-40 L4,-30 L15,-29 L7,-21 L9,-10 L0,-16 L-9,-10 L-7,-21 L-15,-29 L-4,-30 Z" fill="url(#gold)" /></g></svg>';
 
     const bgBase64 = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(bgSvg)));
+    const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
     const certElement = document.createElement('div');
     certElement.id = 'db-temp-cert-stage';
     certElement.style.position = 'absolute';
-    certElement.style.top = '0px';
+    
+    // FIX: Render exactly at current scroll depth so html2canvas doesn't snap to top
+    certElement.style.top = currentScrollY + 'px'; 
     certElement.style.left = '-15000px'; 
     certElement.style.zIndex = '-9999';
 
@@ -986,65 +991,55 @@ const initScenarioEngine = () => {
     document.body.appendChild(certElement);
 
     setTimeout(() => {
-html2canvas(certElement, { 
-        scale: 2, 
-        logging: false,
-        backgroundColor: '#0A0F1D',
-        allowTaint: true
-    }).then(canvas => {
-        // 1. PREVENT JUMP: Unfocus the active button before destroying it
-        if (document.activeElement) {
-            document.activeElement.blur();
-        }
-
-        if (document.body.contains(certElement)) {
-            document.body.removeChild(certElement);
-        }
-        
-        const imgData = canvas.toDataURL('image/png');
-        const certForm = document.getElementById('dbCertForm');
-        
-        // 2. PREVENT COLLAPSE: Lock the height temporarily during the HTML swap
-        certForm.style.minHeight = certForm.offsetHeight + "px";
-        
-        certForm.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
-            '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
-                '<strong>Save Your Certificate</strong><br>' +
-                'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
-            '</div>' +
-            '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">' +
-            '<input type="text" id="scroll-anchor" style="opacity:0; position:absolute; bottom:0; height:1px; width:1px; z-index:-1;">'; // Invisible anchor added here
-
-        const finalImg = document.getElementById('finalCertImg');
-        finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
-        finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
-        finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
-        finalImg.style.userSelect = 'auto';
-        
-        // 3. IFRAME-SAFE SCROLL: Force browser to target the invisible anchor
-        setTimeout(() => {
-            certForm.style.minHeight = "auto"; // Release the height lock
-            const anchor = document.getElementById("scroll-anchor");
-            if (anchor) {
-                anchor.focus({ preventScroll: false });
-                anchor.blur();
+        html2canvas(certElement, { 
+            scale: 2, 
+            logging: false,
+            backgroundColor: '#0A0F1D',
+            allowTaint: true,
+            scrollY: -window.scrollY // FIX: Synchronize internal rendering canvas
+        }).then(canvas => {
+            if (document.body.contains(certElement)) {
+                document.body.removeChild(certElement);
             }
-            certForm.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }, 150);
-        
-    }).catch(err => {
-        console.error("html2canvas render error:", err);
-        alert("Error rendering image. Please try again.");
-        if (document.body.contains(certElement)) {
-            document.body.removeChild(certElement);
-        }
-        if (downloadBtn) {
-            downloadBtn.innerText = originalText;
-            downloadBtn.disabled = false;
-        }
-    });
-}, 500);
-  }; // <--- THIS WAS THE MISSING CLOSING BRACE CAUSING THE PREVIOUS FILE TO CRASH
+            const imgData = canvas.toDataURL('image/png');
+            const certForm = document.getElementById('dbCertForm');
+            
+            // FIX: Hide existing elements instead of destroying them to prevent focus panic
+            Array.from(certForm.children).forEach(child => child.style.display = "none");
+
+            const finalContainer = document.createElement('div');
+            finalContainer.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
+                '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
+                    '<strong>Save Your Certificate</strong><br>' +
+                    'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
+                '</div>' +
+                '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">';
+            
+            certForm.appendChild(finalContainer);
+
+            const finalImg = document.getElementById('finalCertImg');
+            finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
+            finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+            finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
+            finalImg.style.userSelect = 'auto';
+            
+            setTimeout(() => {
+                finalImg.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 100);
+            
+        }).catch(err => {
+            console.error("html2canvas render error:", err);
+            alert("Error rendering image. Please try again.");
+            if (document.body.contains(certElement)) {
+                document.body.removeChild(certElement);
+            }
+            if (downloadBtn) {
+                downloadBtn.innerText = "Generate Certificate";
+                downloadBtn.disabled = false;
+            }
+        });
+    }, 100);
+  };
   
   // Event Listeners
   subjectSelector.addEventListener("change", initializeSubject);
