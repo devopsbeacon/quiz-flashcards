@@ -1010,9 +1010,16 @@ const initScenarioEngine = () => {
             finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
             finalImg.style.userSelect = 'auto';
+            
+            // Allow the DOM layout to completely settle before scrolling smoothly
             setTimeout(() => {
-                certForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+                const elementPosition = certForm.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - 20; // 20px breathing room at top
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }, 300);
         }).catch(err => {
             console.error("html2canvas render error:", err);
             alert("Error rendering image. Please try again.");
