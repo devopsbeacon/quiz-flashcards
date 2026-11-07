@@ -73,7 +73,7 @@ const initScenarioEngine = () => {
       </div>
 
       <!-- THE RESULTS SCREEN -->
-      <div id="scenario-results-screen" class="db-results-screen" style="display: none; padding: 40px; text-align: center; background: #0f172a; height: auto;">
+      <div id="scenario-results-screen" class="db-results-screen" style="display: none; padding: 40px; text-align: center; background: #0f172a; width: 100%; box-sizing: border-box;">
           <div id="dbTrophyIcon" style="font-size:4rem; margin-bottom:15px">🏆</div>
           <h3 id="dbResultsHeading" style="font-size: 24px; font-weight: 800; color: #f8fafc; margin-bottom: 10px;">Assessment Completed!</h3>
           <div class="db-results-score" id="dbFinalScore" style="font-size: 4rem; font-weight: 900; color: #38bdf8; margin-bottom: 10px;">0%</div>
@@ -89,7 +89,7 @@ const initScenarioEngine = () => {
       .zen-title-main { font-size: 32px; font-weight: 800; color: #f8fafc; margin: 0 0 16px; line-height: 1.2; }
       .zen-divider { width: 40px; height: 3px; background: #22c55e; border-radius: 2px; margin: 0 auto 16px; }
       .zen-subtitle { font-size: 16px; color: #94a3b8; line-height: 1.5; margin: 0; }
-      .zen-scenario-wrapper { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: visible; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #e2e8f0; display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); height: auto; min-height: 550px; margin: 0 auto; }
+      .zen-scenario-wrapper { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: visible; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #e2e8f0; display: block; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); min-height: 550px; margin: 0 auto; }
       .zen-scenario-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background-color: #020617; border-bottom: 1px solid #1e293b; }
       .header-left, .header-right { display: flex; align-items: center; gap: 16px; }
       .zen-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #38bdf8; text-transform: uppercase; }
@@ -97,7 +97,7 @@ const initScenarioEngine = () => {
       .zen-timer { font-family: monospace; font-size: 14px; color: #ef4444; font-weight: bold; }
       .zen-select { background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer; outline: none; }
       .zen-select:focus { border-color: #38bdf8; }
-      .zen-split-layout { display: flex; flex: 1; overflow: hidden; }
+      .zen-split-layout { display: flex; overflow: hidden; min-height: 450px; }
       .zen-pane { flex: 1; padding: 24px; overflow-y: auto; }
       .terminal-pane { background-color: #020617; border-right: 1px solid #1e293b; display: flex; flex-direction: column; }
       .terminal-header { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed #334155; }
