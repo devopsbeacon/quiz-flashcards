@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+const initScenarioEngine = () => {
   const root = document.getElementById("db-flashcards-root");
   
   if (!root) {
@@ -1116,6 +1116,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.ctrlKey || e.metaKey) {
       const blockedKeys = ['c', 'u', 'i', 'p', 's', 'a']; 
       if (blockedKeys.includes(e.key.toLowerCase())) e.preventDefault();
-    }
+}
   });
-});
+}; // End of initScenarioEngine
+
+// GoDaddy Async Loader Fix
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initScenarioEngine);
+} else {
+  initScenarioEngine();
+}
