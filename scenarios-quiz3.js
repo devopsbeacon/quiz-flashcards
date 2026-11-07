@@ -850,16 +850,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 250);
   };
 
-  // --- RESULTS SCREEN ---
+// --- RESULTS SCREEN ---
   const showResults = () => {
     clearInterval(timerInterval);
     document.getElementById("scenario-quiz-screen").style.display = "none";
     const resultsScreen = document.getElementById("scenario-results-screen");
     resultsScreen.style.display = "block";
     
-    // Passing criteria changed to 60% for Scenarios
     const score = Math.round((trueCount / activeScenarios.length) * 100);
-    document.getElementById("dbFinalScore").innerText = \`\${score}%\`;
+    document.getElementById("dbFinalScore").innerText = `${score}%`;
 
     const topicDropdown = document.getElementById("subject-selector");
     const passedTopicRaw = topicDropdown ? topicDropdown.options[topicDropdown.selectedIndex].text : "Scenario Assessment";
@@ -874,7 +873,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (score >= 60) {
       document.getElementById("dbTrophyIcon").innerText = "🎉";
       document.getElementById("dbResultsHeading").innerText = "Architect Level Passed!";
-      document.getElementById("dbSummaryText").innerText = \`Exceptional logic. You solved \${trueCount} out of \${activeScenarios.length} scenarios (\${score}%).\`;
+      document.getElementById("dbSummaryText").innerText = `Exceptional logic. You solved ${trueCount} out of ${activeScenarios.length} scenarios (${score}%).`;
       
       triggerCelebration();
 
@@ -890,12 +889,12 @@ document.addEventListener("DOMContentLoaded", () => {
           resultsScreen.appendChild(certForm);
       }
       
-      certForm.innerHTML = \`
+      certForm.innerHTML = `
         <h4 style="margin: 0 0 15px 0; color: #f8fafc;">Claim Your Architect Certificate</h4>
         <input type="text" id="dbCertName" placeholder="Enter Your Full Name" required 
                style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; outline: none; background: #0f172a; color: #f8fafc; box-sizing: border-box; font-size: 15px;">
         <button class="zen-submit-btn" id="dbGenCertBtn" style="background-color: #16a34a; width: 100%;">🏆 Generate Certificate</button>
-      \`;
+      `;
 
       document.getElementById('dbGenCertBtn').onclick = function() {
           window.generateAndDownloadCert(score);
@@ -904,11 +903,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       document.getElementById("dbTrophyIcon").innerText = "📚";
       document.getElementById("dbResultsHeading").innerText = "Keep Practicing!";
-      document.getElementById("dbSummaryText").innerText = \`You solved \${trueCount} out of \${activeScenarios.length} scenarios (\${score}%). Review the terminal logic and try again to hit 60%.\`;
+      document.getElementById("dbSummaryText").innerText = `You solved ${trueCount} out of ${activeScenarios.length} scenarios (${score}%). Review the terminal logic and try again to hit 60%.`;
     }
   };
 
-  // --- CERTIFICATE GENERATOR (Same exact code as MCQ Quiz) ---
+  // --- CERTIFICATE GENERATOR ---
   window.generateAndDownloadCert = function(score) {
     const studentName = document.getElementById("dbCertName").value.trim();
     if (!studentName) {
@@ -931,7 +930,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const passedTopic = window.currentPassedTopic || "Assessment";
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    const bgSvg = \`
+    const bgSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816" width="1056" height="816">
       <defs>
         <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -981,7 +980,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <circle cx="0" cy="-25" r="29" fill="#0A0F1D" />
         <path d="M0,-40 L4,-30 L15,-29 L7,-21 L9,-10 L0,-16 L-9,-10 L-7,-21 L-15,-29 L-4,-30 Z" fill="url(#gold)" />
       </g>
-    </svg>\`;
+    </svg>`;
 
     const bgBase64 = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(bgSvg)));
 
@@ -992,9 +991,9 @@ document.addEventListener("DOMContentLoaded", () => {
     certElement.style.left = '-15000px'; 
     certElement.style.zIndex = '-9999';
 
-    certElement.innerHTML = \`
+    certElement.innerHTML = `
         <div style="width: 1056px; height: 816px; position: relative; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; align-items: center; color: #ffffff;">
-            <img src="\${bgBase64}" style="position: absolute; top: 0; left: 0; width: 1056px; height: 816px; z-index: 1;" />
+            <img src="${bgBase64}" style="position: absolute; top: 0; left: 0; width: 1056px; height: 816px; z-index: 1;" />
             <div style="position: relative; z-index: 10; width: 100%; height: 100%; padding: 90px 80px 45px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-sizing: border-box;">
                 <div style="text-align: center;">
                     <div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 8px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">DEVOPS BEACON ACADEMY</div>
@@ -1009,21 +1008,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span style="display: inline-block; width: 60px; height: 1.5px; background-color: #d4af37;"></span>
                     </div>
                     <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 5rem; color: #ffffff; margin-bottom: 20px; text-shadow: 0 2px 8px rgba(212,175,55,0.4);">
-                        \${studentName}
+                        ${studentName}
                     </div>
                     <div style="font-size: 1.2rem; font-weight: 600; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.8;">
                         FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
                         <span style="font-size: 2.2rem; font-weight: 800; color: #00E5FF; letter-spacing: 1px; display: inline-block; margin-top: 8px; text-transform: none;">
-                            \${passedTopic}
+                            ${passedTopic}
                         </span>
                         <div style="font-size: 1.2rem; color: #94a3b8; font-weight: 700; letter-spacing: 2px; margin-top: 12px;">
-                            VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 900; font-size: 1.5rem;">\${score}%</span>
+                            VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 900; font-size: 1.5rem;">${score}%</span>
                         </div>
                     </div>
                 </div>
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px; box-sizing: border-box; margin-bottom: 8px;">
                     <div style="text-align: center; width: 240px; background-color: #0A0F1D; padding: 5px 0; z-index: 20;">
-                        <div style="font-size: 1.3rem; font-weight: 600; color: #fdf0cd; margin-bottom: 8px;">\${todayDate}</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; color: #fdf0cd; margin-bottom: 8px;">${todayDate}</div>
                         <div style="width: 100%; height: 2px; background-color: #d4af37; margin-bottom: 6px;"></div>
                         <div style="font-size: 0.85rem; font-weight: 800; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase;">DATE</div>
                     </div>
@@ -1038,7 +1037,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         </div>
-    \`;
+    `;
 
     document.body.appendChild(certElement);
 
@@ -1055,7 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const imgData = canvas.toDataURL('image/png');
             const certForm = document.getElementById('dbCertForm');
             
-            certForm.innerHTML = \`
+            certForm.innerHTML = `
                 <h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>
                 <div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
                     <strong>Step 1: Save Your Certificate</strong><br>
@@ -1071,8 +1070,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                     </div>
                 </div>
-                <img id="finalCertImg" src="\${imgData}" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">
-            \`;
+                <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">
+            `;
 
             const finalImg = document.getElementById('finalCertImg');
             finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
