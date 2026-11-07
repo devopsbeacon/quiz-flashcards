@@ -1012,14 +1012,9 @@ const initScenarioEngine = () => {
             finalImg.style.userSelect = 'auto';
             
             // Clean, stable scroll adjustment without jumping
-            setTimeout(() => {
-                const elementPosition = certForm.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - 20;
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }, 300);
+setTimeout(() => {
+                certForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }).catch(err => {
             console.error("html2canvas render error:", err);
             alert("Error rendering image. Please try again.");
