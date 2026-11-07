@@ -89,7 +89,7 @@ const initScenarioEngine = () => {
       .zen-title-main { font-size: 32px; font-weight: 800; color: #f8fafc; margin: 0 0 16px; line-height: 1.2; }
       .zen-divider { width: 40px; height: 3px; background: #22c55e; border-radius: 2px; margin: 0 auto 16px; }
       .zen-subtitle { font-size: 16px; color: #94a3b8; line-height: 1.5; margin: 0; }
-      .zen-scenario-wrapper { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: visible; ... height: auto; min-height: 550px; margin: 0 auto; }
+      .zen-scenario-wrapper { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: visible; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #e2e8f0; display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); height: auto; min-height: 550px; margin: 0 auto; }
       .zen-scenario-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background-color: #020617; border-bottom: 1px solid #1e293b; }
       .header-left, .header-right { display: flex; align-items: center; gap: 16px; }
       .zen-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #38bdf8; text-transform: uppercase; }
