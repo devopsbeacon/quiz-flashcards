@@ -1008,7 +1008,9 @@ const initScenarioEngine = () => {
             Array.from(certForm.children).forEach(child => child.style.display = "none");
 
             const finalContainer = document.createElement('div');
-            finalContainer.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
+            // INJECT NATIVE ANCHOR POINT
+            finalContainer.innerHTML = '<a id="db-cert-anchor" style="display:block; position:relative; top:-20px; visibility:hidden;"></a>' +
+                '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
                 '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
                     '<strong>Save Your Certificate</strong><br>' +
                     'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
@@ -1023,8 +1025,9 @@ const initScenarioEngine = () => {
             finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
             finalImg.style.userSelect = 'auto';
             
+            // BULLETPROOF IFRAME JUMP (Bypasses scroll blocking)
             setTimeout(() => {
-                finalImg.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                window.location.hash = "#db-cert-anchor";
             }, 100);
             
         }).catch(err => {
