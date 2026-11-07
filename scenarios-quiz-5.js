@@ -858,7 +858,7 @@ const initScenarioEngine = () => {
     resultsScreen.style.display = "block";
     
     const score = Math.round((trueCount / activeScenarios.length) * 100);
-    document.getElementById("dbFinalScore").innerText = `${score}%`;
+    document.getElementById("dbFinalScore").innerText = score + "%";
 
     const topicDropdown = document.getElementById("subject-selector");
     const passedTopicRaw = topicDropdown ? topicDropdown.options[topicDropdown.selectedIndex].text : "Scenario Assessment";
@@ -873,7 +873,7 @@ const initScenarioEngine = () => {
     if (score >= 60) {
       document.getElementById("dbTrophyIcon").innerText = "🎉";
       document.getElementById("dbResultsHeading").innerText = "Architect Level Passed!";
-      document.getElementById("dbSummaryText").innerText = `Exceptional logic. You solved ${trueCount} out of ${activeScenarios.length} scenarios (${score}%).`;
+      document.getElementById("dbSummaryText").innerText = "Exceptional logic. You solved " + trueCount + " out of " + activeScenarios.length + " scenarios (" + score + "%).";
       
       triggerCelebration();
 
@@ -889,12 +889,10 @@ const initScenarioEngine = () => {
           resultsScreen.appendChild(certForm);
       }
       
-      certForm.innerHTML = `
-        <h4 style="margin: 0 0 15px 0; color: #f8fafc;">Claim Your Architect Certificate</h4>
-        <input type="text" id="dbCertName" placeholder="Enter Your Full Name" required 
-               style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; outline: none; background: #0f172a; color: #f8fafc; box-sizing: border-box; font-size: 15px;">
-        <button class="zen-submit-btn" id="dbGenCertBtn" style="background-color: #16a34a; width: 100%;">🏆 Generate Certificate</button>
-      `;
+      certForm.innerHTML = '<h4 style="margin: 0 0 15px 0; color: #f8fafc;">Claim Your Architect Certificate</h4>' +
+        '<input type="text" id="dbCertName" placeholder="Enter Your Full Name" required ' +
+        'style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; outline: none; background: #0f172a; color: #f8fafc; box-sizing: border-box; font-size: 15px;">' +
+        '<button class="zen-submit-btn" id="dbGenCertBtn" style="background-color: #16a34a; width: 100%;">🏆 Generate Certificate</button>';
 
       document.getElementById('dbGenCertBtn').onclick = function() {
           window.generateAndDownloadCert(score);
@@ -903,7 +901,7 @@ const initScenarioEngine = () => {
     } else {
       document.getElementById("dbTrophyIcon").innerText = "📚";
       document.getElementById("dbResultsHeading").innerText = "Keep Practicing!";
-      document.getElementById("dbSummaryText").innerText = `You solved ${trueCount} out of ${activeScenarios.length} scenarios (${score}%). Review the terminal logic and try again to hit 60%.`;
+      document.getElementById("dbSummaryText").innerText = "You solved " + trueCount + " out of " + activeScenarios.length + " scenarios (" + score + "%). Review the terminal logic and try again to hit 60%.";
     }
   };
 
@@ -930,57 +928,13 @@ const initScenarioEngine = () => {
     const passedTopic = window.currentPassedTopic || "Assessment";
     const todayDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    const bgSvg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816" width="1056" height="816">
-      <defs>
-        <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#fdf0cd" />
-          <stop offset="25%" stop-color="#d4af37" />
-          <stop offset="50%" stop-color="#aa771c" />
-          <stop offset="75%" stop-color="#d4af37" />
-          <stop offset="100%" stop-color="#fdf0cd" />
-        </linearGradient>
-        <linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#00f2fe" />
-          <stop offset="100%" stop-color="#00e5ff" />
-        </linearGradient>
-        <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1.2" fill="#1e293b" opacity="0.4" />
-        </pattern>
-      </defs>
-
-      <rect width="1056" height="816" fill="#0A0F1D" />
-      <rect width="1056" height="816" fill="url(#grid)" />
-
-      <rect x="35" y="35" width="986" height="746" stroke="url(#gold)" stroke-width="4" fill="none" />
-      <rect x="47" y="47" width="962" height="722" stroke="#00E5FF" stroke-width="1.5" fill="none" opacity="0.6" />
-
-      <path d="M 25 75 L 25 25 L 75 25" stroke="url(#gold)" stroke-width="6" fill="none" />
-      <path d="M 1031 75 L 1031 25 L 981 25" stroke="url(#gold)" stroke-width="6" fill="none" />
-      <path d="M 25 741 L 25 791 L 75 791" stroke="url(#gold)" stroke-width="6" fill="none" />
-      <path d="M 1031 741 L 1031 791 L 981 791" stroke="url(#gold)" stroke-width="6" fill="none" />
-
-      <path d="M 0 100 L 47 100 L 100 153" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="100" cy="153" r="4" fill="#00E5FF" />
-      <path d="M 1056 100 L 1009 100 L 956 153" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="956" cy="153" r="4" fill="#00E5FF" />
-      <path d="M 0 716 L 47 716 L 100 663" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="100" cy="663" r="4" fill="#00E5FF" />
-      <path d="M 1056 716 L 1009 716 L 956 663" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/>
-      <circle cx="956" cy="663" r="4" fill="#00E5FF" />
-
-      <g transform="translate(528, 781)">
-        <circle cx="0" cy="0" r="65" fill="#0A0F1D" />
-        <polygon points="-30,-10 -45,35 -20,25 0,35 -10,-10" fill="#aa771c" />
-        <polygon points="30,-10 10,-10 0,35 20,25 45,35" fill="#d4af37" />
-        <circle cx="0" cy="-25" r="48" fill="url(#gold)" />
-        <circle cx="0" cy="-25" r="42" fill="#0A0F1D" />
-        <circle cx="0" cy="-25" r="38" stroke="url(#gold)" stroke-width="2.5" stroke-dasharray="5 3" fill="none" />
-        <circle cx="0" cy="-25" r="33" fill="url(#gold)" />
-        <circle cx="0" cy="-25" r="29" fill="#0A0F1D" />
-        <path d="M0,-40 L4,-30 L15,-29 L7,-21 L9,-10 L0,-16 L-9,-10 L-7,-21 L-15,-29 L-4,-30 Z" fill="url(#gold)" />
-      </g>
-    </svg>`;
+    const bgSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816" width="1056" height="816">' +
+      '<defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fdf0cd" /><stop offset="25%" stop-color="#d4af37" /><stop offset="50%" stop-color="#aa771c" /><stop offset="75%" stop-color="#d4af37" /><stop offset="100%" stop-color="#fdf0cd" /></linearGradient><linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00f2fe" /><stop offset="100%" stop-color="#00e5ff" /></linearGradient><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#1e293b" opacity="0.4" /></pattern></defs>' +
+      '<rect width="1056" height="816" fill="#0A0F1D" /><rect width="1056" height="816" fill="url(#grid)" />' +
+      '<rect x="35" y="35" width="986" height="746" stroke="url(#gold)" stroke-width="4" fill="none" /><rect x="47" y="47" width="962" height="722" stroke="#00E5FF" stroke-width="1.5" fill="none" opacity="0.6" />' +
+      '<path d="M 25 75 L 25 25 L 75 25" stroke="url(#gold)" stroke-width="6" fill="none" /><path d="M 1031 75 L 1031 25 L 981 25" stroke="url(#gold)" stroke-width="6" fill="none" /><path d="M 25 741 L 25 791 L 75 791" stroke="url(#gold)" stroke-width="6" fill="none" /><path d="M 1031 741 L 1031 791 L 981 791" stroke="url(#gold)" stroke-width="6" fill="none" />' +
+      '<path d="M 0 100 L 47 100 L 100 153" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/><circle cx="100" cy="153" r="4" fill="#00E5FF" /><path d="M 1056 100 L 1009 100 L 956 153" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/><circle cx="956" cy="153" r="4" fill="#00E5FF" /><path d="M 0 716 L 47 716 L 100 663" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/><circle cx="100" cy="663" r="4" fill="#00E5FF" /><path d="M 1056 716 L 1009 716 L 956 663" stroke="url(#cyan)" stroke-width="2" fill="none" opacity="0.8"/><circle cx="956" cy="663" r="4" fill="#00E5FF" />' +
+      '<g transform="translate(528, 781)"><circle cx="0" cy="0" r="65" fill="#0A0F1D" /><polygon points="-30,-10 -45,35 -20,25 0,35 -10,-10" fill="#aa771c" /><polygon points="30,-10 10,-10 0,35 20,25 45,35" fill="#d4af37" /><circle cx="0" cy="-25" r="48" fill="url(#gold)" /><circle cx="0" cy="-25" r="42" fill="#0A0F1D" /><circle cx="0" cy="-25" r="38" stroke="url(#gold)" stroke-width="2.5" stroke-dasharray="5 3" fill="none" /><circle cx="0" cy="-25" r="33" fill="url(#gold)" /><circle cx="0" cy="-25" r="29" fill="#0A0F1D" /><path d="M0,-40 L4,-30 L15,-29 L7,-21 L9,-10 L0,-16 L-9,-10 L-7,-21 L-15,-29 L-4,-30 Z" fill="url(#gold)" /></g></svg>';
 
     const bgBase64 = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(bgSvg)));
 
@@ -991,53 +945,51 @@ const initScenarioEngine = () => {
     certElement.style.left = '-15000px'; 
     certElement.style.zIndex = '-9999';
 
-    certElement.innerHTML = `
-        <div style="width: 1056px; height: 816px; position: relative; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; align-items: center; color: #ffffff;">
-            <img src="${bgBase64}" style="position: absolute; top: 0; left: 0; width: 1056px; height: 816px; z-index: 1;" />
-            <div style="position: relative; z-index: 10; width: 100%; height: 100%; padding: 90px 80px 45px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-sizing: border-box;">
-                <div style="text-align: center;">
-                    <div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 8px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">DEVOPS BEACON ACADEMY</div>
-                    <div style="font-size: 5rem; font-weight: 900; letter-spacing: 6px; color: #d4af37; text-shadow: 0 4px 10px rgba(0,0,0,0.5); margin-bottom: 5px;">CERTIFICATE</div>
-                    <div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 10px; color: #00E5FF; text-transform: uppercase;">OF ACHIEVEMENT</div>
-                    <div style="width: 150px; height: 3px; background-color: #d4af37; margin: 25px auto 0 auto; border-radius: 2px;"></div>
-                </div>
-                <div style="text-align: center; width: 100%;">
-                    <div style="font-size: 1.1rem; font-weight: 700; letter-spacing: 5px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 20px;">
-                        <span style="display: inline-block; width: 60px; height: 1.5px; background-color: #d4af37;"></span>
-                        PROUDLY PRESENTED TO
-                        <span style="display: inline-block; width: 60px; height: 1.5px; background-color: #d4af37;"></span>
-                    </div>
-                    <div style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 5rem; color: #ffffff; margin-bottom: 20px; text-shadow: 0 2px 8px rgba(212,175,55,0.4);">
-                        ${studentName}
-                    </div>
-                    <div style="font-size: 1.2rem; font-weight: 600; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.8;">
-                        FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>
-                        <span style="font-size: 2.2rem; font-weight: 800; color: #00E5FF; letter-spacing: 1px; display: inline-block; margin-top: 8px; text-transform: none;">
-                            ${passedTopic}
-                        </span>
-                        <div style="font-size: 1.2rem; color: #94a3b8; font-weight: 700; letter-spacing: 2px; margin-top: 12px;">
-                            VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 900; font-size: 1.5rem;">${score}%</span>
-                        </div>
-                    </div>
-                </div>
-                <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px; box-sizing: border-box; margin-bottom: 8px;">
-                    <div style="text-align: center; width: 240px; background-color: #0A0F1D; padding: 5px 0; z-index: 20;">
-                        <div style="font-size: 1.3rem; font-weight: 600; color: #fdf0cd; margin-bottom: 8px;">${todayDate}</div>
-                        <div style="width: 100%; height: 2px; background-color: #d4af37; margin-bottom: 6px;"></div>
-                        <div style="font-size: 0.85rem; font-weight: 800; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase;">DATE</div>
-                    </div>
-                    <div style="width: 180px;"></div>
-                    <div style="text-align: center; width: 260px; background-color: #0A0F1D; padding: 5px 0; z-index: 20;">
-                        <div style="font-family: 'Brush Script MT', 'Lucida Handwriting', Georgia, cursive; font-size: 2rem; color: #ffffff; margin-bottom: 4px; line-height: 1; white-space: nowrap;">
-                            DevOps Beacon
-                        </div>
-                        <div style="width: 100%; height: 2px; background-color: #d4af37; margin-bottom: 6px;"></div>
-                        <div style="font-size: 0.85rem; font-weight: 800; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase;">AUTHORIZED SIGNATURE</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+    certElement.innerHTML = '<div style="width: 1056px; height: 816px; position: relative; box-sizing: border-box; font-family: \'Helvetica Neue\', Arial, sans-serif; display: flex; flex-direction: column; align-items: center; color: #ffffff;">' +
+        '<img src="' + bgBase64 + '" style="position: absolute; top: 0; left: 0; width: 1056px; height: 816px; z-index: 1;" />' +
+        '<div style="position: relative; z-index: 10; width: 100%; height: 100%; padding: 90px 80px 45px 80px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; box-sizing: border-box;">' +
+            '<div style="text-align: center;">' +
+                '<div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 8px; color: #fdf0cd; text-transform: uppercase; margin-bottom: 12px;">DEVOPS BEACON ACADEMY</div>' +
+                '<div style="font-size: 5rem; font-weight: 900; letter-spacing: 6px; color: #d4af37; text-shadow: 0 4px 10px rgba(0,0,0,0.5); margin-bottom: 5px;">CERTIFICATE</div>' +
+                '<div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 10px; color: #00E5FF; text-transform: uppercase;">OF ACHIEVEMENT</div>' +
+                '<div style="width: 150px; height: 3px; background-color: #d4af37; margin: 25px auto 0 auto; border-radius: 2px;"></div>' +
+            '</div>' +
+            '<div style="text-align: center; width: 100%;">' +
+                '<div style="font-size: 1.1rem; font-weight: 700; letter-spacing: 5px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 20px;">' +
+                    '<span style="display: inline-block; width: 60px; height: 1.5px; background-color: #d4af37;"></span>' +
+                    'PROUDLY PRESENTED TO' +
+                    '<span style="display: inline-block; width: 60px; height: 1.5px; background-color: #d4af37;"></span>' +
+                '</div>' +
+                '<div style="font-family: Georgia, \'Times New Roman\', serif; font-style: italic; font-size: 5rem; color: #ffffff; margin-bottom: 20px; text-shadow: 0 2px 8px rgba(212,175,55,0.4);">' +
+                    studentName +
+                '</div>' +
+                '<div style="font-size: 1.2rem; font-weight: 600; letter-spacing: 2px; color: #cbd5e1; text-transform: uppercase; line-height: 1.8;">' +
+                    'FOR DEMONSTRATING OUTSTANDING MASTERY IN<br>' +
+                    '<span style="font-size: 2.2rem; font-weight: 800; color: #00E5FF; letter-spacing: 1px; display: inline-block; margin-top: 8px; text-transform: none;">' +
+                        passedTopic +
+                    '</span>' +
+                    '<div style="font-size: 1.2rem; color: #94a3b8; font-weight: 700; letter-spacing: 2px; margin-top: 12px;">' +
+                        'VERIFIED SCORE: <span style="color: #fdf0cd; font-weight: 900; font-size: 1.5rem;">' + score + '%</span>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+            '<div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px; box-sizing: border-box; margin-bottom: 8px;">' +
+                '<div style="text-align: center; width: 240px; background-color: #0A0F1D; padding: 5px 0; z-index: 20;">' +
+                    '<div style="font-size: 1.3rem; font-weight: 600; color: #fdf0cd; margin-bottom: 8px;">' + todayDate + '</div>' +
+                    '<div style="width: 100%; height: 2px; background-color: #d4af37; margin-bottom: 6px;"></div>' +
+                    '<div style="font-size: 0.85rem; font-weight: 800; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase;">DATE</div>' +
+                '</div>' +
+                '<div style="width: 180px;"></div>' +
+                '<div style="text-align: center; width: 260px; background-color: #0A0F1D; padding: 5px 0; z-index: 20;">' +
+                    '<div style="font-family: \'Brush Script MT\', \'Lucida Handwriting\', Georgia, cursive; font-size: 2rem; color: #ffffff; margin-bottom: 4px; line-height: 1; white-space: nowrap;">' +
+                        'DevOps Beacon' +
+                    '</div>' +
+                    '<div style="width: 100%; height: 2px; background-color: #d4af37; margin-bottom: 6px;"></div>' +
+                    '<div style="font-size: 0.85rem; font-weight: 800; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase;">AUTHORIZED SIGNATURE</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+    '</div>';
 
     document.body.appendChild(certElement);
 
@@ -1054,24 +1006,22 @@ const initScenarioEngine = () => {
             const imgData = canvas.toDataURL('image/png');
             const certForm = document.getElementById('dbCertForm');
             
-            certForm.innerHTML = `
-                <h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>
-                <div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
-                    <strong>Step 1: Save Your Certificate</strong><br>
-                    Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>
-                    <div style="margin-top: 10px; border-top: 1px solid #334155; padding-top: 10px;">
-                        <strong>Step 2: Share on LinkedIn</strong><br>
-                        Attach your saved certificate image to your LinkedIn post and tag your peers!
-                        <div style="margin-top: 10px;">
-                            <a href="https://www.linkedin.com/feed/?shareActive=true" target="_blank" style="background-color: #0a66c2; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
-                                Post to LinkedIn
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <img id="finalCertImg" src="${imgData}" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">
-            `;
+            certForm.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
+                '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
+                    '<strong>Step 1: Save Your Certificate</strong><br>' +
+                    'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
+                    '<div style="margin-top: 10px; border-top: 1px solid #334155; padding-top: 10px;">' +
+                        '<strong>Step 2: Share on LinkedIn</strong><br>' +
+                        'Attach your saved certificate image to your LinkedIn post and tag your peers!' +
+                        '<div style="margin-top: 10px;">' +
+                            '<a href="https://www.linkedin.com/feed/?shareActive=true" target="_blank" style="background-color: #0a66c2; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;">' +
+                                '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>' +
+                                'Post to LinkedIn' +
+                            '</a>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">';
 
             const finalImg = document.getElementById('finalCertImg');
             finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
@@ -1094,7 +1044,7 @@ const initScenarioEngine = () => {
         });
     }, 500);
   };
-
+  
   // Event Listeners
   subjectSelector.addEventListener("change", initializeSubject);
   btnNext.addEventListener("click", handleNextBtn);
