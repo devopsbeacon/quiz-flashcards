@@ -42,7 +42,7 @@ const initScenarioEngine = () => {
         </div>
       </header>
 
-      <!-- PROGRESS BAR (Added to track the 4 scenarios) -->
+      <!-- PROGRESS BAR -->
       <div class="db-progress-track" style="background: #1e293b; height: 6px; width: 100%;">
         <div id="scenario-progress-bar" style="height: 100%; width: 0%; background: #22c55e; transition: width 0.3s ease;"></div>
       </div>
@@ -71,7 +71,7 @@ const initScenarioEngine = () => {
         </div>
       </div>
 
-      <!-- THE RESULTS SCREEN (Hidden by default) -->
+      <!-- THE RESULTS SCREEN -->
       <div id="scenario-results-screen" class="db-results-screen" style="display: none; padding: 40px; text-align: center; background: #0f172a; flex: 1;">
           <div id="dbTrophyIcon" style="font-size:4rem; margin-bottom:15px">🏆</div>
           <h3 id="dbResultsHeading" style="font-size: 24px; font-weight: 800; color: #f8fafc; margin-bottom: 10px;">Assessment Completed!</h3>
@@ -999,29 +999,17 @@ const initScenarioEngine = () => {
             
             certForm.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
                 '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
-                    '<strong>Step 1: Save Your Certificate</strong><br>' +
+                    '<strong>Save Your Certificate</strong><br>' +
                     'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
-                    '<div style="margin-top: 10px; border-top: 1px solid #334155; padding-top: 10px;">' +
-                        '<strong>Step 2: Share on LinkedIn</strong><br>' +
-                        'Attach your saved certificate image to your LinkedIn post and tag your peers!' +
-                        '<div style="margin-top: 10px;">' +
-                            '<!-- The Form-POST Bypass -->' +
-                            '<form action="https://www.linkedin.com/feed/" method="GET" target="_blank" rel="noopener noreferrer" style="margin:0; padding:0; display:inline;">' +
-                                '<input type="hidden" name="shareActive" value="true">' +
-                                '<button type="submit" style="background-color: #0a66c2; border: none; cursor: pointer; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; font-family: inherit;">' +
-                                    '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>' +
-                                    'Post to LinkedIn' +
-                                '</button>' +
-                            '</form>' +
-                        '</div>' +
-                    '</div>' +
                 '</div>' +
-                '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">';            const finalImg = document.getElementById('finalCertImg');
-            
-          finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
+                '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">';
+
+            const finalImg = document.getElementById('finalCertImg');
+            finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
             finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
             finalImg.style.userSelect = 'auto';
+            
             setTimeout(() => {
                 certForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 100);
@@ -1038,35 +1026,3 @@ const initScenarioEngine = () => {
         });
     }, 500);
   };
-  
-  // Event Listeners
-  subjectSelector.addEventListener("change", initializeSubject);
-  btnNext.addEventListener("click", handleNextBtn);
-  btnSubmit.addEventListener("click", submitAnswer);
-  document.getElementById("btn-restart-subject").addEventListener("click", initializeSubject);
-
-  // Initialize
-  initializeSubject();
-
-  // Karma Shield Active Defense Hooks
-  const shield = document.getElementById("karma-shield-active");
-  shield.addEventListener("contextmenu", (e) => e.preventDefault());
-  shield.addEventListener("copy", (e) => e.preventDefault());
-  shield.addEventListener("cut", (e) => e.preventDefault());
-  shield.addEventListener("paste", (e) => e.preventDefault());
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "F12") e.preventDefault();
-    if (e.ctrlKey || e.metaKey) {
-      const blockedKeys = ['c', 'u', 'i', 'p', 's', 'a']; 
-      if (blockedKeys.includes(e.key.toLowerCase())) e.preventDefault();
-}
-  });
-}; // End of initScenarioEngine
-
-// GoDaddy Async Loader Fix
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initScenarioEngine);
-} else {
-  initScenarioEngine();
-}
