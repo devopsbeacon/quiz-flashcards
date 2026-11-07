@@ -1011,10 +1011,19 @@ const initScenarioEngine = () => {
             finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
             finalImg.style.userSelect = 'auto';
             
-            // Clean, stable scroll adjustment without jumping
-setTimeout(() => {
-                certForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+            // IFRAME-SAFE SCROLLING ALGORITHM
+            setTimeout(() => {
+                const resultsScreen = document.getElementById("scenario-results-screen");
+                const yOffset = certForm.getBoundingClientRect().top + window.pageYOffset - 20;
+                
+                // Try scrolling the window (for direct loads)
+                window.scrollTo({ top: yOffset, behavior: 'smooth' });
+                
+                // Fallback: Scroll the specific container itself (for iframe traps)
+                if(resultsScreen) {
+                    resultsScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 400);
         }).catch(err => {
             console.error("html2canvas render error:", err);
             alert("Error rendering image. Please try again.");
