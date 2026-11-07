@@ -72,7 +72,7 @@ const initScenarioEngine = () => {
         </div>
       </div>
 
-      <!-- THE RESULTS SCREEN (Hidden by default) -->
+      <!-- THE RESULTS SCREEN -->
       <div id="scenario-results-screen" class="db-results-screen" style="display: none; padding: 40px; text-align: center; background: #0f172a; height: auto;">
           <div id="dbTrophyIcon" style="font-size:4rem; margin-bottom:15px">🏆</div>
           <h3 id="dbResultsHeading" style="font-size: 24px; font-weight: 800; color: #f8fafc; margin-bottom: 10px;">Assessment Completed!</h3>
