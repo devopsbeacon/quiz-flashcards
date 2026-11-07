@@ -1,4 +1,5 @@
 const initScenarioEngine = () => {
+  console.log("DevOpsBeacon: Initializing Scenario Engine...");
   const root = document.getElementById("db-flashcards-root");
   
   if (!root) {
@@ -42,7 +43,7 @@ const initScenarioEngine = () => {
         </div>
       </header>
 
-      <!-- PROGRESS BAR (Added to track the 4 scenarios) -->
+      <!-- PROGRESS BAR -->
       <div class="db-progress-track" style="background: #1e293b; height: 6px; width: 100%;">
         <div id="scenario-progress-bar" style="height: 100%; width: 0%; background: #22c55e; transition: width 0.3s ease;"></div>
       </div>
@@ -997,7 +998,7 @@ const initScenarioEngine = () => {
             const imgData = canvas.toDataURL('image/png');
             const certForm = document.getElementById('dbCertForm');
             
-certForm.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
+            certForm.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
                 '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
                     '<strong>Save Your Certificate</strong><br>' +
                     'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
