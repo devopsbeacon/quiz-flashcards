@@ -887,7 +887,7 @@ const initScenarioEngine = () => {
         '<button class="zen-submit-btn" id="dbGenCertBtn" style="background-color: #16a34a; width: 100%;">🏆 Generate Certificate</button>';
 
       document.getElementById('dbGenCertBtn').onclick = function() {
-          window.generateAndDownloadCert(score);
+          window.generateAndDownloadCert(score, event);
       };
 
     } else {
