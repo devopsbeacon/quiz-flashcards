@@ -842,7 +842,7 @@ const initScenarioEngine = () => {
     }, 250);
   };
 
-// --- RESULTS SCREEN ---
+// --- RESULTS SCREEN & SMOOTH SCROLL ---
   const showResults = () => {
     clearInterval(timerInterval);
     document.getElementById("scenario-quiz-screen").style.display = "none";
@@ -897,7 +897,7 @@ const initScenarioEngine = () => {
     }
   };
 
-  // --- CERTIFICATE GENERATOR ---
+  // --- CERTIFICATE GENERATOR & SMOOTH SCROLL ---
   window.generateAndDownloadCert = function(score) {
     const studentName = document.getElementById("dbCertName").value.trim();
     if (!studentName) {
@@ -1011,10 +1011,10 @@ const initScenarioEngine = () => {
             finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
             finalImg.style.userSelect = 'auto';
             
-            // Allow the DOM layout to completely settle before scrolling smoothly
+            // Clean, stable scroll adjustment without jumping
             setTimeout(() => {
                 const elementPosition = certForm.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - 20; // 20px breathing room at top
+                const offsetPosition = elementPosition + window.pageYOffset - 20;
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
