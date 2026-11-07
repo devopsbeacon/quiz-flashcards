@@ -986,57 +986,58 @@ const initScenarioEngine = () => {
     document.body.appendChild(certElement);
 
     setTimeout(() => {
-        html2canvas(certElement, { 
-            scale: 2, 
-            logging: false,
-            backgroundColor: '#0A0F1D',
-            allowTaint: true
-        }).then(canvas => {
-            if (document.body.contains(certElement)) {
-                document.body.removeChild(certElement);
-            }
-            const imgData = canvas.toDataURL('image/png');
-            const certForm = document.getElementById('dbCertForm');
-            
-            certForm.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
-                '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
-                    '<strong>Save Your Certificate</strong><br>' +
-                    'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
-                '</div>' +
-                '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">';
+html2canvas(certElement, { 
+        scale: 2, 
+        logging: false,
+        backgroundColor: '#0A0F1D',
+        allowTaint: true
+    }).then(canvas => {
+        // 1. PREVENT JUMP: Unfocus the active button before destroying it
+        if (document.activeElement) {
+            document.activeElement.blur();
+        }
 
-            const finalImg = document.getElementById('finalCertImg');
-            finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
-            finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
-            finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
-            finalImg.style.userSelect = 'auto';
-            
-            // IFRAME-SAFE SCROLLING ALGORITHM
-            setTimeout(() => {
-                const resultsScreen = document.getElementById("scenario-results-screen");
-                const yOffset = certForm.getBoundingClientRect().top + window.pageYOffset - 20;
-                
-                // Try scrolling the window (for direct loads)
-                window.scrollTo({ top: yOffset, behavior: 'smooth' });
-                
-                // Fallback: Scroll the specific container itself (for iframe traps)
-                if(resultsScreen) {
-                    resultsScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 400);
-        }).catch(err => {
-            console.error("html2canvas render error:", err);
-            alert("Error rendering image. Please try again.");
-            if (document.body.contains(certElement)) {
-                document.body.removeChild(certElement);
-            }
-            if (downloadBtn) {
-                downloadBtn.innerText = originalText;
-                downloadBtn.disabled = false;
-            }
-        });
-    }, 500);
-  };
+        if (document.body.contains(certElement)) {
+            document.body.removeChild(certElement);
+        }
+        
+        const imgData = canvas.toDataURL('image/png');
+        const certForm = document.getElementById('dbCertForm');
+        
+        // 2. PREVENT COLLAPSE: Lock the height temporarily during the HTML swap
+        certForm.style.minHeight = certForm.offsetHeight + "px";
+        
+        certForm.innerHTML = '<h4 style="margin: 0 0 10px 0; color: #f8fafc;">🎉 Your Certificate is Ready!</h4>' +
+            '<div style="background: #0f172a; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">' +
+                '<strong>Save Your Certificate</strong><br>' +
+                'Right-click (or long-press) the certificate below and select <em>"Save image as..."</em>' +
+            '</div>' +
+            '<img id="finalCertImg" src="' + imgData + '" style="width: 100%; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);" alt="DevOps Beacon Certificate">';
+
+        const finalImg = document.getElementById('finalCertImg');
+        finalImg.addEventListener('contextmenu', function(e) { e.stopPropagation(); });
+        finalImg.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+        finalImg.addEventListener('touchstart', function(e) { e.stopPropagation(); });
+        finalImg.style.userSelect = 'auto';
+        
+        // 3. IFRAME-SAFE SCROLL: Use relative downward push, bypassing GoDaddy interceptors
+        setTimeout(() => {
+            certForm.style.minHeight = "auto"; // Release the height lock
+            window.scrollBy({ top: 800, left: 0, behavior: 'smooth' });
+        }, 100);
+        
+    }).catch(err => {
+        console.error("html2canvas render error:", err);
+        alert("Error rendering image. Please try again.");
+        if (document.body.contains(certElement)) {
+            document.body.removeChild(certElement);
+        }
+        if (downloadBtn) {
+            downloadBtn.innerText = originalText;
+            downloadBtn.disabled = false;
+        }
+    });
+}, 500);
   
   // Event Listeners
   subjectSelector.addEventListener("change", initializeSubject);
